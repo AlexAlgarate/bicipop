@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client"
+  output   = "./generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+
+}
+
+model User {
+  id            String   @id @default(uuid())
+  username      String   @unique
+  email         String   @unique
+  password      String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  products      Product[]
+  favorites     Favorite[]
+}
+
+model Product {
+  id            String   @id @default(uuid())
+  title         String
+  description   String
+  price         Float
+  imageUrl      String?
+  location      String
+  status        ProductStatus @default(ACTIVE)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  categoryId    String
+  categories    Category @relation(fields: [categoryId], references: [id])
+
+  favorites     Favorite[]
+
+  @@index([userId])
+  @@index([categoryId])
+  @@index([status])
+  @@index([createdAt])
+
+}
+
+model Favorite {
+  id            String @id @default(uuid())
+  user          User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String
+  product       Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId     String
+  createdAt     DateTime @default(now())
+
+  @@unique([userId, productId])
+}
+
+model Category {
+  id            String @id @default(uuid())
+  name          String @unique
+  slug          String @unique
+  createdAt     DateTime  @default(now())
+  products      Product[]
+}
+
+enum ProductStatus {
+  ACTIVE
+  SOLD
+  RESERVED
+}
