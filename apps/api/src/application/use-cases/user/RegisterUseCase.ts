@@ -11,8 +11,8 @@ export class RegisterUseCase {
   ) {}
 
   async execute(query: RegisterDTO): Promise<User> {
-    const existing = await this.userRepository.findByEmail(query.email);
-    if (existing) throw new BusinessConflictError('Email already exists');
+    const existingUser = await this.userRepository.findByEmail(query.email);
+    if (existingUser) throw new BusinessConflictError('Email already exists');
 
     const passwordHash = await this.passwordHasher.hash(query.password);
 

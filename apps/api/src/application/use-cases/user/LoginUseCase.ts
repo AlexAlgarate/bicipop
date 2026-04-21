@@ -13,20 +13,23 @@ export class LoginUseCase {
   ) {}
 
   async execute(query: LoginDTO): Promise<AuthResponseDTO> {
-    const user = await this.userRepository.findByEmail(query.email);
-    if (!user) throw new EntityNotFoundError('User', query.email);
+    const existingUser = await this.userRepository.findByEmail(query.email);
+    if (!existingUser) throw new EntityNotFoundError('User', query.email);
 
-    const isValid = await this.passwordHasher.compare(query.password, user.password);
+    const isValid = await this.passwordHasher.compare(query.password, existingUser.password);
     if (!isValid) throw new UnauthorizedError('Wrong password');
 
-    const token = this.tokenService.generate({ userId: user.id, email: user.email });
+    const token = this.tokenService.generate({
+      userId: existingUser.id,
+      email: existingUser.email,
+    });
 
     return {
       token,
       user: {
-        id: user.id,
-        username: user.username,
-        email: user.email,
+        id: existingUser.id,
+        username: existingUser.username,
+        email: existingUser.email,
       },
     };
   }

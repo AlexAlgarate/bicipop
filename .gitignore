@@ -38,3 +38,6 @@ next-env.d.ts
 **/prisma/generated
 **/prisma/migrations
 repomix-output.xml
+apps/**/dist
+apps/**/build
+apps/**/coverage

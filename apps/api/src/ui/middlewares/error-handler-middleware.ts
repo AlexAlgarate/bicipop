@@ -3,7 +3,7 @@ import { status } from 'http-status';
 import * as z from 'zod';
 import * as Sentry from '@sentry/node';
 
-import { DomainError } from '@domain/types/errors/DomainError';
+import { DomainError } from '@domain/errors';
 
 const domainErrorToHttpStatusCode: Record<string, number> = {
   EntityNotFoundError: status.NOT_FOUND,

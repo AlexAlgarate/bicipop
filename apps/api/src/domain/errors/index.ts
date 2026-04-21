@@ -3,3 +3,4 @@ export * from './UnauthorizedError';
 export * from './ForbiddenOperation';
 export * from './EntityNotFoundError';
 export * from './EmailServiceError';
+export * from './DomainError';
