@@ -6,9 +6,11 @@ export default defineConfig({
     alias: {
       '@domain': path.resolve(__dirname, './src/domain'),
       '@infrastructure': path.resolve(__dirname, './src/infrastructure'),
+      '@application': path.resolve(__dirname, './src/application'),
       '@ui': path.resolve(__dirname, './src/ui'),
       '@di': path.resolve(__dirname, './src/di'),
       '@tests': path.resolve(__dirname, './src/tests'),
+      '@bicipop/shared': path.resolve(__dirname, '../../packages/shared/src'),
     },
   },
   test: {

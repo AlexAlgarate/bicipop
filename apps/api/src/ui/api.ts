@@ -39,8 +39,9 @@ export const createApp = (): Application => {
 };
 
 export const startHttpApi = (app: Application): void => {
+  const API_VERSION = '/api/v1';
   const { API_PORT } = new EnvironmentService().get();
   app.listen(API_PORT, () => {
-    console.log(`API is running on port ${API_PORT}`);
+    console.log(`API is running on port http://localhost:${API_PORT}/${API_VERSION}`);
   });
 };

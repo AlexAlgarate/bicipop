@@ -1,35 +1,46 @@
-// import 'reflect-metadata';
+import 'dotenv/config';
+import 'reflect-metadata';
 
-// import { environmentService } from '@infrastructure/services/environment-service';
-// import { PrismaPg } from '@prisma/adapter-pg';
-// import { PrismaClient } from '../../prisma/generated/client/client';
-// import { container } from '@di/container';
-// import { EMAIL_SERVICE } from '@di/tokens';
+import { Application } from 'express';
 
-// import { Application } from 'express';
-// import { registerTestBindings } from '@di/tests-bindings';
-// import { createApp } from '@ui/api';
+import { container } from '@di/container';
+import { registerInfrastructure } from '@di/infrastructure-bindings';
+import { registerUseCases } from '@di/usecase-bindings';
+import { prisma } from '@infrastructure/prisma/client';
+import { createApp } from '@ui/api';
 
-// const connectionString = process.env.DATABASE_URL;
+export const TEST_EMAIL_PREFIX = 'authtest+';
+export const testPrisma = prisma;
 
-// if (!connectionString) {
-//   throw new Error('DATABASE_URL is not defined in the environment variables.');
-// }
-// const adapter = new PrismaPg({ connectionString });
+let testApp: Application | null = null;
 
-// export const prisma = new PrismaClient({ adapter });
+beforeAll(async () => {
+  container.unbindAll();
+  registerInfrastructure();
+  registerUseCases();
 
-// let testApp: Application;
-// beforeAll(async () => {
-//   environmentService.load();
-//   registerTestBindings();
-//   container.rebind(EMAIL_SERVICE).toConstantValue({
-//     sendEmailToSeller: vi.fn(),
-//   });
-// }, 120000);
+  testApp = createApp();
+  await prisma.$connect();
+}, 120000);
 
-// export const getTestApp = (): Application => testApp;
+export const getTestApp = (): Application => {
+  if (!testApp) {
+    throw new Error('Test app has not been initialized. Ensure setup.ts ran before tests.');
+  }
+  return testApp;
+};
 
-// afterEach(async () => {});
+afterEach(async () => {
+  await prisma.user.deleteMany({
+    where: {
+      email: {
+        startsWith: TEST_EMAIL_PREFIX,
+      },
+    },
+  });
+});
 
-// afterAll(async () => {});
+afterAll(async () => {
+  await prisma.$disconnect();
+  container.unbindAll();
+});
