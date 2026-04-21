@@ -26,7 +26,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const cookieStore = await cookies();
-  const AUTH_COOKIE_NAME = process.env.AUTH_COOKIE_NAME ?? 'session-token';
+  const AUTH_COOKIE_NAME = process.env.AUTH_COOKIE_NAME ?? 'bp_auth_token';
   const sessionToken = cookieStore.get(AUTH_COOKIE_NAME);
   const isAuthenticated = !!sessionToken;
 

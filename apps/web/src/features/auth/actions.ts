@@ -6,9 +6,10 @@ import { redirect } from 'next/navigation';
 import { AuthFormState } from '@/features/auth/types';
 import { loginSchema, registerSchema } from '@/features/auth/validation';
 import { getFieldErrorsFromTree } from '@/lib/validations/validation-errors';
+import { authApi } from './api';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api/v1';
-
+import { env } from '@/infrastructure/services/environment-service';
+const { ENVIRONMENT, AUTH_COOKIE_NAME } = env.get();
 export async function loginAction(
   _prevState: AuthFormState,
   formData: FormData,
@@ -30,30 +31,13 @@ export async function loginAction(
     };
   }
 
-  const email = parsed.data.email.toLowerCase();
-
   try {
-    const response = await fetch(`${API_URL}/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password: parsed.data.password }),
-    });
+    const { content: token } = await authApi.login(
+      parsed.data.email.toLowerCase(),
+      parsed.data.password,
+    );
 
-    if (!response.ok) {
-      return invalidCredentials(emailInput);
-    }
-
-    const data = await response.json();
-    const token = data.content;
-
-    const cookieStore = await cookies();
-    cookieStore.set('auth-token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 7,
-      path: '/',
-    });
+    await setAuthCookie(token);
 
     return {
       success: true,
@@ -61,17 +45,15 @@ export async function loginAction(
       errors: {},
       values: {},
     };
-  } catch {
-    return invalidCredentials(emailInput);
+  } catch (error) {
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : 'Credenciales inválidas',
+      errors: {},
+      values: { email: emailInput },
+    };
   }
 }
-
-const invalidCredentials = (email: string): AuthFormState => ({
-  success: false,
-  message: 'Credenciales inválidas',
-  errors: {},
-  values: { email },
-});
 
 export async function registerAction(
   _prevState: AuthFormState,
@@ -99,24 +81,12 @@ export async function registerAction(
     };
   }
 
-  const { email, password, username } = parsed.data;
-
   try {
-    const response = await fetch(`${API_URL}/auth/register`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password, username }),
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      return {
-        success: false,
-        message: errorData.message || 'Error al registrar',
-        errors: {},
-        values: { username: usernameInput },
-      };
-    }
+    await authApi.register(
+      parsed.data.email.toLowerCase(),
+      parsed.data.password,
+      parsed.data.username,
+    );
 
     return {
       success: true,
@@ -124,18 +94,29 @@ export async function registerAction(
       errors: {},
       values: {},
     };
-  } catch {
+  } catch (error) {
     return {
       success: false,
-      message: 'Error de conexión',
+      message: error instanceof Error ? error.message : 'Error de conexión',
       errors: {},
-      values: { username: usernameInput },
+      values: { email: emailInput, username: usernameInput },
     };
   }
 }
 
 export const logout = async () => {
   const cookieStore = await cookies();
-  cookieStore.delete('auth-token');
+  cookieStore.delete(AUTH_COOKIE_NAME);
   redirect('/');
+};
+
+const setAuthCookie = async (token: string): Promise<void> => {
+  const cookieStore = await cookies();
+  cookieStore.set(AUTH_COOKIE_NAME, token, {
+    httpOnly: true,
+    secure: ENVIRONMENT === 'production',
+    sameSite: 'lax',
+    maxAge: 60 * 60 * 24 * 7,
+    path: '/',
+  });
 };
