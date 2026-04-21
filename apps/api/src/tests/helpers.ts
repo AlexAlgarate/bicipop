@@ -13,3 +13,9 @@ export const signup = (email = faker.internet.email(), password = VALID_PASSWORD
 
 export const login = (email: string, password = VALID_PASSWORD): Test =>
   request(getTestApp()).post(API_LOGIN_URL).send({ email, password });
+
+export const validCredentials = () => ({
+  username: faker.internet.username(),
+  email: faker.internet.email(),
+  password: VALID_PASSWORD,
+});
