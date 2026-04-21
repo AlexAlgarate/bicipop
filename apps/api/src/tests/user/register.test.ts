@@ -1,6 +1,5 @@
 import { status } from 'http-status';
 import request from 'supertest';
-
 import { getTestApp, testPrisma } from '@tests/setup';
 import { API_REGISTER_URL, validCredentials } from '@tests/helpers';
 import { signupResponseSchema } from '@tests/schemas/test-user-schemas';

@@ -1,7 +1,6 @@
 import { RegisterUseCase } from '@application/use-cases/user/RegisterUseCase';
 import { validateRegisterInput } from '@application/dto/authentication';
 import { Request, Response } from 'express';
-
 import { container } from '@di/container';
 import { REGISTER_USE_CASE } from '@di/tokens';
 

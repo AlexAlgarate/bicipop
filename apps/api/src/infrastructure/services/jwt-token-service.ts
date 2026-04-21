@@ -26,7 +26,7 @@ export class JwtTokenService implements TokenService {
       return jwt.verify(token, this.jwtSecret, {
         algorithms: ['HS256'],
       }) as TokenPayload;
-    } catch (error) {
+    } catch (_error) {
       return null;
     }
   }

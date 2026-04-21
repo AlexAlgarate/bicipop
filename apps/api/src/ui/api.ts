@@ -1,7 +1,6 @@
 import express, { Application, json } from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
-
 import { EnvironmentService } from '@infrastructure/services/environment-service';
 
 import authenticationRouter from './routes/authentication-routes';

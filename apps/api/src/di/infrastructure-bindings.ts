@@ -1,14 +1,13 @@
 import { UserRepository } from '@domain/repositories/UserRepository';
 import { PasswordHasher } from '@domain/services/PasswordHasher';
 import { TokenService } from '@domain/services/TokenService';
-
 import { PrismaUserRepository } from '@infrastructure/repositories/prisma-user-repository';
 import { JwtTokenService } from '@infrastructure/services/jwt-token-service';
 import { BcryptPasswordHasher } from '@infrastructure/services/bcrypt-password-hasher';
+import { EnvironmentService } from '@infrastructure/services/environment-service';
 
 import { container } from './container';
 import { USER_REPOSITORY, PASSWORD_HASHER, TOKEN_SERVICE, ENVIRONMENT_SERVICE } from './tokens';
-import { EnvironmentService } from '@infrastructure/services/environment-service';
 
 export function registerInfrastructure(): void {
   container.bind<UserRepository>(USER_REPOSITORY).to(PrismaUserRepository).inSingletonScope();

@@ -1,5 +1,4 @@
 import request from 'supertest';
-
 import { getTestApp } from '@tests/setup';
 import { API_LOGIN_URL, API_REGISTER_URL, validCredentials } from '@tests/helpers';
 import { SigninResponse, signinResponseSchema } from '@tests/schemas/test-user-schemas';

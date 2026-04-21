@@ -1,12 +1,11 @@
-import { container } from './container';
 
 import { RegisterUseCase } from '@application/use-cases/user/RegisterUseCase';
 import { LoginUseCase } from '@application/use-cases/user/LoginUseCase';
-
 import { PasswordHasher } from '@domain/services/PasswordHasher';
 import { TokenService } from '@domain/services/TokenService';
 import { UserRepository } from '@domain/repositories/UserRepository';
 
+import { container } from './container';
 import {
   LOGIN_USE_CASE,
   PASSWORD_HASHER,

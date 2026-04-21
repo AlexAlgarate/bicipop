@@ -2,7 +2,6 @@ import 'dotenv/config';
 import 'reflect-metadata';
 
 import { Application } from 'express';
-
 import { container } from '@di/container';
 import { registerInfrastructure } from '@di/infrastructure-bindings';
 import { registerUseCases } from '@di/usecase-bindings';
