@@ -4,18 +4,10 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 import { AuthFormState } from '@/features/auth/types';
-import { comparePassword, hashPassword } from './security';
-import { createSession, getSession } from '@/lib/auth';
-import {
-  getAuthUserByEmail,
-  getUserByEmail,
-  createUser,
-  deleteUser,
-  getUserById,
-} from '@/features/auth/api';
-import { getFieldErrorsFromTree } from '@/lib/validations/validation-errors';
 import { loginSchema, registerSchema } from '@/features/auth/validation';
-import { revalidatePath } from 'next/cache';
+import { getFieldErrorsFromTree } from '@/lib/validations/validation-errors';
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api/v1';
 
 export async function loginAction(
   _prevState: AuthFormState,
@@ -39,21 +31,39 @@ export async function loginAction(
   }
 
   const email = parsed.data.email.toLowerCase();
-  const user = await getAuthUserByEmail(email);
 
-  if (!user) return invalidCredentials(emailInput);
+  try {
+    const response = await fetch(`${API_URL}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password: parsed.data.password }),
+    });
 
-  const validPassword = await comparePassword(parsed.data.password, user.passwordHash);
+    if (!response.ok) {
+      return invalidCredentials(emailInput);
+    }
 
-  if (!validPassword) return invalidCredentials(emailInput);
+    const data = await response.json();
+    const token = data.content;
 
-  await createSession(user.id);
-  return {
-    success: true,
-    message: 'Sesión iniciada correctamente',
-    errors: {},
-    values: {},
-  };
+    const cookieStore = await cookies();
+    cookieStore.set('auth-token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 60 * 60 * 24 * 7,
+      path: '/',
+    });
+
+    return {
+      success: true,
+      message: 'Sesión iniciada correctamente',
+      errors: {},
+      values: {},
+    };
+  } catch {
+    return invalidCredentials(emailInput);
+  }
 }
 
 const invalidCredentials = (email: string): AuthFormState => ({
@@ -69,13 +79,11 @@ export async function registerAction(
 ): Promise<AuthFormState> {
   const emailInput = String(formData.get('email'));
   const passwordInput = String(formData.get('password'));
-  const locationInput = String(formData.get('location'));
   const usernameInput = String(formData.get('username'));
 
   const parsed = registerSchema.safeParse({
     email: emailInput,
     password: passwordInput,
-    location: locationInput,
     username: usernameInput,
   });
 
@@ -87,78 +95,47 @@ export async function registerAction(
       values: {
         email: emailInput,
         username: usernameInput,
-        location: locationInput,
       },
     };
   }
 
-  const { email, password, username, location } = parsed.data;
+  const { email, password, username } = parsed.data;
 
-  const existingUser = await getUserByEmail(email);
+  try {
+    const response = await fetch(`${API_URL}/auth/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password, username }),
+    });
 
-  if (existingUser) {
+    if (!response.ok) {
+      const errorData = await response.json();
+      return {
+        success: false,
+        message: errorData.message || 'Error al registrar',
+        errors: {},
+        values: { username: usernameInput },
+      };
+    }
+
+    return {
+      success: true,
+      message: 'Usuario creado correctamente',
+      errors: {},
+      values: {},
+    };
+  } catch {
     return {
       success: false,
-      message: 'El usuario ya existe',
+      message: 'Error de conexión',
       errors: {},
-      values: { username: usernameInput, location: locationInput },
+      values: { username: usernameInput },
     };
   }
-
-  const passwordHash = await hashPassword(password);
-
-  if (!passwordHash) {
-    return {
-      success: false,
-      message: 'Credenciales incorrectas',
-      errors: {},
-      values: {
-        email: emailInput,
-        username: usernameInput,
-        location: locationInput,
-      },
-    };
-  }
-
-  await createUser(email, username, passwordHash, location);
-
-  return {
-    success: true,
-    message: 'Usuario creado correctamente',
-    errors: {},
-    values: {},
-  };
 }
 
 export const logout = async () => {
-  const AUTH_COOKIE_NAME = process.env.AUTH_COOKIE_NAME ?? 'session-token';
-
   const cookieStore = await cookies();
-
-  cookieStore.delete(AUTH_COOKIE_NAME);
-  revalidatePath('/');
-  redirect('/');
-};
-
-export const deleteUserAccount = async () => {
-  const session = await getSession();
-
-  if (!session) {
-    throw new Error('No hay sesión activa');
-  }
-
-  const user = await getUserById(session.userId);
-
-  if (!user) {
-    throw new Error('Usuario no encontrado');
-  }
-
-  await deleteUser(user.email);
-
-  const AUTH_COOKIE_NAME = process.env.AUTH_COOKIE_NAME ?? 'session-token';
-  const cookieStore = await cookies();
-  cookieStore.delete(AUTH_COOKIE_NAME);
-
-  revalidatePath('/');
+  cookieStore.delete('auth-token');
   redirect('/');
 };

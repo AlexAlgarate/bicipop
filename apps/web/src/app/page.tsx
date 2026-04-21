@@ -1,31 +1,14 @@
 import { Metadata } from 'next';
 
-import { AllProductsView } from '@/features/all-products/components/AllProductsView';
-import { ProductsPageSearchParams } from '@/features/shared/types/search-params.types';
-import { parseProductsSearchParams } from '@/features/shared/utils/parse-search-params';
-import { Suspense } from 'react';
-import { ProductsGrid } from '@/features/all-products/components/GridProducts';
-import { ProductsGridSkeleton } from '@/features/all-products/components/ProductsGridSkeleton';
-
 export const metadata: Metadata = {
   title: 'BiciPop',
-  description:
-    'Página de compraventa de bicicletas de segunda mano. Aprovecha las ofertas.',
-  creator: 'Alex Algarate',
+  description: 'Página de compraventa de bicicletas de segunda mano.',
 };
 
-export default async function Home({
-  searchParams,
-}: {
-  searchParams: ProductsPageSearchParams;
-}) {
-  const params = parseProductsSearchParams(await searchParams);
-
+export default function Home() {
   return (
-    <AllProductsView searchParams={params}>
-      <Suspense fallback={<ProductsGridSkeleton />}>
-        <ProductsGrid {...params} />
-      </Suspense>
-    </AllProductsView>
+    <div className="min-h-[calc(75vh-64px)] flex items-center justify-center">
+      <h1 className="text-4xl font-bold text-foreground">Bienvenido a BiciPop</h1>
+    </div>
   );
 }

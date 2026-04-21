@@ -1,4 +1,4 @@
-import { LayoutList, LogOut, Settings } from 'lucide-react';
+import { LayoutDashboard, LogOut } from 'lucide-react';
 import Link from 'next/link';
 import { logout } from '@/features/auth/actions';
 
@@ -9,14 +9,9 @@ interface MenuOptionsProps {
 export const MenuOptions = ({ onItemClick }: MenuOptionsProps) => {
   const menuItems = [
     {
-      href: '/products/my-products',
-      label: 'Mis anuncios',
-      icon: LayoutList,
-    },
-    {
-      href: '/settings',
-      label: 'Configuración',
-      icon: Settings,
+      href: '/dashboard',
+      label: 'Dashboard',
+      icon: LayoutDashboard,
     },
   ];
 

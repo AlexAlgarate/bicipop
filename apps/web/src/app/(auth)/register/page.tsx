@@ -31,11 +31,6 @@ const RegisterPage = () => {
               placeholder: 'Ej: juanperez@email.com',
             },
             {
-              name: 'location',
-              label: 'Localidad',
-              placeholder: 'Ej: Guadalajara',
-            },
-            {
               name: 'password',
               label: 'Introduce tu contraseña',
               type: 'password',

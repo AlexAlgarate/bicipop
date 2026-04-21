@@ -12,7 +12,6 @@ export const registerSchema = z.object({
     .regex(/[a-z]/, 'Debe incluir al menos una letra minúscula')
     .regex(/[0-9]/, 'Debe incluir al menos un número')
     .regex(/[^A-Za-z0-9]/, 'Debe incluir al menos un carácter especial'),
-  location: z.string().min(1, 'La localidad es obligatoria'),
   username: z.string().min(1, 'El nombre de usuario es obligatorio'),
 });
 

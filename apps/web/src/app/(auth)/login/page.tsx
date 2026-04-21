@@ -14,6 +14,7 @@ const LoginPage = () => {
         <AuthForm
           action={loginAction}
           submitText="Iniciar sesión"
+          redirectTo="/dashboard"
           fields={[
             {
               name: 'email',

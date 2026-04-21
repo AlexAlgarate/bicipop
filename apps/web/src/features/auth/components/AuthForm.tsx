@@ -22,18 +22,19 @@ interface Props {
   fields: FieldConfig[];
   submitText: string;
   footer?: ReactNode;
+  redirectTo?: string;
 }
 
-export const AuthForm = ({ action, fields, submitText, footer }: Props) => {
+export const AuthForm = ({ action, fields, submitText, footer, redirectTo = '/' }: Props) => {
   const router = useRouter();
   const [state, formAction] = useActionState(action, initialRegisterState);
   const [passwordValue, setPasswordValue] = useState('');
 
   useEffect(() => {
     if (state.success) {
-      router.push('/');
+      router.push(redirectTo);
     }
-  }, [router, state.success]);
+  }, [router, state.success, redirectTo]);
 
   const passwordTouched = passwordValue.length > MIN_PASSWORD_LENGTH;
   const passwordInvalidRules =
