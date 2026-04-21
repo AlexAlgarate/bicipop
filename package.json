@@ -12,7 +12,9 @@
     "db:studio": "pnpm --filter api prisma:studio",
     "db:seed": "pnpm --filter api prisma:seed",
     "db:reset": "pnpm --filter api prisma:reset",
-    "test": "pnpm --filter api test"
+    "test": "pnpm --filter api test",
+    "format:api": "pnpm --filter api format",
+    "format:web": "pnpm --filter web format"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"
