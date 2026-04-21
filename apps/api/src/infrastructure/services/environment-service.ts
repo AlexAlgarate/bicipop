@@ -42,11 +42,11 @@ export class EnvironmentService {
     }
   }
 
-  get(): EnvironmentVariables | null {
+  get(): EnvironmentVariables {
     if (!this.environmentVariables) {
       this.load();
     }
-    return this.environmentVariables;
+    return this.environmentVariables!;
   }
 
   private getEnvironmentFile(currentEnvironment: string): '.env.production' | '.env' {
