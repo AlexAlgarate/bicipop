@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { EnvironmentService } from '@infrastructure/services/environment-service';
 import { registerInfrastructure } from '@di/infrastructure-bindings';
 import { registerUseCases } from '@di/usecase-bindings';

@@ -42,9 +42,9 @@ export class EnvironmentService {
     }
   }
 
-  get(): EnvironmentVariables {
+  get(): EnvironmentVariables | null {
     if (!this.environmentVariables) {
-      throw new Error('Environment variables are not loaded. Use load method first');
+      this.load();
     }
     return this.environmentVariables;
   }

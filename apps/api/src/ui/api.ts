@@ -8,8 +8,8 @@ import authenticationRouter from './routes/authentication-routes';
 import healthRouter from './routes/health-routes';
 import { errorHandlerMiddleware } from './middlewares/error-handler-middleware';
 
-const { ENVIRONMENT, CORS_ORIGIN, API_PORT } = new EnvironmentService().get();
 export const createApp = (): Application => {
+  const { ENVIRONMENT, CORS_ORIGIN } = new EnvironmentService().get();
   const API_VERSION = '/api/v1';
 
   const app = express();
@@ -39,6 +39,7 @@ export const createApp = (): Application => {
 };
 
 export const startHttpApi = (app: Application): void => {
+  const { API_PORT } = new EnvironmentService().get();
   app.listen(API_PORT, () => {
     console.log(`API is running on port ${API_PORT}`);
   });
