@@ -1,4 +1,3 @@
-
 import { RegisterUseCase } from '@application/use-cases/user/RegisterUseCase';
 import { LoginUseCase } from '@application/use-cases/user/LoginUseCase';
 import { PasswordHasher } from '@domain/services/PasswordHasher';

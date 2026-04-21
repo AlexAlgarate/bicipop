@@ -30,11 +30,23 @@ export const getTestApp = (): Application => {
 };
 
 afterEach(async () => {
+  await prisma.favorite.deleteMany({
+    where: {
+      user: {
+        email: { endsWith: '@example.com' },
+      },
+    },
+  });
+  await prisma.product.deleteMany({
+    where: {
+      user: {
+        email: { endsWith: '@example.com' },
+      },
+    },
+  });
   await prisma.user.deleteMany({
     where: {
-      email: {
-        startsWith: TEST_EMAIL_PREFIX,
-      },
+      email: { endsWith: '@example.com' },
     },
   });
 });

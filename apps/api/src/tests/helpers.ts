@@ -1,21 +1,16 @@
-import request, { Test } from 'supertest';
-import { faker } from '@faker-js/faker';
-import { getTestApp } from '@tests/setup';
-
 export const VALID_PASSWORD = 'Qwertyui1.';
+import { faker } from '@faker-js/faker';
 
 const API_PREFIX = '/api/v1';
 export const API_REGISTER_URL = `${API_PREFIX}/auth/register`;
 export const API_LOGIN_URL = `${API_PREFIX}/auth/login`;
 
-export const signup = (email = faker.internet.email(), password = VALID_PASSWORD): Test =>
-  request(getTestApp()).post(API_REGISTER_URL).send({ email, password });
+export const validCredentials = () => {
+  const username = faker.internet.username();
 
-export const login = (email: string, password = VALID_PASSWORD): Test =>
-  request(getTestApp()).post(API_LOGIN_URL).send({ email, password });
-
-export const validCredentials = () => ({
-  username: faker.internet.username(),
-  email: faker.internet.email(),
-  password: VALID_PASSWORD,
-});
+  return {
+    username: username,
+    email: `${username}@example.com`,
+    password: VALID_PASSWORD,
+  };
+};
