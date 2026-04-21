@@ -1,19 +1,22 @@
-import express from 'express';
-import cors from 'cors';
-import dotenv from 'dotenv';
+import { EnvironmentService } from '@infrastructure/services/environment-service';
+import { registerInfrastructure } from '@di/infrastructure-bindings';
+import { registerUseCases } from '@di/usecase-bindings';
+import { createApp, startHttpApi } from '@ui/api';
 
-dotenv.config();
+const executeApp = async (): Promise<void> => {
+  try {
+    console.log('-- Starting application --');
+    console.log('...loading environment');
+    new EnvironmentService().load();
 
-const app = express();
-const PORT = process.env.PORT || 3001;
+    registerInfrastructure();
+    registerUseCases();
 
-app.use(cors());
-app.use(express.json());
-
-app.get('/health', (_req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
-});
-
-app.listen(PORT, () => {
-  console.log(`API corriendo en http://localhost:${PORT}`);
-});
+    const app = createApp();
+    startHttpApi(app);
+  } catch (error) {
+    console.error('Error starting application:', error);
+    process.exit(1);
+  }
+};
+await executeApp();
