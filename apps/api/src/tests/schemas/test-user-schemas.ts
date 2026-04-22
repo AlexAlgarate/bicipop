@@ -5,7 +5,7 @@ export const signupResponseSchema = z.object({
 });
 
 export const signinResponseSchema = z.object({
-  content: z.string().min(1),
+  user: z.record(z.string(), z.string()),
 });
 
 export type SignupResponse = z.infer<typeof signupResponseSchema>;
