@@ -14,6 +14,9 @@ export class RegisterUseCase {
     const existingUser = await this.userRepository.findByEmail(query.email);
     if (existingUser) throw new BusinessConflictError('Email already exists');
 
+    const existingUsername = await this.userRepository.findByUsername(query.username);
+    if (existingUsername) throw new BusinessConflictError('Username already exists');
+
     const passwordHash = await this.passwordHasher.hash(query.password);
 
     const newUser = await this.userRepository.create({

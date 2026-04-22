@@ -12,7 +12,8 @@ export const registerSchema = z.object({
     .max(16, 'Password cannot have more than 16 characters')
     .regex(/[A-Z]/, 'Password must include at least one uppercase letter')
     .regex(/[a-z]/, 'Password must include at least one lowercase letter')
-    .regex(/[0-9]/, 'Password must include at least one number'),
+    .regex(/[0-9]/, 'Password must include at least one number')
+    .regex(/[^A-Za-z0-9]/, 'Password must include at least one special character'),
 });
 
 export type RegisterInput = z.infer<typeof registerSchema>;
