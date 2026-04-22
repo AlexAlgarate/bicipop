@@ -1,4 +1,4 @@
-import { env } from '@/infrastructure/services/environment-service';
+import { env } from '@/lib/environment-service';
 
 const getApiUrl = () => env.get().NEXT_PUBLIC_API_URL;
 

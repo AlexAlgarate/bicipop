@@ -8,7 +8,7 @@ import { loginSchema, registerSchema } from '@/features/auth/validation';
 import { getFieldErrorsFromTree } from '@/lib/validations/validation-errors';
 import { authApi } from './api';
 
-import { env } from '@/infrastructure/services/environment-service';
+import { env } from '@/lib/environment-service';
 const { ENVIRONMENT, AUTH_COOKIE_NAME } = env.get();
 export async function loginAction(
   _prevState: AuthFormState,
