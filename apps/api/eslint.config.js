@@ -1,13 +1,13 @@
-import prettier from "eslint-config-prettier";
-import importPlugin from "eslint-plugin-import";
-import tsParser from "@typescript-eslint/parser";
-import tsPlugin from "@typescript-eslint/eslint-plugin";
+import prettier from 'eslint-config-prettier';
+import importPlugin from 'eslint-plugin-import';
+import tsParser from '@typescript-eslint/parser';
+import tsPlugin from '@typescript-eslint/eslint-plugin';
 
 export default [
   {
-    files: ["**/*.ts"],
+    files: ['**/*.ts'],
     plugins: {
-      "@typescript-eslint": tsPlugin,
+      '@typescript-eslint': tsPlugin,
       import: importPlugin,
     },
     languageOptions: {
@@ -16,22 +16,16 @@ export default [
     rules: {
       ...tsPlugin.configs.recommended.rules,
       ...prettier.rules,
-      "@typescript-eslint/no-unused-vars": [
-        "error",
-        { argsIgnorePattern: "^_", caughtErrorsIgnorePattern: "^_" },
+      '@typescript-eslint/explicit-function-return-type': 'warn',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_', caughtErrorsIgnorePattern: '^_' },
       ],
-      "import/order": [
-        "error",
+      'import/order': [
+        'error',
         {
-          groups: [
-            "builtin",
-            "external",
-            "internal",
-            "parent",
-            "sibling",
-            "index",
-          ],
-          "newlines-between": "always",
+          groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
+          // "newlines-between": "always",
         },
       ],
     },
