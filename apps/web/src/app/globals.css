@@ -119,3 +119,23 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.btn {
+  @apply cursor-pointer px-4 py-2 transition-colors rounded-lg justify-center items-center inline-flex font-medium shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
+}
+
+.btn-primary {
+  @apply bg-primary text-white hover:bg-primary-soft;
+}
+
+.btn-secondary {
+  @apply bg-secondary text-white hover:bg-secondary/90;
+}
+
+.btn-outline {
+  @apply border border-border bg-transparent hover:bg-card;
+}
+
+.btn-ghost {
+  @apply hover:bg-card;
+}
