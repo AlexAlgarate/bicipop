@@ -3,7 +3,7 @@ import * as z from 'zod';
 const environmentVariablesValidator = z
   .object({
     ENVIRONMENT: z.enum(['local', 'production']).optional().default('local'),
-    NEXT_PUBLIC_API_URL: z.string().optional().default('http://localhost:3001/api/v1'),
+    NEXT_PUBLIC_API_URL: z.string().optional().default('http://localhost:4000/api/v1'),
     NEXT_PUBLIC_SUPABASE_URL: z
       .string()
       .optional()
@@ -15,7 +15,7 @@ const environmentVariablesValidator = z
   })
   .transform((val) => ({
     ENVIRONMENT: val.ENVIRONMENT ?? 'local',
-    NEXT_PUBLIC_API_URL: val.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001/api/v1',
+    NEXT_PUBLIC_API_URL: val.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000/api/v1',
     NEXT_PUBLIC_SUPABASE_URL:
       val.NEXT_PUBLIC_SUPABASE_URL ?? 'https://szclxuchqtsjavxvrxba.supabase.co',
     NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY:

@@ -8,7 +8,16 @@ export const loginController = async (request: Request, response: Response): Pro
   const { email, password } = validateLoginInput(request.body);
 
   const loginUseCase = container.get<LoginUseCase>(LOGIN_USE_CASE);
-  const { token } = await loginUseCase.execute({ email, password });
+  const { token, user } = await loginUseCase.execute({ email, password });
 
-  response.json({ content: token });
+  response.cookie('bicipop_auth_token', token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+  });
+
+  response.status(200).json({
+    user,
+  });
 };

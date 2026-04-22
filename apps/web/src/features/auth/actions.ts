@@ -9,7 +9,8 @@ import { getFieldErrorsFromTree } from '@/lib/validations/validation-errors';
 import { authApi } from './api';
 
 import { env } from '@/lib/environment-service';
-const { ENVIRONMENT, AUTH_COOKIE_NAME } = env.get();
+const { AUTH_COOKIE_NAME } = env.get();
+
 export async function loginAction(
   _prevState: AuthFormState,
   formData: FormData,
@@ -32,12 +33,7 @@ export async function loginAction(
   }
 
   try {
-    const { content: token } = await authApi.login(
-      parsed.data.email.toLowerCase(),
-      parsed.data.password,
-    );
-
-    await setAuthCookie(token);
+    await authApi.login(parsed.data.email.toLowerCase(), parsed.data.password);
 
     return {
       success: true,
@@ -108,15 +104,4 @@ export const logout = async () => {
   const cookieStore = await cookies();
   cookieStore.delete(AUTH_COOKIE_NAME);
   redirect('/');
-};
-
-const setAuthCookie = async (token: string): Promise<void> => {
-  const cookieStore = await cookies();
-  cookieStore.set(AUTH_COOKIE_NAME, token, {
-    httpOnly: true,
-    secure: ENVIRONMENT === 'production',
-    sameSite: 'lax',
-    maxAge: 60 * 60 * 24 * 7,
-    path: '/',
-  });
 };
