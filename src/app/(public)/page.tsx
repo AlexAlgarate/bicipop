@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 
+import { HeroSection } from '@/features/all-products/components/HeroSection';
+
 export const metadata: Metadata = {
   title: 'BiciPop',
   description: 'Página de compraventa de bicicletas de segunda mano.',
@@ -7,8 +9,8 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <div className="min-h-[calc(75vh-64px)] flex items-center justify-center">
-      <h1 className="text-4xl font-bold text-foreground">Bienvenido a BiciPop</h1>
+    <div className="pb-20 space-y-12">
+      <HeroSection />
     </div>
   );
 }

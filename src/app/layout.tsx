@@ -1,10 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
-import './globals.css';
-import { cookies } from 'next/headers';
 
-import { Navbar } from '@/components/Navbar/Navbar';
-import { Footer } from '@/components/Footer/Footer';
+import './globals.css';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -26,21 +23,12 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const cookieStore = await cookies();
-  const AUTH_COOKIE_NAME = process.env.AUTH_COOKIE_NAME ?? 'bp_auth_token';
-  const sessionToken = cookieStore.get(AUTH_COOKIE_NAME);
-  const isAuthenticated = !!sessionToken;
-
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col bg-background`}
       >
-        <Navbar isAuthenticated={isAuthenticated} />
-        <main className="flex1 w-full">
-          <div>{children}</div>
-        </main>
-        <Footer />
+        <div className="flex-1 w-full">{children}</div>
       </body>
     </html>
   );

@@ -7,14 +7,12 @@ const LoginPage = () => {
     <div className="min-h-[calc(75vh-64px)] px-4 py-12">
       <div className="mx-auto max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-foreground">
-            Inicia sesión en BiciPop
-          </h1>
+          <h1 className="text-3xl font-bold text-foreground">Inicia sesión en BiciPop</h1>
         </div>
         <AuthForm
           action={loginAction}
           submitText="Iniciar sesión"
-          redirectTo="/dashboard"
+          redirectTo="/"
           fields={[
             {
               name: 'email',
