@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { ROUTE } from '@/utils/constants';
+import { routes } from '@/utils/constants';
 
 export const HeroSection = () => {
   return (
@@ -25,13 +25,13 @@ export const HeroSection = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
             <Link
-              href={ROUTE.items.upload}
+              href={routes.items.upload}
               className="bg-primary hover:bg-primary/90 text-white px-8 py-3.5 rounded-lg font-bold transition-transform active:scale-95 text-center"
             >
               Sell Something
             </Link>
             <Link
-              href={ROUTE.home}
+              href={routes.home}
               className="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/30 text-white px-8 py-3.5 rounded-lg font-bold transition-all text-center"
             >
               Start Exploring

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { ROUTE } from '@/utils/constants';
+import { routes } from '@/utils/constants';
 
 export const NavbarLogin = async () => {
   return (
@@ -10,10 +10,10 @@ export const NavbarLogin = async () => {
 
         <nav className="flex items-center gap-2">
           <>
-            <Link href={ROUTE.auth.login} className="btn btn-ghost">
+            <Link href={routes.auth.login} className="btn btn-ghost">
               Login
             </Link>
-            <Link href={ROUTE.auth.register} className="btn btn-primary">
+            <Link href={routes.auth.register} className="btn btn-primary">
               Register
             </Link>
           </>
