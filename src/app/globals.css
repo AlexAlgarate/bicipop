@@ -1,60 +1,20 @@
 @import 'tailwindcss';
 
-@variant dark (&:where(.dark, .dark *));
-
-/* Light theme (default) */
+/* Dark theme (default) */
 :root {
   /* Base */
-  --background: #f8fafc;
-  --foreground: #0f172a;
-
-  /* Cards */
-  --card: #ffffff;
-  --card-foreground: #0f172a;
-
-  /* Borders */
-  --border: #e2e8f0;
-  --border-muted: #f1f5f9;
-
-  /* Muted */
-  --muted: #64748b;
-  --muted-foreground: #475569;
-
-  /* Primary */
-  --primary: #2563eb;
-  --primary-hover: #1d4ed8;
-  --primary-active: #1e40af;
-  --primary-foreground: #ffffff;
-  --primary-soft: #2563eb1a;
-  --primary-ring: #2563eb66;
-
-  /* Secondary */
-  --secondary: #f1f5f9;
-  --secondary-hover: #e2e8f0;
-  --secondary-foreground: #0f172a;
-
-  /* Success */
-  --success: #16a34a;
-  --success-foreground: #ffffff;
-
-  /* Destructive */
-  --destructive: #dc2626;
-  --destructive-foreground: #ffffff;
-
-  --ring: var(--primary);
-}
-
-/* Dark theme */
-.dark {
   --background: #010817;
   --foreground: #f8fafc;
 
+  /* Cards */
   --card: #1e293b;
   --card-foreground: #f8fafc;
 
+  /* Borders */
   --border: #334155;
   --border-muted: #1e293b;
 
+  /* Muted */
   --muted: #94a3b8;
   --muted-foreground: #cbd5e1;
 
