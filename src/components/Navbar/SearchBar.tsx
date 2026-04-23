@@ -6,11 +6,7 @@ import { useRef, useState } from 'react';
 
 const DEBOUNCE_MS = 400;
 
-interface SearchBarProps {
-  mobileOpen?: boolean;
-}
-
-export const SearchBar = ({ mobileOpen = false }: SearchBarProps) => {
+export const SearchBar = () => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
@@ -55,9 +51,8 @@ export const SearchBar = ({ mobileOpen = false }: SearchBarProps) => {
   }
 
   return (
-    <div
-      className={`relative ${mobileOpen ? 'block w-full' : 'flex-1 max-w-2xl hidden md:block'}`}
-    >
+    <form className="relative w-full">
+      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted pointer-events-none" />
       <input
         ref={inputRef}
         type="text"
@@ -65,19 +60,17 @@ export const SearchBar = ({ mobileOpen = false }: SearchBarProps) => {
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         placeholder="Search for products..."
-        autoFocus={mobileOpen}
         className="w-full py-2.5 pl-10 pr-8 bg-secondary text-foreground rounded-lg placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-all"
       />
-      <Search className="w-4 h-4 text-muted absolute left-3.5 top-3.5 pointer-events-none" />
       {value && (
         <button
           onClick={handleClear}
           aria-label="Limpiar búsqueda"
-          className="absolute right-3.5 top-3 text-muted-foreground hover:text-foreground transition-colors"
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
         >
           <X className="w-4 h-4" />
         </button>
       )}
-    </div>
+    </form>
   );
 };

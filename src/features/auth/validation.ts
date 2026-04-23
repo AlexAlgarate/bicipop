@@ -3,7 +3,7 @@ import z from 'zod';
 type PasswordMode = 'dev' | 'prod';
 
 const createPasswordSchema = (mode: PasswordMode) => {
-  const DEV_PASSWORD_LENGTH = 6;
+  const DEV_PASSWORD_LENGTH = 3;
   const PROD_PASSWORD_LENGTH = 8;
 
   const base = z

@@ -1,6 +1,8 @@
 import { cookies } from 'next/headers';
 import { cache } from 'react';
 
+import type { CurrentUser } from '@/domain/user/types';
+
 import { prisma } from '../client';
 
 import { type SessionTokenPayload, signSessionToken, verifySessionToken } from './jwt';
@@ -36,7 +38,7 @@ export const getSession = async (): Promise<SessionTokenPayload | null> => {
   return verifySessionToken(token);
 };
 
-export const getCurrentUser = cache(async () => {
+export const getCurrentUser = cache(async (): Promise<CurrentUser | null> => {
   const session = await getSession();
 
   if (!session) return null;
