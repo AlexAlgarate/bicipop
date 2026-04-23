@@ -64,9 +64,9 @@ export const SearchBar = ({ mobileOpen = false }: SearchBarProps) => {
         value={value}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
-        placeholder="Buscar productos..."
+        placeholder="Search for products..."
         autoFocus={mobileOpen}
-        className="w-full py-2.5 pl-10 pr-8 bg-secondary text-foreground rounded-full placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+        className="w-full py-2.5 pl-10 pr-8 bg-secondary text-foreground rounded-lg placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-all"
       />
       <Search className="w-4 h-4 text-muted absolute left-3.5 top-3.5 pointer-events-none" />
       {value && (

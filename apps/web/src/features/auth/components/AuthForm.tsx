@@ -25,7 +25,13 @@ interface Props {
   redirectTo?: string;
 }
 
-export const AuthForm = ({ action, fields, submitText, footer, redirectTo = '/' }: Props) => {
+export const AuthForm = ({
+  action,
+  fields,
+  submitText,
+  footer,
+  redirectTo = '/',
+}: Props) => {
   const router = useRouter();
   const [state, formAction] = useActionState(action, initialRegisterState);
   const [passwordValue, setPasswordValue] = useState('');
