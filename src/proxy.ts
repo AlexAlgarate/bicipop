@@ -1,0 +1,49 @@
+import 'dotenv/config';
+import { type NextRequest, NextResponse } from 'next/server';
+import { jwtVerify } from 'jose';
+
+const AUTH_COOKIE_NAME = process.env.AUTH_COOKIE_NAME;
+if (!AUTH_COOKIE_NAME) throw new Error('AUTH_COOKIE_NAME must bedeclared in .env file');
+
+const secretKey = process.env.JWT_SECRET;
+const key = new TextEncoder().encode(secretKey);
+
+const protectedRoutes = ['/dashboard', '/product/upload', '/product/edit'];
+
+const authRoutes = ['/login', '/register'];
+
+const verifyToken = async (token: string): Promise<boolean> => {
+  try {
+    await jwtVerify(token, key, {
+      algorithms: ['HS256'],
+    });
+    return true;
+  } catch {
+    return false;
+  }
+};
+export async function proxy(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+  const sessionCookie = request.cookies.get(AUTH_COOKIE_NAME || 'bicipop-session')?.value;
+
+  const isProtectedRoute = protectedRoutes.some(route => pathname.startsWith(route));
+  const isAuthRoute = authRoutes.some(route => pathname.startsWith(route));
+
+  const isValidSession = sessionCookie ? await verifyToken(sessionCookie) : false;
+
+  if (isProtectedRoute && !isValidSession) {
+    const loginUrl = new URL('/login', request.url);
+    loginUrl.searchParams.set('callbackUrl', pathname);
+    return NextResponse.redirect(new URL('/dashboard', request.url));
+  }
+
+  if (isAuthRoute && isValidSession) {
+    return NextResponse.redirect(new URL('/dashboard', request.url));
+  }
+
+  return NextResponse.next();
+}
+
+export const config = {
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|.*\\..*|_next).*)'],
+};
