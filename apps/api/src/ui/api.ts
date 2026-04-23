@@ -7,9 +7,10 @@ import authenticationRouter from './routes/authentication-routes';
 import healthRouter from './routes/health-routes';
 import { errorHandlerMiddleware } from './middlewares/error-handler-middleware';
 
+const API_VERSION = 'api/v1';
+
 export const createApp = (): Application => {
   const { ENVIRONMENT, CORS_ORIGIN } = new EnvironmentService().get();
-  const API_VERSION = '/api/v1';
 
   const app = express();
   const helmetConfig = {
@@ -24,13 +25,14 @@ export const createApp = (): Application => {
     cors({
       methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
       allowedHeaders: ['Content-Type', 'Authorization'],
-      origin: CORS_ORIGIN || '*',
+      origin: CORS_ORIGIN,
+      credentials: true,
     })
   );
   app.use(json());
 
-  app.use(`${API_VERSION}/auth`, authenticationRouter);
-  app.use(`${API_VERSION}/health`, healthRouter);
+  app.use(`/${API_VERSION}/auth`, authenticationRouter);
+  app.use(`/${API_VERSION}/health`, healthRouter);
 
   app.use(errorHandlerMiddleware);
 
@@ -38,7 +40,6 @@ export const createApp = (): Application => {
 };
 
 export const startHttpApi = (app: Application): void => {
-  const API_VERSION = '/api/v1';
   const { API_PORT } = new EnvironmentService().get();
   app.listen(API_PORT, () => {
     console.log(`API is running on port http://localhost:${API_PORT}/${API_VERSION}`);
