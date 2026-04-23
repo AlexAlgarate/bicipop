@@ -2,10 +2,13 @@
 
 import { Menu, Search, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { SearchBar } from './SearchBar';
 import Link from 'next/link';
-import { ThemeToggle } from '../theme-toggle';
+
 import { useCloseMenuClickingOutside } from '@/hooks/use-close-menu';
+
+import { ThemeToggle } from '../theme-toggle';
+
+import { SearchBar } from './SearchBar';
 import { MenuOptions } from './MenuOptions';
 
 interface MobileMenuProps {

@@ -1,4 +1,4 @@
-import { ProductDTO, ProductWithRelations } from './types';
+import type { ProductDTO, ProductWithRelations } from './types';
 
 export const mapToAdDTO = (ad: ProductWithRelations): ProductDTO => {
   return {

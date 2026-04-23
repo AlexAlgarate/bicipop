@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 export const useCloseMenuClickingOutside = (
   ref: React.RefObject<HTMLDivElement | null>,
   handler: () => void,
-  active: boolean = true,
+  active: boolean = true
 ) => {
   useEffect(() => {
     if (!active) return;

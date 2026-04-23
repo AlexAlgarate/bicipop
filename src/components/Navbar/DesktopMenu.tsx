@@ -1,8 +1,10 @@
 'use client';
 
-import { useCloseMenuClickingOutside } from '@/hooks/use-close-menu';
 import { Menu } from 'lucide-react';
 import { useRef, useState } from 'react';
+
+import { useCloseMenuClickingOutside } from '@/hooks/use-close-menu';
+
 import { MenuOptions } from './MenuOptions';
 
 export const DesktopMenu = () => {

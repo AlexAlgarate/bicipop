@@ -3,11 +3,13 @@
 import { type ReactNode, useActionState, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-import { FormField } from './FormField';
 import { Button } from '@/components/ui/Button';
-import { AuthFormState, initialRegisterState } from '../types';
-import { PasswordRules } from './PasswordRules';
 import { MIN_PASSWORD_LENGTH } from '@/utils/constants';
+
+import { type AuthFormState, initialRegisterState } from '../types';
+
+import { FormField } from './FormField';
+import { PasswordRules } from './PasswordRules';
 
 type FieldConfig = {
   name: string;
@@ -25,13 +27,7 @@ interface Props {
   redirectTo?: string;
 }
 
-export const AuthForm = ({
-  action,
-  fields,
-  submitText,
-  footer,
-  redirectTo = '/',
-}: Props) => {
+export const AuthForm = ({ action, fields, submitText, footer, redirectTo = '/' }: Props) => {
   const router = useRouter();
   const [state, formAction] = useActionState(action, initialRegisterState);
   const [passwordValue, setPasswordValue] = useState('');
@@ -57,7 +53,7 @@ export const AuthForm = ({
       action={formAction}
       className="rounded-lg border border-gray-200 dark:border-border bg-white dark:bg-card shadow-sm p-8 space-y-5"
     >
-      {fields.map((field) => (
+      {fields.map(field => (
         <div key={field.name}>
           <FormField
             name={field.name}
@@ -66,7 +62,7 @@ export const AuthForm = ({
             defaultValue={state.values?.[field.name]}
             error={state.errors?.[field.name]?.[0]}
             placeholder={field.placeholder}
-            onChange={(e) => {
+            onChange={e => {
               if (field.name === 'password') {
                 setPasswordValue(e.target.value);
               }
@@ -89,9 +85,7 @@ export const AuthForm = ({
       {state.message && (
         <p
           className={`text-sm text-center ${
-            state.success
-              ? 'text-green-600 dark:text-green-400'
-              : 'text-red-600 dark:text-red-400'
+            state.success ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
           }`}
         >
           {state.message}

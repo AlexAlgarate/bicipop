@@ -1,8 +1,10 @@
+import Link from 'next/link';
+
+import { ThemeToggle } from '../theme-toggle';
+
 import { SearchBar } from './SearchBar';
 import { LogoSection } from './LogoSection';
 import { DesktopMenu } from './DesktopMenu';
-import { ThemeToggle } from '../theme-toggle';
-import Link from 'next/link';
 
 interface AuthSectionsProps {
   isAuthenticated: boolean;

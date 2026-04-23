@@ -12,9 +12,7 @@ export const useTheme = () => {
 
   useEffect(() => {
     const getSystemTheme = (): Theme => {
-      return window.matchMedia('(prefers-color-scheme: dark)').matches
-        ? 'dark'
-        : 'light';
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     };
 
     const getStoredTheme = (): Theme | null => {
@@ -49,7 +47,7 @@ export const useTheme = () => {
   const toggleTheme = () => {
     const newTheme = state.theme === 'light' ? 'dark' : 'light';
     applyTheme(newTheme);
-    setState((prev) => ({ ...prev, theme: newTheme }));
+    setState(prev => ({ ...prev, theme: newTheme }));
   };
 
   return { theme: state.theme, toggleTheme, mounted: state.mounted };

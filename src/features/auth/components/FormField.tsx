@@ -1,5 +1,5 @@
 'use client';
-import { ChangeEventHandler, useState } from 'react';
+import { type ChangeEventHandler, useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 
 import { FieldError } from '@/components/FieldError';
@@ -60,15 +60,11 @@ export function FormField({
         {isPassword && (
           <button
             type="button"
-            onClick={() => setShowPassword((value) => !value)}
+            onClick={() => setShowPassword(value => !value)}
             aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar constraseña'}
             className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-muted-foreground hover:text-foreground transition-colors"
           >
-            {showPassword ? (
-              <EyeOff className="w-4 h-4" />
-            ) : (
-              <Eye className="w-4 h-4" />
-            )}
+            {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
           </button>
         )}
       </div>

@@ -1,5 +1,6 @@
 import { LayoutDashboard, LogOut } from 'lucide-react';
 import Link from 'next/link';
+
 import { logout } from '@/features/auth/actions';
 
 interface MenuOptionsProps {
