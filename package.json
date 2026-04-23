@@ -16,11 +16,12 @@
     "prisma:studio": "prisma studio",
     "prisma:seed": "tsx --env-file=.env ./prisma/seed.ts",
     "prisma:reset": "prisma migrate reset",
-    "prisma": "pnpm db:generate && pnpm db:push && pnpm db:seed"
+    "prisma": "pnpm prisma:generate && pnpm prisma:push && pnpm prisma:seed"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.7.0",
     "@prisma/client": "^7.7.0",
+    "bcryptjs": "^3.0.3",
     "dotenv": "^17.4.2",
     "jose": "^6.2.2",
     "lucide-react": "^1.8.0",
