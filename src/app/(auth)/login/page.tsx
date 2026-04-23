@@ -7,7 +7,7 @@ const LoginPage = () => {
     <div className="min-h-[calc(75vh-64px)] px-4 py-12">
       <div className="mx-auto max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-foreground">Inicia sesión en BiciPop</h1>
+          <h1 className="text-3xl font-bold text-foreground">Log in to BiciPop</h1>
         </div>
         <AuthForm
           action={loginAction}
@@ -18,20 +18,20 @@ const LoginPage = () => {
               name: 'email',
               label: 'Email',
               type: 'email',
-              placeholder: 'Ej: juanperez@email.com',
+              placeholder: 'Enter your email',
             },
             {
               name: 'password',
-              label: 'Contraseña',
+              label: 'Password',
               type: 'password',
-              placeholder: 'Mín 8 caracteres, una mayúscula y un número',
+              placeholder: 'Enter your password',
             },
           ]}
           footer={
             <AuthFooter
-              footerText="¿No tienes una cuenta? "
+              footerText="Don't you have an account? "
               href="/register"
-              linkText="Regístrate aquí"
+              linkText="Signup here"
             />
           }
         />
