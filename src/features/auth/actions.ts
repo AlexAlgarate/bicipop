@@ -1,19 +1,20 @@
 'use server';
 
-import { cookies } from 'next/headers';
+import 'dotenv/config';
 import { redirect } from 'next/navigation';
+import { revalidatePath } from 'next/cache';
 
-import { AuthFormState } from '@/features/auth/types';
+import type { AuthFormState } from '@/features/auth/types';
 import { loginSchema, registerSchema } from '@/features/auth/validation';
 import { getFieldErrorsFromTree } from '@/lib/validations/validation-errors';
-import { authApi } from './api';
+import { createSession, deleteSession } from '@/lib/auth/session';
 
-import { env } from '@/lib/environment-service';
-const { AUTH_COOKIE_NAME } = env.get();
+import { getAuthUserByEmail, getUserByEmail, registerUser } from './api';
+import { comparePassword, hashPassword } from './password-service';
 
 export async function loginAction(
   _prevState: AuthFormState,
-  formData: FormData,
+  formData: FormData
 ): Promise<AuthFormState> {
   const emailInput = String(formData.get('email'));
   const passwordInput = String(formData.get('password'));
@@ -26,34 +27,48 @@ export async function loginAction(
   if (!parsed.success) {
     return {
       success: false,
-      message: 'Revisa los campos marcados',
+      message: 'Check wrong fields',
       errors: getFieldErrorsFromTree(parsed.error),
       values: { email: emailInput },
     };
   }
 
+  const user = await getAuthUserByEmail(parsed.data.email);
+  if (!user) return invalidCredentials(emailInput);
+
+  const validPassword = await comparePassword(parsed.data.password, user.password);
+  if (!validPassword) return invalidCredentials(emailInput);
+
   try {
-    await authApi.login(parsed.data.email.toLowerCase(), parsed.data.password);
+    await createSession(user.id);
+    revalidatePath('/');
 
     return {
       success: true,
-      message: 'Sesión iniciada correctamente',
+      message: 'Successful login',
       errors: {},
       values: {},
     };
   } catch (error) {
     return {
       success: false,
-      message: error instanceof Error ? error.message : 'Credenciales inválidas',
+      message: error instanceof Error ? error.message : 'Invalid credentials',
       errors: {},
       values: { email: emailInput },
     };
   }
 }
 
+const invalidCredentials = (email: string): AuthFormState => ({
+  success: false,
+  message: 'Invalid credentials',
+  errors: {},
+  values: { email },
+});
+
 export async function registerAction(
   _prevState: AuthFormState,
-  formData: FormData,
+  formData: FormData
 ): Promise<AuthFormState> {
   const emailInput = String(formData.get('email'));
   const passwordInput = String(formData.get('password'));
@@ -68,7 +83,7 @@ export async function registerAction(
   if (!parsed.success) {
     return {
       success: false,
-      message: 'Revisa los campos marcados',
+      message: 'Check wrong fields',
       errors: getFieldErrorsFromTree(parsed.error),
       values: {
         email: emailInput,
@@ -77,31 +92,41 @@ export async function registerAction(
     };
   }
 
+  const { email, password, username } = parsed.data;
+
+  const existingUser = await getUserByEmail(email);
+
+  if (existingUser) {
+    return {
+      success: false,
+      message: 'User already exists',
+      errors: {},
+      values: { username: usernameInput },
+    };
+  }
+
+  const passwordHashed = await hashPassword(password);
   try {
-    await authApi.register(
-      parsed.data.email.toLowerCase(),
-      parsed.data.password,
-      parsed.data.username,
-    );
+    await registerUser(username, email, passwordHashed);
 
     return {
       success: true,
-      message: 'Usuario creado correctamente',
+      message: 'User created successfully',
       errors: {},
       values: {},
     };
   } catch (error) {
     return {
       success: false,
-      message: error instanceof Error ? error.message : 'Error de conexión',
+      message: error instanceof Error ? error.message : 'Connection error',
       errors: {},
       values: { email: emailInput, username: usernameInput },
     };
   }
 }
 
-export const logout = async () => {
-  const cookieStore = await cookies();
-  cookieStore.delete(AUTH_COOKIE_NAME);
+export const logout = async (): Promise<void> => {
+  await deleteSession();
+  revalidatePath('/');
   redirect('/');
 };

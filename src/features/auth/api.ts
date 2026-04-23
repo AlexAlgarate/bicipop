@@ -1,55 +1,28 @@
-import { env } from '@/lib/environment-service';
+import { prisma } from '@/lib/client';
 
-const getApiUrl = () => env.get().NEXT_PUBLIC_API_URL;
+export const registerUser = async (username: string, email: string, password: string) => {
+  await prisma.user.create({
+    data: {
+      username,
+      email,
+      password,
+    },
+  });
+};
 
-export interface LoginResponse {
-  user: Record<string, unknown>;
-}
-export const authApi = {
-  login: async (email: string, password: string): Promise<LoginResponse> => {
-    const response = await fetch(`${getApiUrl()}/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify({ email, password }),
-    });
+export const getUserByEmail = async (email: string) => {
+  return await prisma.user.findUnique({
+    where: { email },
+  });
+};
 
-    if (!response.ok) {
-      try {
-        const error = await response.json();
-        throw new Error(error.message || 'Invalid credentials');
-      } catch {
-        throw new Error('Invalid credentials');
-      }
-    }
-
-    return response.json();
-  },
-
-  register: async (
-    email: string,
-    password: string,
-    username: string,
-  ): Promise<void> => {
-    const response = await fetch(`${getApiUrl()}/auth/register`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password, username }),
-    });
-
-    if (!response.ok) {
-      try {
-        const error = await response.json();
-        throw new Error(error.message || 'Error while registering');
-      } catch {
-        throw new Error('Error while registering');
-      }
-    }
-
-    try {
-      await response.json();
-    } catch {
-      // Response is not JSON, but that's ok for register
-    }
-  },
+export const getAuthUserByEmail = async (email: string) => {
+  return await prisma.user.findUnique({
+    where: { email },
+    select: {
+      id: true,
+      email: true,
+      password: true,
+    },
+  });
 };
