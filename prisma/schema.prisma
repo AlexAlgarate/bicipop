@@ -24,17 +24,18 @@ model Product {
   title         String
   description   String
   price         Float
-  imageUrl      String?
+  imageUrl      String
   location      String
   status        ProductStatus @default(ACTIVE)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
-  
+  likes         Int    @default(0)
+
   userId      String
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   categoryId    String
-  categories    Category @relation(fields: [categoryId], references: [id])
+  category    Category @relation(fields: [categoryId], references: [id])
 
   favorites     Favorite[]
 
