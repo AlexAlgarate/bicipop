@@ -16,7 +16,6 @@ export type ProductFormState = {
   values?: Record<string, string | number>;
 };
 
-
 export type Category = { id: string; name: string };
 
 const VALID_IMAGE_TYPES = new Set(['image/jpeg', 'image/png', 'image/jpg']);

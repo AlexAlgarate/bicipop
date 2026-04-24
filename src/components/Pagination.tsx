@@ -127,23 +127,19 @@ const PaginationEllipsis = () => (
 
 const generatePagination = (
   currentPage: number,
-  totalPages: number,
+  totalPages: number
 ): (string | number)[] => {
-  // Si hay 5 páginas o menos, mostrar todas sin puntos suspensivos
   if (totalPages <= 5) {
     return Array.from({ length: totalPages }, (_, i) => i + 1);
   }
 
-  // Si estamos en las primeras 3 páginas: Mostrar [1, 2, 3, ..., última página]
   if (currentPage <= 3) {
     return [1, 2, 3, '...', totalPages];
   }
 
-  // Si estamos en las últimas 3 páginas
   if (currentPage >= totalPages - 2) {
     return [1, '...', totalPages - 2, totalPages - 1, totalPages];
   }
 
-  // Si estamos en medio: Mostrar [1, ..., p-1, p, p+1, ..., última]
   return [1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages];
 };

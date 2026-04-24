@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { SearchX } from 'lucide-react';
 
+import { routes } from '@/utils/constants';
+
 const PageNotFound = () => {
   return (
     <div className="min-h-[calc(75vh-64px)] flex items-center justify-center px-4">
@@ -11,15 +13,13 @@ const PageNotFound = () => {
           </div>
         </div>
 
-        <h2 className="text-2xl font-bold text-foreground mb-3">
-          Página no encontrada
-        </h2>
+        <h2 className="text-2xl font-bold text-foreground mb-3">Página no encontrada</h2>
         <p className="text-muted-foreground mb-8">
           No existe la página que estás buscando.
         </p>
 
         <Link
-          href="/"
+          href={routes.home}
           className="
           inline-flex items-center gap-2 bg-primary hover:bg-primary-hover
           text-primary-foreground font-medium px-6 py-2.5
