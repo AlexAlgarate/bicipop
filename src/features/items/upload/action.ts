@@ -19,22 +19,41 @@ import { createProductSchema } from './validation';
 
 const errorState = (
   message: string,
-  data?: Record<string, string | number>,
   extras?: Partial<ProductFormState>
 ): ProductFormState => ({
   success: false,
   message,
   requestId: Date.now(),
-  values: { ...data },
   ...extras,
 });
+
+const resolveImageUrl = async (
+  formData: FormData
+): Promise<string | ProductFormState> => {
+  const imageMode = formData.get('imageMode');
+
+  if (imageMode === 'url') {
+    const imageUrl = String(formData.get('imageUrl'));
+    return imageUrl || errorState('Image URL is required');
+  }
+
+  if (imageMode === 'file') {
+    const file = formData.get('imageFile') as File;
+
+    if (!file || file.size === 0) return errorState('Image file is required');
+    if (!isValidImage(file)) return errorState('File must be an image');
+
+    return await uploadImgInSupabaseBucket(file);
+  }
+
+  return errorState('Inavlid image mode');
+};
 
 export const createProductAction = async (
   _prevState: ProductFormState | null,
   formData: FormData
 ): Promise<ProductFormState | null> => {
   const session = await getSession();
-
   if (!session?.userId) redirect(routes.auth.login);
 
   const rawValues = {
@@ -45,55 +64,27 @@ export const createProductAction = async (
     categoryId: String(formData.get('categoryId')),
   };
 
-  const imageMode = formData.get('imageMode');
-
-  let imageUrl: string | null = null;
-
-  if (imageMode === 'url') {
-    imageUrl = String(formData.get('imageUrl'));
-
-    if (!imageUrl) {
-      return errorState('Image URL is required');
-    }
-  }
-
-  if (imageMode === 'file') {
-    const file = formData.get('imageFile') as File;
-
-    if (!file || file.size === 0) {
-      return errorState('Image file is required');
-    }
-
-    if (!isValidImage(file)) {
-      return errorState('File must be an image');
-    }
-
-    imageUrl = await uploadImgInSupabaseBucket(file);
-  }
-
-  // const image = formData.get('imageUrl') as File;
-
   const parsed = createProductSchema.safeParse(rawValues);
 
   if (!parsed.success) {
-    return errorState(
-      'There are errors in the form. Please correct them and try again',
-      {},
-      {
-        errors: getFieldErrorsFromTree(parsed.error),
-      }
-    );
+    return errorState('There are errors in the form. Please correct them and try again', {
+      errors: getFieldErrorsFromTree(parsed.error),
+    });
   }
 
-  if (!imageUrl) return null;
+  const imageResult = await resolveImageUrl(formData);
+  if (typeof imageResult !== 'string') return imageResult;
 
   try {
-    await createProduct({ ...parsed.data, imageUrl, userId: session.userId });
+    await createProduct({
+      ...parsed.data,
+      imageUrl: imageResult,
+      userId: session.userId,
+    });
 
     revalidatePath(`/`);
     redirect('/');
   } catch (error) {
-    // Re-throw Next.js control flow errors (redirect, notFound, etc.)
     if (isNextControlFlowError(error)) {
       throw error;
     }
@@ -102,7 +93,7 @@ export const createProductAction = async (
 
     return errorState(
       'Failed to upload the product. Please try again',
-      {},
+
       {
         errors: {
           general: toErrorArray(userMessage),
