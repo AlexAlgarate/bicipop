@@ -1,7 +1,7 @@
 import z from 'zod';
 
 export const getFieldErrorsFromTree = <T>(
-  error: z.ZodError<T>,
+  error: z.ZodError<T>
 ): Record<string, string[]> => {
   const tree = z.treeifyError(error);
   const fieldErrors: Record<string, string[]> = {};
