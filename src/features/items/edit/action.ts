@@ -1,19 +1,23 @@
+'use server';
+
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 
 import { type ProductFormState } from '@/features/items/shared/types';
 import { getSession } from '@/infrastructure/auth/session';
 import { routes } from '@/utils/constants';
-import type { ProductStatus } from '@/generated/client/enums';
-import prisma from '@/infrastructure/db/prisma/client';
+import type { ProductStatus } from '@/generated/client/client';
 import { getFieldErrorsFromTree } from '@/infrastructure/validations/validation-errors';
 
+import { getProductById } from '../shared/api';
+
 import { updateProductSchema } from './validation';
+import { updateProduct } from './api';
 
 export const updateProductAction = async (
-  _prevState: ProductFormState,
+  _prevState: ProductFormState | null,
   formData: FormData
-): Promise<ProductFormState> => {
+): Promise<ProductFormState | null> => {
   const session = await getSession();
 
   if (!session?.userId) redirect(routes.auth.login);
@@ -30,9 +34,7 @@ export const updateProductAction = async (
     image: String(formData.get('imageUrl')),
   };
 
-  const existingProduct = await prisma.product.findUnique({
-    where: { id: rawValues.productId },
-  });
+  const existingProduct = await getProductById(rawValues.productId);
 
   if (!existingProduct || existingProduct.userId !== session.userId) {
     return {
@@ -68,7 +70,7 @@ export const updateProductAction = async (
   }
 
   try {
-    const data = {
+    await updateProduct({
       title: rawValues.title,
       description: rawValues.description,
       price: rawValues.price,
@@ -76,11 +78,7 @@ export const updateProductAction = async (
       imageUrl: rawValues.image,
       categoryId: rawValues.categoryId,
       status: rawValues.status,
-    };
-
-    await prisma.product.update({
-      where: { id: rawValues.productId },
-      data: { ...data },
+      productId: rawValues.productId,
     });
 
     revalidatePath('/', 'layout');

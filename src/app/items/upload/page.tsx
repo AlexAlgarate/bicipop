@@ -1,13 +1,17 @@
 import type { Metadata } from 'next';
 
 import { BackToHomeLink } from '@/components/BackToHomeLink';
+import ProductForm from '@/features/items/components/ProductForm';
+import { getCategories } from '@/features/items/shared/api';
 
 export const metadata: Metadata = {
   title: 'Upload Product',
   description: 'List a new product for sale on BiciPop',
 };
 
-export const UploadProductPage = () => {
+export const UploadProductPage = async () => {
+  const categories = await getCategories();
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-2xl mx-auto">
@@ -20,7 +24,7 @@ export const UploadProductPage = () => {
         </div>
 
         <div className="bg-card rounded-xl shadow-sm p-6 md:p-8">
-          {/* <CreateAdForm categories={categories} /> */}
+          <ProductForm categories={categories} mode="create" />
         </div>
       </div>
     </div>
