@@ -11,10 +11,11 @@ export interface CreateProductDto {
 export type ProductFormState = {
   success: boolean;
   message: string;
-  errors?: Record<string, string[]>;
+  errors?: Record<string, string[] | undefined>;
   requestId: number;
   values?: Record<string, string | number>;
 };
+
 
 export type Category = { id: string; name: string };
 
