@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-import { HeroSection } from '@/features/all-products/components/HeroSection';
+import { HeroSection } from '@/features/all-items/components/HeroSection';
 
 export const metadata: Metadata = {
   title: 'BiciPop',

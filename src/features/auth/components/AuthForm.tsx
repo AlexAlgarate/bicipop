@@ -27,7 +27,13 @@ interface Props {
   redirectTo?: string;
 }
 
-export const AuthForm = ({ action, fields, submitText, footer, redirectTo = '/' }: Props) => {
+export const AuthForm = ({
+  action,
+  fields,
+  submitText,
+  footer,
+  redirectTo = '/',
+}: Props) => {
   const router = useRouter();
   const [state, formAction] = useActionState(action, initialRegisterState);
   const [passwordValue, setPasswordValue] = useState('');
@@ -85,7 +91,9 @@ export const AuthForm = ({ action, fields, submitText, footer, redirectTo = '/' 
       {state.message && (
         <p
           className={`text-sm text-center ${
-            state.success ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
+            state.success
+              ? 'text-green-600 dark:text-green-400'
+              : 'text-red-600 dark:text-red-400'
           }`}
         >
           {state.message}

@@ -7,11 +7,9 @@ const RegisterPage = () => {
     <div className="min-h-[calc(75vh-64px)] px-4 py-12">
       <div className="mx-auto max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-foreground">
-            Regístrate en la plataforma
-          </h1>
+          <h1 className="text-3xl font-bold text-foreground">Register on the platform</h1>
           <p className="text-muted-foreground mt-2 text-sm">
-            Únete a BiciPop y publica tu primera bici
+            Join BiciPop and post your first bike
           </p>
         </div>
         <AuthForm
@@ -20,29 +18,35 @@ const RegisterPage = () => {
           fields={[
             {
               name: 'username',
-              label: 'Nombre de usuario',
-              placeholder: 'Ej: Juanperez23',
+              label: 'Name',
+              placeholder: 'Enter your name',
               type: 'text',
             },
             {
               name: 'email',
               label: 'Email',
               type: 'email',
-              placeholder: 'Ej: juanperez@email.com',
+              placeholder: 'Enter your email',
             },
             {
               name: 'password',
-              label: 'Introduce tu contraseña',
+              label: 'Enter your password',
               type: 'password',
-              placeholder: 'Mín 8 caracteres, una mayúscula y un número',
+              placeholder: 'Enter your password',
+            },
+            {
+              name: 'confirmPassword',
+              label: 'Confirm your password',
+              type: 'password',
+              placeholder: 'Confirm your password',
               showPasswordRules: true,
             },
           ]}
           footer={
             <AuthFooter
-              footerText="¿Ya tienes una cuenta? "
+              footerText="Do you have an account? "
               href="/login"
-              linkText="Inicia sesión"
+              linkText="Log in"
             />
           }
         />

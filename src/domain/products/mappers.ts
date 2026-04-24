@@ -1,19 +1,20 @@
 import type { ProductDTO, ProductWithRelations } from './types';
 
-export const mapToAdDTO = (ad: ProductWithRelations): ProductDTO => {
+export const mapToProductDTO = (product: ProductWithRelations): ProductDTO => {
   return {
-    id: ad.id,
-    title: ad.title,
-    description: ad.description,
-    price: ad.price,
-    imageUrl: ad.imageUrl,
-    userId: ad.userId,
-    categoryId: ad.categoryId,
-    location: ad.location,
-    likes: ad.likes,
-    createdAt: ad.createdAt,
-    updatedAt: ad.updatedAt,
-    category: ad.category.name,
-    userName: ad.user.username,
+    id: product.id,
+    title: product.title,
+    description: product.description,
+    price: product.price,
+    imageUrl: product.imageUrl,
+    userId: product.userId,
+    categoryId: product.categoryId,
+    location: product.location,
+    likes: product.likes,
+    createdAt: product.createdAt,
+    updatedAt: product.updatedAt,
+    category: product.category.name,
+    userName: product.user.username,
+    status: product.status,
   };
 };

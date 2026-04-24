@@ -1,10 +1,10 @@
 import Link from 'next/link';
 import { Plus, User, LogOut, LayoutDashboard, Search } from 'lucide-react';
 
-import { getCurrentUser } from '@/lib/auth/session';
-import { SearchBar } from '@/components/Navbar/SearchBar';
+import { getCurrentUser } from '@/infrastructure/auth/session';
+import { SearchBar } from '@/components/layout/Navbar/SearchBar';
 import { logout } from '@/features/auth/actions';
-import { ROUTE } from '@/utils/constants';
+import { routes } from '@/utils/constants';
 import type { CurrentUser } from '@/domain/user/types';
 
 export const Navbar = async () => {
@@ -39,10 +39,10 @@ export const Navbar = async () => {
             </>
           ) : (
             <>
-              <Link href={ROUTE.auth.login} className="btn btn-ghost">
+              <Link href={routes.auth.login} className="btn btn-ghost">
                 Login
               </Link>
-              <Link href={ROUTE.auth.register} className="btn btn-primary">
+              <Link href={routes.auth.register} className="btn btn-primary">
                 Register
               </Link>
             </>
@@ -74,7 +74,7 @@ const LogoSection = () => {
 
 const UploadButton = () => {
   return (
-    <Link href={ROUTE.items.upload} className="btn btn-primary gap-2">
+    <Link href={routes.items.upload} className="btn btn-primary gap-2">
       <Plus className="h-4 w-4" />
       <span className="hidden sm:inline">Upload</span>
     </Link>
@@ -83,7 +83,7 @@ const UploadButton = () => {
 
 const DashboardButton = () => {
   return (
-    <Link href={ROUTE.dashboard} className="btn btn-ghost gap-2 px-3">
+    <Link href={routes.dashboard} className="btn btn-ghost gap-2 px-3">
       <LayoutDashboard className="h-5 w-5" />
       <span className="hidden sm:inline">Dashboard</span>
     </Link>
@@ -92,7 +92,7 @@ const DashboardButton = () => {
 
 const UserButton = ({ id, username }: CurrentUser) => {
   return (
-    <Link href={`${ROUTE.profile}/${id}`} className="btn btn-ghost gap-2 px-3">
+    <Link href={`${routes.profile}/${id}`} className="btn btn-ghost gap-2 px-3">
       <User className="h-5 w-5" />
       <span className="hidden sm:inline">{username}</span>
     </Link>

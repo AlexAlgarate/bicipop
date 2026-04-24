@@ -1,3 +1,5 @@
+import type { ProductStatus } from '@/generated/client/enums';
+
 export interface ProductDTO {
   id: string;
   title: string;
@@ -12,6 +14,7 @@ export interface ProductDTO {
   updatedAt: Date;
   category: string;
   userName: string;
+  status: ProductStatus;
 }
 
 export type ProductWithRelations = {
@@ -28,4 +31,5 @@ export type ProductWithRelations = {
   updatedAt: Date;
   category: { name: string };
   user: { username: string };
+  status: ProductStatus;
 };

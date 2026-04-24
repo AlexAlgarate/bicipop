@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/client';
+import prisma from '@/infrastructure/db/prisma/client';
 
 export const registerUser = async (username: string, email: string, password: string) => {
   await prisma.user.create({

@@ -1,9 +1,11 @@
+'use server';
+
 import { cookies } from 'next/headers';
 import { cache } from 'react';
 
 import type { CurrentUser } from '@/domain/user/types';
 
-import { prisma } from '../client';
+import prisma from '../db/prisma/client';
 
 import { type SessionTokenPayload, signSessionToken, verifySessionToken } from './jwt';
 

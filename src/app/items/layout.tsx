@@ -1,12 +1,14 @@
-import React from 'react';
-
-import { NavbarLogin } from '@/features/auth/components/NavbarLogin';
+import { Navbar } from '@/components/layout/Navbar/Navbar';
 import { Footer } from '@/components/layout/Footer/Footer';
 
-export default function AuthLayout({ children }: { children: React.ReactNode }) {
+export default async function ItemsLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
     <div className="flex flex-col min-h-screen">
-      <NavbarLogin />
+      <Navbar />
       <main className="flex-1 w-full">{children}</main>
       <Footer />
     </div>
