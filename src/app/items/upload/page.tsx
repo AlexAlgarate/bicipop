@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 import { BackToHomeLink } from '@/components/BackToHomeLink';
-import ProductForm from '@/features/items/components/ProductForm';
+import ProductForm from '@/features/items/shared/components/ProductForm';
 import { getCategories } from '@/features/items/shared/api';
 
 export const metadata: Metadata = {

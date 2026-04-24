@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 
-import { HeroSection } from '@/features/all-items/components/HeroSection';
+import { HeroSection } from '@/features/items/items/components/HeroSection';
 import { routes } from '@/utils/constants';
 
 export const metadata: Metadata = {

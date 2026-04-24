@@ -49,7 +49,7 @@ const resolveImageUrl = async (
   return errorState('Inavlid image mode');
 };
 
-export const createProductAction = async (
+export const uploadProductAction = async (
   _prevState: ProductFormState | null,
   formData: FormData
 ): Promise<ProductFormState | null> => {
