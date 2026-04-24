@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Plus, User, LogOut, LayoutDashboard, Search } from 'lucide-react';
 
 import { getCurrentUser } from '@/infrastructure/auth/session';
-import { SearchBar } from '@/components/Navbar/SearchBar';
+import { SearchBar } from '@/components/layout/Navbar/SearchBar';
 import { logout } from '@/features/auth/actions';
 import { routes } from '@/utils/constants';
 import type { CurrentUser } from '@/domain/user/types';
