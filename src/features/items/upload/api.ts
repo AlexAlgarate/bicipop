@@ -1,4 +1,4 @@
-import prisma from '@/lib/client';
+import prisma from '@/infrastructure/db/prisma/client';
 import type { CreateProductDto } from '@/features/items/shared/types';
 import { mapToProductDTO } from '@/domain/products/mappers';
 

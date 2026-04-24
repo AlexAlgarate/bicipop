@@ -2,11 +2,11 @@ import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 
 import { type ProductFormState } from '@/features/items/shared/types';
-import { getSession } from '@/lib/auth/session';
+import { getSession } from '@/infrastructure/auth/session';
 import { routes } from '@/utils/constants';
 import type { ProductStatus } from '@/generated/client/enums';
-import prisma from '@/lib/client';
-import { getFieldErrorsFromTree } from '@/lib/validations/validation-errors';
+import prisma from '@/infrastructure/db/prisma/client';
+import { getFieldErrorsFromTree } from '@/infrastructure/validations/validation-errors';
 
 import { updateProductSchema } from './validation';
 

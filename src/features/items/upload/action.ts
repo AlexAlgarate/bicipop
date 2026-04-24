@@ -3,10 +3,10 @@
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 
-import { getSession } from '@/lib/auth/session';
+import { getSession } from '@/infrastructure/auth/session';
 import { routes } from '@/utils/constants';
-import { getFieldErrorsFromTree } from '@/lib/validations/validation-errors';
-import { uploadImgInSupabaseBucket } from '@/lib/services/supabase/uploadImage';
+import { getFieldErrorsFromTree } from '@/infrastructure/validations/validation-errors';
+import { uploadImgInSupabaseBucket } from '@/infrastructure/db/supabase/uploadImage';
 import { isValidImage, type ProductFormState } from '@/features/items/shared/types';
 
 import { createProductSchema } from './validation';

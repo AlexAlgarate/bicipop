@@ -6,11 +6,14 @@ import { revalidatePath } from 'next/cache';
 
 import type { AuthFormState } from '@/features/auth/types';
 import { loginSchema, registerSchema } from '@/features/auth/validation';
-import { getFieldErrorsFromTree } from '@/lib/validations/validation-errors';
-import { createSession, deleteSession } from '@/lib/auth/session';
+import { getFieldErrorsFromTree } from '@/infrastructure/validations/validation-errors';
+import { createSession, deleteSession } from '@/infrastructure/auth/session';
+import {
+  comparePassword,
+  hashPassword,
+} from '@/infrastructure/security/bcrypt-password-hasher';
 
 import { getAuthUserByEmail, getUserByEmail, registerUser } from './api';
-import { comparePassword, hashPassword } from './password-service';
 
 export async function loginAction(
   _prevState: AuthFormState,
