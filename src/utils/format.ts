@@ -1,3 +1,11 @@
+export const formatPrice = (price: number) => {
+  return new Intl.NumberFormat('es-ES', {
+    style: 'currency',
+    currency: 'EUR',
+    maximumFractionDigits: 0,
+  }).format(price);
+};
+
 export const timeAgo = (input: Date | string): string => {
   const date = typeof input === 'string' ? new Date(input) : input;
   const now = new Date();
