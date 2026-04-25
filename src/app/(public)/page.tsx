@@ -4,13 +4,22 @@ import { ArrowRight } from 'lucide-react';
 
 import { HeroSection } from '@/features/items/items/components/HeroSection';
 import { routes } from '@/utils/constants';
+import { ProductsGrid } from '@/features/items/items/components/GridProducts';
+import { parseProductsSearchParams } from '@/features/items/shared/utils/parse-search-params';
+import type { ProductsPageSearchParams } from '@/features/items/shared/types/search-params.types';
 
 export const metadata: Metadata = {
   title: 'BiciPop',
   description: 'Página de compraventa de bicicletas de segunda mano.',
 };
 
-export default function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: ProductsPageSearchParams;
+}) {
+  const params = parseProductsSearchParams(await searchParams);
+
   return (
     <div className="pb-20 space-y-12">
       <HeroSection />
@@ -28,6 +37,7 @@ export default function Home() {
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
+        <ProductsGrid {...params} />
       </section>
     </div>
   );
