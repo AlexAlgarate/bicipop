@@ -14,7 +14,6 @@ interface ProductCardProps {
   id: string;
   title: string;
   price: number;
-  likes: number;
   imageUrl: string;
   isLiked?: boolean;
   isOwner?: boolean;
@@ -27,13 +26,6 @@ const formatPrice = (price: number) => {
     currency: 'EUR',
     maximumFractionDigits: 0,
   }).format(price);
-};
-
-const formatLikes = (likes: number) => {
-  if (likes >= 1000) {
-    return (likes / 1000).toFixed(1) + 'k';
-  }
-  return likes;
 };
 
 export const ProductCard = ({ product }: { product: ProductCardProps }) => {
@@ -52,9 +44,9 @@ export const ProductCard = ({ product }: { product: ProductCardProps }) => {
 };
 
 const ProductInfo = ({ product }: { product: ProductCardProps }) => {
-  const [optimisticLikes, setOptimisticLikes] = useOptimistic(
-    { likes: product.likes, isLiked: product.isLiked ?? false },
-    (_state, action: { likes: number; isLiked: boolean }) => action
+  const [isLiked, setIsLiked] = useOptimistic(
+    product.isLiked ?? false,
+    (_state, action: boolean) => action
   );
 
   const [isPending, startTransition] = useTransition();
@@ -68,7 +60,7 @@ const ProductInfo = ({ product }: { product: ProductCardProps }) => {
     startTransition(async () => {
       try {
         const result = await toggleFavoriteAction(product.id);
-        setOptimisticLikes({ likes: result.likesCount, isLiked: result.liked });
+        setIsLiked(result.liked);
       } catch (error) {
         console.error('[Error toggling favorite]', error);
       }
@@ -83,13 +75,13 @@ const ProductInfo = ({ product }: { product: ProductCardProps }) => {
         <p className="text-primary font-bold text-xl tracking-tight">
           {formatPrice(product.price)}
         </p>
-        <FavoriteButton
-          handleLikeClick={handleLikeClick}
-          isDisabled={isDisabled}
-          isLiked={optimisticLikes.isLiked}
-          likes={optimisticLikes.likes}
-          product={product.isOwner}
-        />
+        {!product.isOwner && (
+          <FavoriteButton
+            handleLikeClick={handleLikeClick}
+            isDisabled={isDisabled}
+            isLiked={isLiked}
+          />
+        )}
       </div>
 
       <h3 className="font-medium line-clamp-2 text-lg leading-tight group-hover:text-primary">
@@ -135,41 +127,34 @@ interface FavoriteButtonProps {
   handleLikeClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
   isDisabled: boolean;
   isLiked: boolean;
-  likes: number;
-  product?: boolean;
 }
 
 const FavoriteButton = ({
   handleLikeClick,
   isDisabled,
   isLiked,
-  likes,
-  product,
 }: FavoriteButtonProps) => {
   return (
     <Button
       onClick={handleLikeClick}
       disabled={isDisabled}
-      aria-label={isLiked ? 'Ya te gusta' : 'Me gusta'}
+      aria-label={isLiked ? 'Quitar de favoritos' : 'Añadir a favoritos'}
       className={`flex items-center gap-1.5 bg-gray-100
         px-2.5 py-1.5 text-gray-600
-        hover:text-red-500 hover:bg-red-50
+        hover:text-yellow-500 hover:bg-yellow-50
         transition-all duration-200
         w-fit mb-2.5 rounded-full
-        ${isLiked ? 'text-red-500 bg-red-50' : ''}`}
+        ${isLiked ? 'text-yellow-500 bg-yellow-50' : ''}`}
       title={
-        product
-          ? 'No puedes dar like a tu propio producto'
-          : isLiked
-            ? 'Ya has dado like'
-            : 'Dar like'
+        isLiked
+          ? 'Quitar de favoritos'
+          : 'Añadir a favoritos'
       }
     >
       <Star
         className={`w-5 h-5 transition-all duration-200 
           ${isLiked ? 'fill-current scale-110' : 'group-hover:scale-110'}`}
       />
-      <p className="text-xs font-semibold">{formatLikes(likes)}</p>
     </Button>
   );
 };

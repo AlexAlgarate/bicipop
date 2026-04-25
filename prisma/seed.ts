@@ -13,7 +13,7 @@ const pool = new Pool({
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
-async function main() {
+async function main(): Promise<void> {
   console.log('🌱 Seeding...');
 
   await prisma.product.deleteMany();
@@ -59,7 +59,7 @@ async function main() {
     for (let i = 0; i < productsData.length; i++) {
       const product = productsData[i];
 
-      if (!product) return null;
+      if (!product) continue;
 
       const categoryId = categoryMap.get(product.category);
 

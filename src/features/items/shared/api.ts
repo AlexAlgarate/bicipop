@@ -38,7 +38,7 @@ export const getProductByOwner = async (
 export const toggleFavorite = async (
   userId: string,
   productId: string
-): Promise<{ liked: boolean; likesCount: number }> => {
+): Promise<{ liked: boolean }> => {
   const favoriteKey = { userId_productId: { userId, productId } };
 
   return prisma.$transaction(async tx => {
@@ -50,9 +50,7 @@ export const toggleFavorite = async (
       await tx.favorite.create({ data: { userId, productId } });
     }
 
-    const likesCount = await tx.favorite.count({ where: { productId } });
-
-    return { liked: !existing, likesCount };
+    return { liked: !existing };
   });
 };
 
@@ -77,7 +75,6 @@ export const getProductWithFavoriteStatus = cache(
 
     return {
       ...mapToProductDTO(productData),
-      likes: _count.favorites,
       isLiked: (favorites?.length ?? 0) > 0,
       isOwner: product.userId === userId,
     };
@@ -114,7 +111,6 @@ export const findProducts = async (
 
   const mappedItems = items.map(({ _count, favorites, ...item }) => ({
     ...mapToProductDTO(item),
-    likes: _count.favorites,
     isLiked: (favorites?.length ?? 0) > 0,
     isOwner: item.userId === userId,
   }));

@@ -9,13 +9,13 @@ import { getProductByOwner, toggleFavorite } from '@/features/items/shared/api';
 
 export const toggleFavoriteAction = async (
   productId: string
-): Promise<{ liked: boolean; likesCount: number }> => {
+): Promise<{ liked: boolean }> => {
   const session = await getSession();
   if (!session?.userId) redirect('/login');
 
   const ad = await getProductByOwner(productId, session.userId);
   if (ad) {
-    throw new Error('Cannot like your own product');
+    throw new Error('Cannot favorite your own product');
   }
 
   const result = await toggleFavorite(session.userId, productId);
