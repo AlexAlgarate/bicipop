@@ -8,7 +8,7 @@ import { getWhereClause } from '../shared/utils/build-filters';
 import type { ProductsResultDto } from './types';
 
 export async function getProducts(filters: FilterProducts): Promise<ProductsResultDto> {
-  const { safePage, safePageSize } = getPagination(filters.page, filters.pageSize);
+  const { page, pageSize } = getPagination(filters.page, filters.pageSize);
 
   const [session, whereClause] = await Promise.all([
     getSession(),
@@ -17,18 +17,18 @@ export async function getProducts(filters: FilterProducts): Promise<ProductsResu
 
   const { items, totalCount } = await findProducts(
     whereClause,
-    safePage,
-    safePageSize,
+    page,
+    pageSize,
     filters.order,
     session?.userId ?? null
   );
 
-  const totalPages = Math.max(1, Math.ceil(totalCount / safePageSize));
+  const totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
 
   return {
     items,
     totalCount,
     totalPages,
-    currentPage: Math.min(safePage, totalPages),
+    currentPage: Math.min(page, totalPages),
   };
 }
