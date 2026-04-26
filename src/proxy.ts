@@ -8,7 +8,7 @@ if (!AUTH_COOKIE_NAME) throw new Error('AUTH_COOKIE_NAME must bedeclared in .env
 const secretKey = process.env.JWT_SECRET;
 const key = new TextEncoder().encode(secretKey);
 
-const protectedRoutes = ['/dashboard', '/product/upload', '/product/edit'];
+const protectedRoutes = ['/dashboard', '/items/upload', '/items/edit'];
 
 const authRoutes = ['/login', '/register'];
 

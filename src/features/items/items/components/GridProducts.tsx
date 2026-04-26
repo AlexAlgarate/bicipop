@@ -1,21 +1,21 @@
 import { ProductCard } from '@/features/items/shared/components/ProductCard';
-import { PRODUCTS_PER_PAGE } from '@/utils/constants';
 import { Pagination } from '@/components/Pagination';
-import type { ProductsSearchParams } from '@/features/items/shared/types/search-params.types';
-import { getProducts } from '@/features/items/items/api';
 import { EmptyState } from '@/features/items/items/components/EmptyState';
+import type { ProductsWithFavoriteStatus } from '@/features/items/shared/api';
 
-export const ProductsGrid = async (params: ProductsSearchParams) => {
-  const {
-    items: products,
-    currentPage,
-    totalPages,
-  } = await getProducts({
-    ...params,
-    pageSize: PRODUCTS_PER_PAGE,
-  });
+interface ProductsGridProps {
+  products: ProductsWithFavoriteStatus[];
+  currentPage: number;
+  totalPages: number;
+}
 
-  if (products.length === 0) return <EmptyState query={params.query} />;
+export const ProductsGrid = ({
+  products,
+  currentPage,
+  totalPages,
+}: ProductsGridProps) => {
+  if (products.length === 0) return <EmptyState query="" />;
+
   return (
     <>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">

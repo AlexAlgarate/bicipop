@@ -81,7 +81,7 @@ export const getProductWithFavoriteStatus = cache(
   }
 );
 
-export type AdWithFavoriteStatus = ProductDTO & {
+export type ProductsWithFavoriteStatus = ProductDTO & {
   isLiked: boolean;
   isOwner: boolean;
 };
@@ -92,7 +92,7 @@ export const findProducts = async (
   pageSize: number,
   order: 'asc' | 'desc',
   userId: string | null
-): Promise<{ items: AdWithFavoriteStatus[]; totalCount: number }> => {
+): Promise<{ items: ProductsWithFavoriteStatus[]; totalCount: number }> => {
   const [totalCount, items] = await Promise.all([
     prisma.product.count({ where: whereClause }),
     prisma.product.findMany({
