@@ -15,9 +15,9 @@ export const metadata: Metadata = {
 export default async function Home({
   searchParams,
 }: {
-  searchParams: Promise<{ page?: string }>;
+  searchParams: Promise<{ page?: string; query: string }>;
 }) {
-  const { page: pageParam } = await searchParams;
+  const { page: pageParam, query } = await searchParams;
   const page = pageParam ? parseInt(pageParam, 10) : 1;
 
   const {
@@ -28,7 +28,7 @@ export default async function Home({
     page,
     pageSize: PRODUCTS_PER_PAGE,
     order: 'desc',
-    query: '',
+    query: query,
   });
 
   return (
