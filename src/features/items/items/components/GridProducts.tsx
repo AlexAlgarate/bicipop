@@ -1,0 +1,32 @@
+import { ProductCard } from '@/features/items/shared/components/ProductCard';
+import { Pagination } from '@/components/Pagination';
+import { EmptyState } from '@/features/items/items/components/EmptyState';
+import type { ProductsWithFavoriteStatus } from '@/features/items/shared/api';
+
+interface ProductsGridProps {
+  products: ProductsWithFavoriteStatus[];
+  currentPage: number;
+  totalPages: number;
+}
+
+export const ProductsGrid = ({
+  products,
+  currentPage,
+  totalPages,
+}: ProductsGridProps) => {
+  if (products.length === 0) return <EmptyState query="" />;
+
+  return (
+    <>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {products.map(product => (
+          <ProductCard key={product.id} product={product} />
+        ))}
+      </div>
+
+      <div className="mt-12">
+        <Pagination currentPage={currentPage} totalPages={totalPages} />
+      </div>
+    </>
+  );
+};

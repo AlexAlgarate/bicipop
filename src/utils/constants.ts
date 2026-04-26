@@ -16,6 +16,7 @@ export const routes = {
   profile: '/profile',
   aboutUs: '/about',
   termsOfService: '/terms',
+  search: '/search',
 };
 
 export const DEV_IMAGE_URL =

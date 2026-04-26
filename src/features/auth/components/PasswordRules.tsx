@@ -46,9 +46,7 @@ export const PasswordRules = ({ password }: PasswordRulesProps) => {
           >
             {hasInput && <Icon className="w-3 h-3 shrink-0" />}
             {!hasInput && (
-              <span className="w-3 h-3 shrink-0 flex items-center justify-center">
-                ·
-              </span>
+              <span className="w-3 h-3 shrink-0 flex items-center justify-center">·</span>
             )}
             {label}
           </p>

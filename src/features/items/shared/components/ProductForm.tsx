@@ -6,7 +6,7 @@ import Image from 'next/image';
 
 import type { ProductStatus } from '@/generated/client/enums';
 import type { ProductFormState } from '@/features/items/shared/types';
-import { createProductAction } from '@/features/items/upload/action';
+import { uploadProductAction } from '@/features/items/upload/action';
 import { updateProductAction } from '@/features/items/edit/action';
 
 interface Category {
@@ -33,7 +33,7 @@ interface ProductFormProps {
 type ImageMode = 'url' | 'file';
 
 export default function ProductForm({ categories, mode, initialData }: ProductFormProps) {
-  const action = mode === 'create' ? createProductAction : updateProductAction;
+  const action = mode === 'create' ? uploadProductAction : updateProductAction;
 
   const [state, formAction, isPending] = useActionState<
     ProductFormState | null,

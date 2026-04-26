@@ -9,7 +9,6 @@ export interface ProductDTO {
   userId: string;
   categoryId: string;
   location: string;
-  likes: number;
   createdAt: Date;
   updatedAt: Date;
   category: string;
@@ -26,7 +25,6 @@ export type ProductWithRelations = {
   userId: string;
   categoryId: string;
   location: string;
-  likes: number;
   createdAt: Date;
   updatedAt: Date;
   category: { name: string };

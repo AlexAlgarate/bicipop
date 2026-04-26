@@ -1,15 +1,26 @@
 import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 
 import { BackToHomeLink } from '@/components/BackToHomeLink';
 import ProductForm from '@/features/items/shared/components/ProductForm';
-import { getCategories } from '@/features/items/shared/api';
+import { getCategories, getProductById } from '@/features/items/shared/api';
 
 export const metadata: Metadata = {
   title: 'Upload Product',
   description: 'List a new product for sale on BiciPop',
 };
 
-export const UploadProductPage = async () => {
+interface ProductDetailProps {
+  params: Promise<{ id: string }>;
+}
+
+export const ProductDetailPage = async ({ params }: ProductDetailProps) => {
+  const { id } = await params;
+
+  const product = await getProductById(id);
+
+  if (!product) notFound();
+
   const categories = await getCategories();
 
   return (
@@ -31,4 +42,4 @@ export const UploadProductPage = async () => {
   );
 };
 
-export default UploadProductPage;
+export default ProductDetailPage;

@@ -10,7 +10,6 @@ export const mapToProductDTO = (product: ProductWithRelations): ProductDTO => {
     userId: product.userId,
     categoryId: product.categoryId,
     location: product.location,
-    likes: product.likes,
     createdAt: product.createdAt,
     updatedAt: product.updatedAt,
     category: product.category.name,
