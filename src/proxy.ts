@@ -2,8 +2,7 @@ import 'dotenv/config';
 import { type NextRequest, NextResponse } from 'next/server';
 import { jwtVerify } from 'jose';
 
-const AUTH_COOKIE_NAME = process.env.AUTH_COOKIE_NAME;
-if (!AUTH_COOKIE_NAME) throw new Error('AUTH_COOKIE_NAME must bedeclared in .env file');
+const SESSION_COOKIE_NAME = 'session';
 
 const secretKey = process.env.JWT_SECRET;
 const key = new TextEncoder().encode(secretKey);
@@ -24,7 +23,7 @@ const verifyToken = async (token: string): Promise<boolean> => {
 };
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const sessionCookie = request.cookies.get(AUTH_COOKIE_NAME || 'bicipop-session')?.value;
+  const sessionCookie = request.cookies.get(SESSION_COOKIE_NAME)?.value;
 
   const isProtectedRoute = protectedRoutes.some(route => pathname.startsWith(route));
   const isAuthRoute = authRoutes.some(route => pathname.startsWith(route));
@@ -34,7 +33,7 @@ export async function proxy(request: NextRequest) {
   if (isProtectedRoute && !isValidSession) {
     const loginUrl = new URL('/login', request.url);
     loginUrl.searchParams.set('callbackUrl', pathname);
-    return NextResponse.redirect(new URL('/dashboard', request.url));
+    return NextResponse.redirect(loginUrl);
   }
 
   if (isAuthRoute && isValidSession) {

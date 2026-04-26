@@ -3,10 +3,9 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 
 import { HeroSection } from '@/features/items/items/components/HeroSection';
-import { routes } from '@/utils/constants';
+import { PRODUCTS_PER_PAGE, routes } from '@/utils/constants';
 import { ProductsGrid } from '@/features/items/items/components/GridProducts';
 import { getProducts } from '@/features/items/items/api';
-import { PRODUCTS_PER_PAGE } from '@/utils/constants';
 
 export const metadata: Metadata = {
   title: 'BiciPop',
@@ -14,7 +13,11 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-  const { items: products, currentPage, totalPages } = await getProducts({
+  const {
+    items: products,
+    currentPage,
+    totalPages,
+  } = await getProducts({
     page: 1,
     pageSize: PRODUCTS_PER_PAGE,
     order: 'desc',
@@ -38,7 +41,11 @@ export default async function Home() {
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
-        <ProductsGrid products={products} currentPage={currentPage} totalPages={totalPages} />
+        <ProductsGrid
+          products={products}
+          currentPage={currentPage}
+          totalPages={totalPages}
+        />
       </section>
     </div>
   );
