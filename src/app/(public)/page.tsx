@@ -12,13 +12,20 @@ export const metadata: Metadata = {
   description: 'Página de compraventa de bicicletas de segunda mano.',
 };
 
-export default async function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}) {
+  const { page: pageParam } = await searchParams;
+  const page = pageParam ? parseInt(pageParam, 10) : 1;
+
   const {
     items: products,
     currentPage,
     totalPages,
   } = await getProducts({
-    page: 1,
+    page,
     pageSize: PRODUCTS_PER_PAGE,
     order: 'desc',
     query: '',
