@@ -27,11 +27,10 @@ export const updateProductAction = async (
     title: String(formData.get('title')),
     description: String(formData.get('description')),
     price: Number(formData.get('price')),
-    imageUrl: String(formData.get('imageUrl')),
+    imageUrl: String(formData.get('imageUrl') || ''),
     location: String(formData.get('location')),
     categoryId: String(formData.get('categoryId')),
-    status: formData.get('status') as ProductStatus,
-    image: String(formData.get('imageUrl')),
+    status: (formData.get('status') as ProductStatus) || 'ACTIVE',
   };
 
   const existingProduct = await getProductById(rawValues.productId);
@@ -69,13 +68,13 @@ export const updateProductAction = async (
     });
   }
 
-  try {
+try {
     await updateProduct({
       title: rawValues.title,
       description: rawValues.description,
       price: rawValues.price,
       location: rawValues.location,
-      imageUrl: rawValues.image,
+      imageUrl: rawValues.imageUrl,
       categoryId: rawValues.categoryId,
       status: rawValues.status,
       productId: rawValues.productId,
@@ -83,9 +82,13 @@ export const updateProductAction = async (
 
     revalidatePath('/', 'layout');
     revalidatePath('/dashboard', 'page');
-    revalidatePath(`/product/${rawValues.productId}`, 'page');
-    redirect(`/product/${rawValues.productId}`);
+    revalidatePath(`/items/${rawValues.productId}`, 'page');
+    redirect(`/items/${rawValues.productId}`);
   } catch (error) {
+    if (typeof error === 'object' && error !== null && 'digest' in error && 
+        typeof error.digest === 'string' && error.digest.startsWith('NEXT_REDIRECT')) {
+      throw error;
+    }
     return errorState('Failed to update product. Please try again', {
       errors: error instanceof Error ? { general: [error.message] } : undefined,
     });

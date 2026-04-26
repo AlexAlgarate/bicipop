@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 import { BackToHomeLink } from '@/components/BackToHomeLink';
-import ProductForm from '@/features/items/shared/components/ProductForm';
 import { getCategories, getProductById } from '@/features/items/shared/api';
 
 export const metadata: Metadata = {
@@ -34,8 +33,12 @@ export const ProductDetailPage = async ({ params }: ProductDetailProps) => {
           </p>
         </div>
 
-        <div className="bg-card rounded-xl shadow-sm p-6 md:p-8">
-          <ProductForm categories={categories} mode="create" />
+        <div>
+          {product.title}
+          {categories.map(cat => (
+            <div key={cat.id}>Category: {cat.name}</div>
+          ))}
+          {product.price} €
         </div>
       </div>
     </div>

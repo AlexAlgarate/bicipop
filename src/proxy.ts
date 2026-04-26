@@ -2,12 +2,14 @@ import 'dotenv/config';
 import { type NextRequest, NextResponse } from 'next/server';
 import { jwtVerify } from 'jose';
 
+import { routes } from './utils/constants';
+
 const SESSION_COOKIE_NAME = 'session';
 
 const secretKey = process.env.JWT_SECRET;
 const key = new TextEncoder().encode(secretKey);
 
-const protectedRoutes = ['/dashboard', '/items/upload', '/items/edit'];
+const protectedRoutes = [routes.dashboard, routes.items.upload, routes.items.edit];
 
 const authRoutes = ['/login', '/register'];
 
@@ -31,13 +33,13 @@ export async function proxy(request: NextRequest) {
   const isValidSession = sessionCookie ? await verifyToken(sessionCookie) : false;
 
   if (isProtectedRoute && !isValidSession) {
-    const loginUrl = new URL('/login', request.url);
+    const loginUrl = new URL(routes.auth.login, request.url);
     loginUrl.searchParams.set('callbackUrl', pathname);
     return NextResponse.redirect(loginUrl);
   }
 
   if (isAuthRoute && isValidSession) {
-    return NextResponse.redirect(new URL('/dashboard', request.url));
+    return NextResponse.redirect(new URL(routes.dashboard, request.url));
   }
 
   return NextResponse.next();

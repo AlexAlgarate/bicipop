@@ -214,7 +214,7 @@ export default function ProductForm({ categories, mode, initialData }: ProductFo
             name="imageUrl"
             type="url"
             className="input"
-            value={imageUrl}
+            defaultValue={imageUrl}
             onChange={e => setImageUrl(e.target.value)}
             disabled={isPending}
             placeholder="https://example.com/image.jpg"
