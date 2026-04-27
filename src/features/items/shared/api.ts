@@ -101,11 +101,22 @@ export const findProducts = async (
   page: number,
   pageSize: number,
   order: 'asc' | 'desc',
-  userId: string | null
+  userId: string | null,
+  query?: string
 ): Promise<{ items: ProductsWithFavoriteStatus[]; totalCount: number }> => {
+  const where = query
+    ? {
+        OR: [
+          { title: { contains: query, mode: 'insensitive' as const } },
+          { description: { contains: query } },
+        ],
+      }
+    : {};
+
   const [totalCount, items] = await Promise.all([
-    prisma.product.count(),
+    prisma.product.count({ where }),
     prisma.product.findMany({
+      where,
       skip: (page - 1) * pageSize,
       take: pageSize,
       orderBy: { createdAt: order },

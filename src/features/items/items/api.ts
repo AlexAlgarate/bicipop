@@ -15,7 +15,8 @@ export async function getProducts(filters: FilterProducts): Promise<ProductsResu
     page,
     pageSize,
     filters.order,
-    session?.userId ?? null
+    session?.userId ?? null,
+    filters.query
   );
 
   const totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
