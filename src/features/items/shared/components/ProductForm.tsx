@@ -1,13 +1,16 @@
 'use client';
 
-import { useActionState, useEffect, useState } from 'react';
-import { Loader2, ImageIcon } from 'lucide-react';
-import Image from 'next/image';
+import { useActionState } from 'react';
 
-import type { ProductStatus } from '@/generated/client/enums';
+import { ProductStatus } from '@/generated/client/enums';
 import type { ProductFormState } from '@/features/items/shared/types';
 import { uploadProductAction } from '@/features/items/upload/action';
 import { updateProductAction } from '@/features/items/edit/action';
+
+import { ImageField } from './ProductForm/ImageField';
+import { FormField } from './ProductForm/FormField';
+import { SubmitButton } from './ProductForm/SubmitButton';
+import { SelectField } from './ProductForm/SelectField';
 
 interface Category {
   id: string;
@@ -30,35 +33,24 @@ interface ProductFormProps {
   };
 }
 
-type ImageMode = 'url' | 'file';
+const STATUS_OPTIONS: { value: ProductStatus; label: string }[] = [
+  { value: ProductStatus.ACTIVE, label: 'Active' },
+  { value: ProductStatus.RESERVED, label: 'Reserved' },
+  { value: ProductStatus.SOLD, label: 'Sold' },
+];
 
-export default function ProductForm({ categories, mode, initialData }: ProductFormProps) {
-  const action = mode === 'create' ? uploadProductAction : updateProductAction;
+const ACTIONS = {
+  create: uploadProductAction,
+  edit: updateProductAction,
+} as const;
 
+export const ProductForm = ({ categories, mode, initialData }: ProductFormProps) => {
   const [state, formAction, isPending] = useActionState<
     ProductFormState | null,
     FormData
-  >(action, null);
+  >(ACTIONS[mode], null);
 
-  // IMAGE STATE
-  const [imageMode, setImageMode] = useState<ImageMode>('url');
-  const [imageUrl, setImageUrl] = useState(initialData?.imageUrl || '');
-  const [file, setFile] = useState<File | null>(null);
-
-  // PREVIEW
-  const preview = imageMode === 'url' ? imageUrl : file ? URL.createObjectURL(file) : '';
-
-  // limpiar objectURL
-  useEffect(() => {
-    return () => {
-      if (file) URL.revokeObjectURL(URL.createObjectURL(file));
-    };
-  }, [file]);
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selected = e.target.files?.[0] ?? null;
-    setFile(selected);
-  };
+  const errors = state?.errors;
 
   return (
     <form action={formAction} className="space-y-6">
@@ -72,228 +64,100 @@ export default function ProductForm({ categories, mode, initialData }: ProductFo
         <input type="hidden" name="productId" value={initialData.id} />
       )}
 
-      {/* Title */}
-      <div>
-        <label htmlFor="title" className="mb-1 block text-sm font-medium">
-          Title
-        </label>
+      <FormField label="Title" htmlFor="title" error={errors?.title}>
         <input
           id="title"
           name="title"
           type="text"
-          required
-          minLength={3}
           className="input"
           defaultValue={initialData?.title}
           disabled={isPending}
+          placeholder="Title of the product..."
         />
-        {state?.errors?.title && (
-          <p className="mt-1 text-sm text-red-500">{state.errors.title[0]}</p>
-        )}
-      </div>
+      </FormField>
 
-      {/* Description */}
-      <div>
-        <label htmlFor="description" className="mb-1 block text-sm font-medium">
-          Description
-        </label>
+      <FormField label="Description" htmlFor="description" error={errors?.description}>
         <textarea
           id="description"
           name="description"
-          required
-          minLength={10}
           rows={4}
           className="input resize-none"
           defaultValue={initialData?.description}
           disabled={isPending}
+          placeholder="Describe your product in detail..."
         />
-        {state?.errors?.description && (
-          <p className="mt-1 text-sm text-red-500">{state.errors.description[0]}</p>
-        )}
-      </div>
+      </FormField>
 
-      {/* Price & Location */}
       <div className="grid gap-4 sm:grid-cols-2">
-        <div>
-          <label htmlFor="price" className="mb-1 block text-sm font-medium">
-            Price (EUR)
-          </label>
+        <FormField label="Price (EUR)" htmlFor="price" error={errors?.price}>
           <input
             id="price"
             name="price"
             type="number"
-            required
-            min="0"
-            step="0.01"
             className="input"
             defaultValue={initialData?.price}
             disabled={isPending}
+            placeholder="0.00 €"
           />
-          {state?.errors?.price && (
-            <p className="mt-1 text-sm text-red-500">{state.errors.price[0]}</p>
-          )}
-        </div>
+        </FormField>
 
-        <div>
-          <label htmlFor="location" className="mb-1 block text-sm font-medium">
-            Location
-          </label>
+        <FormField label="Location" htmlFor="location" error={errors?.location}>
           <input
             id="location"
             name="location"
             type="text"
-            required
-            minLength={2}
             className="input"
             defaultValue={initialData?.location}
             disabled={isPending}
+            placeholder="City, Country"
           />
-          {state?.errors?.location && (
-            <p className="mt-1 text-sm text-red-500">{state.errors.location[0]}</p>
-          )}
-        </div>
+        </FormField>
       </div>
 
-      {/* Category */}
-      <div>
-        <label htmlFor="categoryId" className="mb-1 block text-sm font-medium">
-          Category
-        </label>
-        <select
-          id="categoryId"
-          name="categoryId"
-          required
-          className="input"
-          defaultValue={initialData?.categoryId}
+      <SelectField
+        label="category"
+        htmlFor="categoryId"
+        name="categoryId"
+        error={errors?.categoryId}
+        defaultValue={initialData?.categoryId}
+        disabled={isPending}
+        className="pr-9 appearance-none cursor-pointer"
+      >
+        <option value="">Select a category</option>
+        {categories.map(({ id, name }) => (
+          <option key={id} value={id}>
+            {name}
+          </option>
+        ))}
+      </SelectField>
+
+      <ImageField
+        initialUrl={initialData?.imageUrl}
+        error={errors?.imageUrl}
+        disabled={isPending}
+      />
+
+      {mode === 'edit' && (
+        <SelectField
+          label="Status"
+          htmlFor="status"
+          name="status"
+          error={errors?.status}
+          defaultValue={initialData?.status}
           disabled={isPending}
+          className="pr-9 appearance-none cursor-pointer"
         >
-          <option value="">Select a category</option>
-          {categories.map(category => (
-            <option key={category.id} value={category.id}>
-              {category.name}
+          {STATUS_OPTIONS.map(({ value, label }) => (
+            <option key={value} value={value}>
+              {label}
             </option>
           ))}
-        </select>
-        {state?.errors?.categoryId && (
-          <p className="mt-1 text-sm text-red-500">{state.errors.categoryId[0]}</p>
-        )}
-      </div>
-
-      {/* IMAGE FIELD */}
-      <div>
-        <label className="mb-1 block text-sm font-medium">Image</label>
-
-        {/* Mode selector */}
-        <div className="flex gap-2 mb-2">
-          <button
-            type="button"
-            onClick={() => setImageMode('url')}
-            className={`px-3 py-1 rounded ${
-              imageMode === 'url' ? 'bg-primary text-white' : 'bg-muted'
-            }`}
-          >
-            URL
-          </button>
-          <button
-            type="button"
-            onClick={() => setImageMode('file')}
-            className={`px-3 py-1 rounded ${
-              imageMode === 'file' ? 'bg-primary text-white' : 'bg-muted'
-            }`}
-          >
-            Upload
-          </button>
-        </div>
-
-        {/* Hidden mode */}
-        <input type="hidden" name="imageMode" value={imageMode} />
-
-        {/* URL input */}
-        {imageMode === 'url' && (
-          <input
-            name="imageUrl"
-            type="url"
-            className="input"
-            defaultValue={imageUrl}
-            onChange={e => setImageUrl(e.target.value)}
-            disabled={isPending}
-            placeholder="https://example.com/image.jpg"
-          />
-        )}
-
-        {/* File input */}
-        {imageMode === 'file' && (
-          <input
-            name="imageFile"
-            type="file"
-            accept="image/*"
-            className="input"
-            onChange={handleFileChange}
-            disabled={isPending}
-          />
-        )}
-
-        {state?.errors?.imageUrl && (
-          <p className="mt-1 text-sm text-red-500">{state.errors.imageUrl[0]}</p>
-        )}
-
-        {/* Preview */}
-        {preview ? (
-          <div className="mt-3 relative aspect-video w-full max-w-xs overflow-hidden rounded-lg border border-border">
-            <Image
-              src={preview}
-              alt="Preview"
-              fill
-              className="object-cover"
-              onError={() => {
-                if (imageMode === 'url') setImageUrl('');
-              }}
-            />
-          </div>
-        ) : (
-          <div className="mt-3 flex aspect-video w-full max-w-xs items-center justify-center rounded-lg border border-dashed border-border bg-(--card-hover)">
-            <div className="text-center text-muted">
-              <ImageIcon className="mx-auto h-8 w-8" />
-              <p className="mt-1 text-xs">Image preview</p>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Status */}
-      {mode === 'edit' && (
-        <div>
-          <label htmlFor="status" className="mb-1 block text-sm font-medium">
-            Status
-          </label>
-          <select
-            id="status"
-            name="status"
-            required
-            className="input"
-            defaultValue={initialData?.status}
-            disabled={isPending}
-          >
-            <option value="ACTIVE">Active</option>
-            <option value="RESERVED">Reserved</option>
-            <option value="SOLD">Sold</option>
-          </select>
-        </div>
+        </SelectField>
       )}
 
-      {/* Submit */}
-      <button type="submit" disabled={isPending} className="btn btn-primary w-full py-3">
-        {isPending ? (
-          <>
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            {mode === 'create' ? 'Publishing...' : 'Updating...'}
-          </>
-        ) : mode === 'create' ? (
-          'Publish Product'
-        ) : (
-          'Update Product'
-        )}
-      </button>
+      <SubmitButton isPending={isPending} mode={mode} />
     </form>
   );
-}
+};
+
+export default ProductForm;
