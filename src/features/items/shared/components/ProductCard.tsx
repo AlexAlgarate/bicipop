@@ -19,6 +19,7 @@ interface ProductCardProps {
   isLiked?: boolean;
   isOwner?: boolean;
   status: ProductStatus;
+  category: string;
 }
 
 interface FavoriteButtonProps {
@@ -37,7 +38,9 @@ const FavoriteButton = ({ onClick, isDisabled, isFavorite }: FavoriteButtonProps
       ${isFavorite ? 'text-yellow-500 bg-yellow-50' : ''}`}
     title={isFavorite ? 'Quitar de favoritos' : 'Añadir a favoritos'}
   >
-    <Star className={`w-5 h-5 ${isFavorite ? 'fill-current scale-110 transition-all duration-200' : ''}`} />
+    <Star
+      className={`w-5 h-5 ${isFavorite ? 'fill-current scale-110 transition-all duration-200' : ''}`}
+    />
   </Button>
 );
 
@@ -48,13 +51,20 @@ interface ProductInfoProps {
   onFavoriteClick: (e: React.MouseEvent) => void;
 }
 
-const ProductInfo = ({ product, isFavorite, isPending, onFavoriteClick }: ProductInfoProps) => {
+const ProductInfo = ({
+  product,
+  isFavorite,
+  isPending,
+  onFavoriteClick,
+}: ProductInfoProps) => {
   const isDisabled = product.isOwner || isPending;
 
   return (
     <div className="flex flex-col flex-1 p-4 gap-2">
       <div className="flex justify-between items-center gap-3 mb-2">
-        <p className="text-primary font-bold text-xl tracking-tight">{formatPrice(product.price)}</p>
+        <p className="text-primary font-bold text-xl tracking-tight">
+          {formatPrice(product.price)}
+        </p>
         {!product.isOwner && (
           <FavoriteButton
             onClick={onFavoriteClick}

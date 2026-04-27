@@ -68,7 +68,7 @@ export const updateProductAction = async (
     });
   }
 
-try {
+  try {
     await updateProduct({
       title: rawValues.title,
       description: rawValues.description,
@@ -85,8 +85,13 @@ try {
     revalidatePath(`/items/${rawValues.productId}`, 'page');
     redirect(`/items/${rawValues.productId}`);
   } catch (error) {
-    if (typeof error === 'object' && error !== null && 'digest' in error && 
-        typeof error.digest === 'string' && error.digest.startsWith('NEXT_REDIRECT')) {
+    if (
+      typeof error === 'object' &&
+      error !== null &&
+      'digest' in error &&
+      typeof error.digest === 'string' &&
+      error.digest.startsWith('NEXT_REDIRECT')
+    ) {
       throw error;
     }
     return errorState('Failed to update product. Please try again', {

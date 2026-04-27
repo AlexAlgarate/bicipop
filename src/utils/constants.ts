@@ -12,6 +12,7 @@ export const routes = {
     edit: '/items/edit',
     detail: '/items',
   },
+  category: '/category',
   dashboard: '/dashboard',
   profile: '/profile',
   aboutUs: '/about',

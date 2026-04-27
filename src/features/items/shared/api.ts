@@ -3,21 +3,32 @@ import { cache } from 'react';
 import prisma from '@/infrastructure/db/prisma/client';
 import { mapToProductDTO } from '@/domain/products/mappers';
 import type { ProductDTO } from '@/domain/products/types';
-import type { WhereClause } from '@/features/items/shared/utils/build-filters';
 
-export const getProductById = cache(async (id: string): Promise<ProductDTO | null> => {
-  const product = await prisma.product.findUnique({
-    where: { id },
-    include: {
-      category: true,
-      user: true,
-    },
-  });
+export const getProductById = cache(
+  async (
+    id: string,
+    userId: string | null = null
+  ): Promise<(ProductDTO & { isOwner: boolean; isLiked: boolean }) | null> => {
+    const product = await prisma.product.findUnique({
+      where: { id },
+      include: {
+        category: true,
+        user: true,
+        _count: { select: { favorites: true } },
+        favorites: userId ? { where: { userId } } : false,
+      },
+    });
 
-  if (!product) return null;
+    if (!product) return null;
 
-  return mapToProductDTO(product);
-});
+    const { _count, favorites, ...productData } = product;
+    return {
+      ...mapToProductDTO(productData),
+      isLiked: (favorites?.length ?? 0) > 0,
+      isOwner: product.userId === userId,
+    };
+  }
+);
 
 export const getCategories = async () => {
   return await prisma.category.findMany({
@@ -87,16 +98,14 @@ export type ProductsWithFavoriteStatus = ProductDTO & {
 };
 
 export const findProducts = async (
-  whereClause: WhereClause,
   page: number,
   pageSize: number,
   order: 'asc' | 'desc',
   userId: string | null
 ): Promise<{ items: ProductsWithFavoriteStatus[]; totalCount: number }> => {
   const [totalCount, items] = await Promise.all([
-    prisma.product.count({ where: whereClause }),
+    prisma.product.count(),
     prisma.product.findMany({
-      where: whereClause,
       skip: (page - 1) * pageSize,
       take: pageSize,
       orderBy: { createdAt: order },

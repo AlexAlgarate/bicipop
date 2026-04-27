@@ -11,7 +11,7 @@ export const BackToHomeLink = () => {
         className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
       >
         <ArrowLeft className="w-4 h-4 mr-1" />
-        Volver al inicio
+        Back to products
       </Link>
     </div>
   );

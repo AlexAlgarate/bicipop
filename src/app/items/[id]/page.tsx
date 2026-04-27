@@ -1,46 +1,84 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
+import { getProductById } from '@/features/items/shared/api';
+import { getRelatedProducts } from '@/features/items/item-detail/api';
+import { getSession } from '@/infrastructure/auth/session';
+import { ProductImage } from '@/features/items/item-detail/components/ProductImage';
+import { ProductHeader } from '@/features/items/item-detail/components/ProductHeader';
+import { ProductMetaInfo } from '@/features/items/item-detail/components/ProductMetaInfo';
+import { ProductSellerInfo } from '@/features/items/item-detail/components/ProductSellerInfo';
+import { ProductActions } from '@/features/items/item-detail/components/ProductActions';
+import { RelatedProducts } from '@/features/items/item-detail/components/RelatedProducts';
 import { BackToHomeLink } from '@/components/BackToHomeLink';
-import { getCategories, getProductById } from '@/features/items/shared/api';
-
-export const metadata: Metadata = {
-  title: 'Upload Product',
-  description: 'List a new product for sale on BiciPop',
-};
 
 interface ProductDetailProps {
   params: Promise<{ id: string }>;
 }
 
-export const ProductDetailPage = async ({ params }: ProductDetailProps) => {
-  const { id } = await params;
+export const dynamic = 'force-dynamic';
 
+export async function generateMetadata({
+  params,
+}: ProductDetailProps): Promise<Metadata> {
+  const { id } = await params;
   const product = await getProductById(id);
 
+  if (!product) {
+    return {
+      title: 'Product Not Found',
+    };
+  }
+
+  return {
+    title: product.title,
+    description: product.description.slice(0, 160),
+    openGraph: {
+      title: product.title,
+      description: product.description.slice(0, 160),
+      images: [product.imageUrl],
+    },
+  };
+}
+
+export const ProductDetailPage = async ({ params }: ProductDetailProps) => {
+  const { id } = await params;
+  const session = await getSession();
+  const userId = session?.userId ?? null;
+
+  const product = await getProductById(id, userId);
   if (!product) notFound();
 
-  const categories = await getCategories();
+  const relatedProducts = await getRelatedProducts({
+    categoryId: product.categoryId,
+    excludeId: product.id,
+    excludeUserId: product.userId,
+    limit: 4,
+    currentUserId: session?.userId,
+  });
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="max-w-2xl mx-auto">
-        <div className="mb-6">
-          <BackToHomeLink />
-          <h1 className="text-3xl font-bold text-foreground mt-4">Upload Product</h1>
-          <p className="text-muted-foreground mt-1">
-            Fill in the details below to list your product for sale in Bicipop.
-          </p>
-        </div>
+      <BackToHomeLink />
 
-        <div>
-          {product.title}
-          {categories.map(cat => (
-            <div key={cat.id}>Category: {cat.name}</div>
-          ))}
-          {product.price} €
+      <div className="grid gap-8 lg:grid-cols-2">
+        <ProductImage product={product} />
+
+        <div className="space-y-6">
+          <ProductHeader product={product} />
+          <ProductMetaInfo product={product} />
+
+          <div>
+            <h2 className="mb-2 text-lg font-semibold">Description</h2>
+            <p className="whitespace-pre-line text-muted">{product.description}</p>
+          </div>
+
+          <ProductSellerInfo product={product} />
+          <ProductActions product={product} isOwner={product.isOwner} />
         </div>
       </div>
+
+      <RelatedProducts relatedProducts={relatedProducts} />
     </div>
   );
 };
