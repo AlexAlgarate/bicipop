@@ -14,6 +14,8 @@ export interface ProductDTO {
   category: string;
   userName: string;
   status: ProductStatus;
+  categorySlug: string;
+  categoryName: string;
 }
 
 export type ProductWithRelations = {
@@ -27,7 +29,7 @@ export type ProductWithRelations = {
   location: string;
   createdAt: Date;
   updatedAt: Date;
-  category: { name: string };
+  category: { name: string; slug: string };
   user: { username: string };
   status: ProductStatus;
 };

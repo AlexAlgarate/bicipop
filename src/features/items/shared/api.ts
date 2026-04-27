@@ -4,19 +4,31 @@ import prisma from '@/infrastructure/db/prisma/client';
 import { mapToProductDTO } from '@/domain/products/mappers';
 import type { ProductDTO } from '@/domain/products/types';
 
-export const getProductById = cache(async (id: string): Promise<ProductDTO | null> => {
-  const product = await prisma.product.findUnique({
-    where: { id },
-    include: {
-      category: true,
-      user: true,
-    },
-  });
+export const getProductById = cache(
+  async (
+    id: string,
+    userId: string | null = null
+  ): Promise<(ProductDTO & { isOwner: boolean; isLiked: boolean }) | null> => {
+    const product = await prisma.product.findUnique({
+      where: { id },
+      include: {
+        category: true,
+        user: true,
+        _count: { select: { favorites: true } },
+        favorites: userId ? { where: { userId } } : false,
+      },
+    });
 
-  if (!product) return null;
+    if (!product) return null;
 
-  return mapToProductDTO(product);
-});
+    const { _count, favorites, ...productData } = product;
+    return {
+      ...mapToProductDTO(productData),
+      isLiked: (favorites?.length ?? 0) > 0,
+      isOwner: product.userId === userId,
+    };
+  }
+);
 
 export const getCategories = async () => {
   return await prisma.category.findMany({
