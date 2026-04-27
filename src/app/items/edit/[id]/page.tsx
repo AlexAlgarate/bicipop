@@ -42,7 +42,7 @@ const EditProductPage = async ({ params }: EditProductPageProps) => {
           <p className="mt-2 text-muted">Update the details of your product listing</p>
         </div>
 
-        <div className="card p-6">
+        <div className="bg-card rounded-xl shadow-sm p-6 md:p-8">
           <ProductForm
             categories={categories}
             mode="edit"
