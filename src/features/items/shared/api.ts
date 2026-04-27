@@ -3,7 +3,6 @@ import { cache } from 'react';
 import prisma from '@/infrastructure/db/prisma/client';
 import { mapToProductDTO } from '@/domain/products/mappers';
 import type { ProductDTO } from '@/domain/products/types';
-import type { WhereClause } from '@/features/items/shared/utils/build-filters';
 
 export const getProductById = cache(async (id: string): Promise<ProductDTO | null> => {
   const product = await prisma.product.findUnique({
@@ -87,16 +86,14 @@ export type ProductsWithFavoriteStatus = ProductDTO & {
 };
 
 export const findProducts = async (
-  whereClause: WhereClause,
   page: number,
   pageSize: number,
   order: 'asc' | 'desc',
   userId: string | null
 ): Promise<{ items: ProductsWithFavoriteStatus[]; totalCount: number }> => {
   const [totalCount, items] = await Promise.all([
-    prisma.product.count({ where: whereClause }),
+    prisma.product.count(),
     prisma.product.findMany({
-      where: whereClause,
       skip: (page - 1) * pageSize,
       take: pageSize,
       orderBy: { createdAt: order },

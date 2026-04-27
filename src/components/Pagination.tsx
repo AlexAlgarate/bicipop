@@ -26,11 +26,11 @@ export const Pagination = ({ currentPage, totalPages }: PaginationProps) => {
   return (
     <div className="flex flex-col items-center gap-4 mt-8">
       <p className="text-sm text-muted-foreground font-medium">
-        Mostrando página {currentPage} de {totalPages}
+        Showing page {currentPage} of {totalPages}
       </p>
       <nav
         aria-label="Paginación"
-        className="flex items-center gap-1 bg-white p-1 rounded-full shadow-sm border border-gray-100"
+        className="flex items-center gap-1 p-1 rounded-full shadow-sm border border-border bg-card"
       >
         <PaginationArrow
           direction="left"
@@ -64,6 +64,7 @@ export const Pagination = ({ currentPage, totalPages }: PaginationProps) => {
     </div>
   );
 };
+
 const PaginationNumber = ({
   page,
   isActive,
@@ -77,11 +78,11 @@ const PaginationNumber = ({
     onClick={onClick}
     aria-current={isActive ? 'page' : undefined}
     className={`
-      h-9 w-9 flex items-center justify-center text-sm font-medium transition-all duration-200
+      h-10 w-10 flex items-center justify-center text-sm font-medium transition-all duration-200
       ${
         isActive
           ? 'bg-primary text-white shadow-md scale-105 '
-          : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+          : 'text-foreground hover:bg-gray-100 hover:text-gray-900'
       }
     `}
   >
@@ -105,11 +106,11 @@ const PaginationArrow = ({
       onClick={onClick}
       disabled={isDisabled}
       className={`
-        h-9 w-9 flex items-center justify-center rounded-full
+        p-0 h-9 w-9 flex items-center justify-center rounded-full transition 
         ${
           isDisabled
-            ? 'text-gray-300 cursor-not-allowed'
-            : 'text-gray-600 hover:bg-gray-100 hover:text-primary active:bg-gray-200'
+            ? 'text-muted-foreground opacity-40 cursor-not-allowed'
+            : 'text-foreground hover:bg-muted hover:text-primary active:bg-muted'
         }
       `}
       aria-label={direction === 'left' ? 'Página anterior' : 'Página siguiente'}
