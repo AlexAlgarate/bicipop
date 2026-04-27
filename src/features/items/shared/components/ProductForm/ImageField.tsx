@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 type ImageMode = 'url' | 'file';
 
-export const useImagePreview = (initialUrl = '') => {
+const useImagePreview = (initialUrl = '') => {
   const [imageMode, setImageMode] = useState<ImageMode>('url');
   const [imageUrl, setImageUrl] = useState(initialUrl);
   const [filePreviewUrl, setFilePreviewUrl] = useState<string | null>(null);
