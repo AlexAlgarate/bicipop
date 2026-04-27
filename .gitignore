@@ -1,4 +1,7 @@
-node_modules/
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
 /.pnp
 .pnp.*
 .yarn/*
@@ -7,9 +10,11 @@ node_modules/
 !.yarn/releases
 !.yarn/versions
 
+# testing
 /coverage
 
-.next/
+# next.js
+/.next/
 /out/
 
 # production
@@ -26,7 +31,7 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # env files (can opt-in for committing if needed)
-.env
+.env*
 
 # vercel
 .vercel
@@ -34,7 +39,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
-**/prisma/generated
+**/generated
 **/prisma/migrations
 repomix-output.xml
+apps/**/dist
+apps/**/build
+apps/**/coverage
+**/node_modules
+**/dist
+**/build
