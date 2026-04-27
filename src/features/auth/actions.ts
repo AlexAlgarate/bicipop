@@ -13,7 +13,7 @@ import {
   hashPassword,
 } from '@/infrastructure/security/bcrypt-password-hasher';
 
-import { getAuthUserByEmail, getUserByEmail, registerUser } from './api';
+import { getAuthUserByEmail, getUserByEmail, getUserByUsername, registerUser } from './api';
 
 export async function loginAction(
   _prevState: AuthFormState,
@@ -75,6 +75,7 @@ export async function registerAction(
 ): Promise<AuthFormState> {
   const emailInput = String(formData.get('email'));
   const passwordInput = String(formData.get('password'));
+  const confirmPasswordInput = String(formData.get('confirmPassword'));
   const usernameInput = String(formData.get('username'));
 
   const parsed = registerSchema.safeParse({
@@ -97,6 +98,18 @@ export async function registerAction(
 
   const { email, password, username } = parsed.data;
 
+  if (confirmPasswordInput !== password) {
+    return {
+      success: false,
+      message: 'Las contraseñas no coinciden',
+      errors: {},
+      values: {
+        email: emailInput,
+        username: usernameInput,
+      },
+    };
+  }
+
   const existingUser = await getUserByEmail(email);
 
   if (existingUser) {
@@ -105,6 +118,17 @@ export async function registerAction(
       message: 'User already exists',
       errors: {},
       values: { username: usernameInput },
+    };
+  }
+
+  const existingUsername = await getUserByUsername(username);
+
+  if (existingUsername) {
+    return {
+      success: false,
+      message: 'Username already taken',
+      errors: {},
+      values: { email: emailInput, username: usernameInput },
     };
   }
 

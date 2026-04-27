@@ -30,9 +30,9 @@ export const EmptyState = ({ query }: EmptyStateProps) => {
           </p>
           <Link
             href="/products/create"
-            className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium rounded-full py-2.5 px-6 shadow-lg transition-transform hover:-translate-y-0.5"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium rounded-lg py-2.5 px-6 shadow-lg transition-transform hover:-translate-y-0.5"
           >
-            Post listing
+            Sell your bike
           </Link>
         </>
       )}
