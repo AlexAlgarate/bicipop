@@ -13,7 +13,12 @@ import {
   hashPassword,
 } from '@/infrastructure/security/bcrypt-password-hasher';
 
-import { getAuthUserByEmail, getUserByEmail, getUserByUsername, registerUser } from './api';
+import {
+  getAuthUserByEmail,
+  getUserByEmail,
+  getUserByUsername,
+  registerUser,
+} from './api';
 
 export async function loginAction(
   _prevState: AuthFormState,
