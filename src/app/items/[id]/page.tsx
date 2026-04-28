@@ -11,6 +11,7 @@ import { ProductSellerInfo } from '@/features/items/item-detail/components/Produ
 import { ProductActions } from '@/features/items/item-detail/components/ProductActions';
 import { RelatedProducts } from '@/features/items/item-detail/components/RelatedProducts';
 import { BackToHomeLink } from '@/components/BackToHomeLink';
+import { routes } from '@/utils/constants';
 
 interface ProductDetailProps {
   params: Promise<{ id: string }>;
@@ -59,7 +60,7 @@ export const ProductDetailPage = async ({ params }: ProductDetailProps) => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <BackToHomeLink />
+      <BackToHomeLink title="dashboard" url={routes.dashboard} />
 
       <div className="grid gap-8 lg:grid-cols-2">
         <ProductImage product={product} />
