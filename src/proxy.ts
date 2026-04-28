@@ -5,7 +5,6 @@ import { verifyToken } from '@/infrastructure/auth/jwt';
 import { routes } from '@/utils/constants';
 
 const protectedRoutes = [routes.dashboard, routes.items.upload, routes.items.edit];
-
 const authRoutes = [routes.auth.login, routes.auth.register];
 
 export async function proxy(request: NextRequest) {
