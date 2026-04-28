@@ -1,4 +1,4 @@
-import { Footer } from '@/components/layout/Footer/Footer';
+import { Footer } from '@/components/layout/Footer';
 import { Navbar } from '@/components/layout/Navbar/Navbar';
 
 export default async function PublicLayout({

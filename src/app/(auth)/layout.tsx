@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { NavbarLogin } from '@/features/auth/components/NavbarLogin';
-import { Footer } from '@/components/layout/Footer/Footer';
+import { Footer } from '@/components/layout/Footer';
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
