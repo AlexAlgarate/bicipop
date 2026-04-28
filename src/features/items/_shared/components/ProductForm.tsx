@@ -3,17 +3,18 @@
 import { useActionState } from 'react';
 
 import { ProductStatus } from '@/generated/client/enums';
-import type { ProductFormState, Category } from '@/features/items/_shared/types';
+import type { ProductFormState } from '@/features/items/_shared/types';
 import { uploadProductAction } from '@/features/items/upload/action';
 import { updateProductAction } from '@/features/items/edit/action';
 import { FormField } from '@/components/ui/FormField';
+import type { CategoryDTO } from '@/domain/category/types';
 
 import { ImageField } from './ProductForm/ImageField';
 import { SubmitButton } from './ProductForm/SubmitButton';
 import { SelectField } from './ProductForm/SelectField';
 
 interface ProductFormProps {
-  categories: Category[];
+  categories: CategoryDTO[];
   mode: 'create' | 'edit';
   initialData?: {
     id: string;

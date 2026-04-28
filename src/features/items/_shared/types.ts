@@ -5,9 +5,3 @@ export type ProductFormState = {
   requestId: number;
   values?: Record<string, string | number>;
 };
-
-export interface Category {
-  id: string;
-  name: string;
-  slug: string;
-}
