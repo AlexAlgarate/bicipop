@@ -2,19 +2,15 @@
 
 import { Check, X } from 'lucide-react';
 
+import { getPasswordRulesStatus } from '../validation';
+
 interface PasswordRulesProps {
   password: string;
 }
 
 export const PasswordRules = ({ password }: PasswordRulesProps) => {
   const hasInput = password.length > 0;
-
-  const rules = {
-    length: password.length >= 8,
-    upperLowerNumber:
-      /[A-Z]/.test(password) && /[a-z]/.test(password) && /[0-9]/.test(password),
-    symbol: /[^A-Za-z0-9]/.test(password),
-  };
+  const rules = getPasswordRulesStatus(password);
 
   const items = [
     { key: 'length', label: 'Mínimo 8 caracteres', rule: rules.length },

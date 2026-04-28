@@ -37,19 +37,27 @@ export const loginSchema = z.object({
   password: z.string().min(1),
 });
 
-export const isPasswordValid = (password: string): boolean => {
+export interface PasswordRulesStatus {
+  length: boolean;
+  upperLowerNumber: boolean;
+  symbol: boolean;
+}
+
+export const getPasswordRulesStatus = (password: string): PasswordRulesStatus => {
   const isDev = process.env.NODE_ENV !== 'production';
   const minLength = isDev ? DEV_PASSWORD_LENGTH : PROD_PASSWORD_LENGTH;
 
-  if (password.length < minLength) return false;
-  if (!/[A-Z]/.test(password)) return false;
-  if (!/[a-z]/.test(password)) return false;
-  if (!/[0-9]/.test(password)) return false;
+  return {
+    length: password.length >= minLength,
+    upperLowerNumber:
+      /[A-Z]/.test(password) &&
+      /[a-z]/.test(password) &&
+      /[0-9]/.test(password),
+    symbol: isDev ? true : /[^A-Za-z0-9]/.test(password),
+  };
+};
 
-  if (!isDev) {
-    if (password.length > 16) return false;
-    if (!/[^A-Za-z0-9]/.test(password)) return false;
-  }
-
-  return true;
+export const isPasswordValid = (password: string): boolean => {
+  const rules = getPasswordRulesStatus(password);
+  return rules.length && rules.upperLowerNumber && rules.symbol;
 };
