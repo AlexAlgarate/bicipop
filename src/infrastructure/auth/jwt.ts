@@ -2,24 +2,12 @@ import 'dotenv/config';
 
 import { SignJWT, jwtVerify } from 'jose';
 
+import type { SessionTokenPayload } from './types';
+
 const JWT_SECRET = process.env.JWT_SECRET;
-if (!JWT_SECRET) throw new Error('AUTH_COOKIE_NAME must bedeclared in .env file');
+if (!JWT_SECRET) throw new Error('JWT_SECRET must bedeclared in .env file');
 
 const secret = new TextEncoder().encode(JWT_SECRET);
-
-export type SessionTokenPayload = {
-  userId: string;
-};
-export const verifyToken = async (token: string): Promise<boolean> => {
-  try {
-    await jwtVerify(token, secret, {
-      algorithms: ['HS256'],
-    });
-    return true;
-  } catch {
-    return false;
-  }
-};
 
 export const signSessionToken = async (
   payload: SessionTokenPayload,
@@ -36,16 +24,16 @@ export const verifySessionToken = async (
   token: string
 ): Promise<SessionTokenPayload | null> => {
   try {
-    const { payload } = await jwtVerify(token, secret, {
-      algorithms: ['HS256'],
-    });
-
+    const { payload } = await jwtVerify(token, secret, { algorithms: ['HS256'] });
     if (typeof payload.userId !== 'string') return null;
 
-    return {
-      userId: payload.userId,
-    };
+    return { userId: payload.userId };
   } catch {
     return null;
   }
+};
+
+export const verifyToken = async (token: string): Promise<boolean> => {
+  const result = await verifySessionToken(token);
+  return result !== null;
 };

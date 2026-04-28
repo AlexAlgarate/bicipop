@@ -4,13 +4,15 @@ import { cookies } from 'next/headers';
 import { cache } from 'react';
 
 import type { CurrentUser } from '@/domain/user/types';
+import {
+  SESSION_COOKIE_NAME,
+  SESSION_DURATION_MS,
+} from '@/infrastructure/auth/constants';
 
 import prisma from '../db/prisma/client';
 
-import { type SessionTokenPayload, signSessionToken, verifySessionToken } from './jwt';
-
-const SESSION_COOKIE_NAME = 'session';
-const SESSION_DURATION_MS = 7 * 24 * 60 * 60 * 1000;
+import { signSessionToken, verifySessionToken } from './jwt';
+import type { SessionTokenPayload } from './types';
 
 const getSessionExpiresAt = (): Date => {
   return new Date(Date.now() + SESSION_DURATION_MS);
@@ -31,14 +33,14 @@ export const createSession = async (userId: string): Promise<void> => {
   });
 };
 
-export const getSession = async (): Promise<SessionTokenPayload | null> => {
+export const getSession = cache(async (): Promise<SessionTokenPayload | null> => {
   const cookieStore = await cookies();
   const token = cookieStore.get(SESSION_COOKIE_NAME)?.value;
 
   if (!token) return null;
 
   return verifySessionToken(token);
-};
+});
 
 export const getCurrentUser = cache(async (): Promise<CurrentUser | null> => {
   const session = await getSession();
@@ -47,12 +49,7 @@ export const getCurrentUser = cache(async (): Promise<CurrentUser | null> => {
 
   return prisma.user.findUnique({
     where: { id: session.userId },
-    select: {
-      id: true,
-      email: true,
-      username: true,
-      createdAt: true,
-    },
+    select: { id: true, email: true, username: true, createdAt: true },
   });
 });
 
