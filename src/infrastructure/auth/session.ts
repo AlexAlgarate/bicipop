@@ -3,7 +3,7 @@
 import { cookies } from 'next/headers';
 import { cache } from 'react';
 
-import type { CurrentUser } from '@/domain/user/types';
+import type { UserDTO } from '@/domain/user/types';
 import {
   SESSION_COOKIE_NAME,
   SESSION_DURATION_MS,
@@ -42,7 +42,7 @@ export const getSession = cache(async (): Promise<SessionTokenPayload | null> =>
   return verifySessionToken(token);
 });
 
-export const getCurrentUser = cache(async (): Promise<CurrentUser | null> => {
+export const getCurrentUser = cache(async (): Promise<UserDTO | null> => {
   const session = await getSession();
 
   if (!session) return null;

@@ -5,7 +5,7 @@ import { getCurrentUser } from '@/infrastructure/auth/session';
 import { SearchBar } from '@/components/layout/Navbar/SearchBar';
 import { logout } from '@/features/auth/actions';
 import { routes } from '@/utils/constants';
-import type { CurrentUser } from '@/domain/user/types';
+import type { UserDTO } from '@/domain/user/types';
 
 export const Navbar = async () => {
   const user = await getCurrentUser();
@@ -93,7 +93,7 @@ const DashboardButton = () => {
   );
 };
 
-const UserButton = ({ id, username }: CurrentUser) => {
+const UserButton = ({ id, username }: UserDTO) => {
   return (
     <Link href={`${routes.profile}/${id}`} className="btn btn-ghost gap-2 px-3">
       <User className="h-5 w-5" />
