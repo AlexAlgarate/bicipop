@@ -13,12 +13,7 @@ import {
   hashPassword,
 } from '@/infrastructure/security/bcrypt-password-hasher';
 
-import {
-  getAuthUserByEmail,
-  getUserByEmail,
-  getUserByUsername,
-  registerUser,
-} from './api';
+import { getUserForAuth, getUserByEmail, getUserByUsername, registerUser } from './api';
 
 export async function loginAction(
   _prevState: AuthFormState,
@@ -41,7 +36,7 @@ export async function loginAction(
     };
   }
 
-  const user = await getAuthUserByEmail(parsed.data.email);
+  const user = await getUserForAuth(parsed.data.email);
   if (!user) return invalidCredentials(emailInput);
 
   const validPassword = await comparePassword(parsed.data.password, user.password);

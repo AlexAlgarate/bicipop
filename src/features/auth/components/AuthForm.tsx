@@ -44,7 +44,8 @@ export const AuthForm = ({
     }
   }, [router, state.success, redirectTo]);
 
-  const passwordInvalidRules = passwordValue.length > 0 && !isPasswordValid(passwordValue);
+  const passwordInvalidRules =
+    passwordValue.length > 0 && !isPasswordValid(passwordValue);
 
   return (
     <form

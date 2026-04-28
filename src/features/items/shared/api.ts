@@ -6,7 +6,9 @@ import { mapToProductDTO } from '@/domain/products/mappers';
 import type { ProductDTO } from '@/domain/products/types';
 
 export const getProductById = cache(
-  async (id: string): Promise<(ProductDTO & { isOwner: boolean; isLiked: boolean }) | null> => {
+  async (
+    id: string
+  ): Promise<(ProductDTO & { isOwner: boolean; isLiked: boolean }) | null> => {
     const session = await getSession();
     const userId = session?.userId ?? null;
 

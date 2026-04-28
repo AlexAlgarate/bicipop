@@ -12,10 +12,7 @@ interface EditProductPageProps {
 const EditProductPage = async ({ params }: EditProductPageProps) => {
   const { id } = await params;
 
-  const [product, categories] = await Promise.all([
-    getProductById(id),
-    getCategories(),
-  ]);
+  const [product, categories] = await Promise.all([getProductById(id), getCategories()]);
 
   if (!product) notFound();
 

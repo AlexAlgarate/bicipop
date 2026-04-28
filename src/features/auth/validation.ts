@@ -50,9 +50,7 @@ export const getPasswordRulesStatus = (password: string): PasswordRulesStatus =>
   return {
     length: password.length >= minLength,
     upperLowerNumber:
-      /[A-Z]/.test(password) &&
-      /[a-z]/.test(password) &&
-      /[0-9]/.test(password),
+      /[A-Z]/.test(password) && /[a-z]/.test(password) && /[0-9]/.test(password),
     symbol: isDev ? true : /[^A-Za-z0-9]/.test(password),
   };
 };
