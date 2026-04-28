@@ -9,4 +9,5 @@ export type ProductFormState = {
 export interface Category {
   id: string;
   name: string;
+  slug: string;
 }
