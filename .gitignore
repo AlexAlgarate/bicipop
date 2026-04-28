@@ -48,3 +48,4 @@ apps/**/coverage
 **/node_modules
 **/dist
 **/build
+architecture.md
