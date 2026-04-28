@@ -1,4 +1,4 @@
-import { findProducts } from '@/features/items/shared/api';
+import { findProducts } from '@/features/items/_shared/api';
 import { getSession } from '@/infrastructure/auth/session';
 
 import { getPagination } from './utils/get-pagination';

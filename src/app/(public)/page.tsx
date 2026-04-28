@@ -4,7 +4,7 @@ import { ArrowRight } from 'lucide-react';
 
 import { HeroSection } from '@/features/items/list/components/HeroSection';
 import { PRODUCTS_PER_PAGE, routes } from '@/utils/constants';
-import { ProductsGrid } from '@/features/items/shared/components/ProductsGrid';
+import { ProductsGrid } from '@/features/items/_shared/components/ProductsGrid';
 import { getProducts } from '@/features/items/list/api';
 
 export const metadata: Metadata = {

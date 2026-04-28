@@ -12,7 +12,7 @@ import {
   isNextControlFlowError,
 } from '@/utils/error-handler';
 import { uploadImgInSupabaseBucket } from '@/infrastructure/db/supabase/uploadImage';
-import { type ProductFormState } from '@/features/items/shared/types';
+import { type ProductFormState } from '@/features/items/_shared/types';
 
 import { createProduct } from './api';
 import { createProductSchema, isValidImage } from './validation';

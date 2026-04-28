@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache';
 
 import type { ProductStatus } from '@/generated/client/enums';
 import { getCurrentUser } from '@/infrastructure/auth/session';
-import { getProductById } from '@/features/items/shared/api';
+import { getProductById } from '@/features/items/_shared/api';
 
 import { deleteProduct, updateProductStatus } from './api';
 import type { ProductState } from './types';

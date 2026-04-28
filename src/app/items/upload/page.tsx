@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 
 import { BackToHomeLink } from '@/components/BackToHomeLink';
-import ProductForm from '@/features/items/shared/components/ProductForm';
-import { getCategories } from '@/features/items/shared/api';
+import ProductForm from '@/features/items/_shared/components/ProductForm';
+import { getCategories } from '@/features/items/_shared/api';
 
 export const metadata: Metadata = {
   title: 'Upload Product',

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
-import { getProductById } from '@/features/items/shared/api';
+import { getProductById } from '@/features/items/_shared/api';
 import { getRelatedProducts } from '@/features/items/detail/api';
 import { getSession } from '@/infrastructure/auth/session';
 import { ProductImage } from '@/features/items/detail/components/ProductImage';

@@ -3,7 +3,7 @@
 import { useActionState } from 'react';
 
 import { ProductStatus } from '@/generated/client/enums';
-import type { ProductFormState, Category } from '@/features/items/shared/types';
+import type { ProductFormState, Category } from '@/features/items/_shared/types';
 import { uploadProductAction } from '@/features/items/upload/action';
 import { updateProductAction } from '@/features/items/edit/action';
 import { FormField } from '@/components/ui/FormField';

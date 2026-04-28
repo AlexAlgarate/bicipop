@@ -3,13 +3,13 @@
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 
-import { type ProductFormState } from '@/features/items/shared/types';
+import { type ProductFormState } from '@/features/items/_shared/types';
 import { getSession } from '@/infrastructure/auth/session';
 import { routes } from '@/utils/constants';
 import type { ProductStatus } from '@/generated/client/client';
 import { getFieldErrorsFromTree } from '@/utils/validation-errors';
 
-import { getProductById } from '../shared/api';
+import { getProductById } from '../_shared/api';
 
 import { updateProductSchema } from './validation';
 import { updateProduct } from './api';

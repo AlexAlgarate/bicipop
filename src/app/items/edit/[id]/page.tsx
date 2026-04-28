@@ -1,7 +1,7 @@
 import { notFound, redirect } from 'next/navigation';
 
-import { getCategories, getProductById } from '@/features/items/shared/api';
-import ProductForm from '@/features/items/shared/components/ProductForm';
+import { getCategories, getProductById } from '@/features/items/_shared/api';
+import ProductForm from '@/features/items/_shared/components/ProductForm';
 import { BackToHomeLink } from '@/components/BackToHomeLink';
 import { routes } from '@/utils/constants';
 
