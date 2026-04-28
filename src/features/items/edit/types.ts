@@ -1,4 +1,4 @@
-import type { ProductStatus } from '@/generated/client/client';
+import type { ProductStatus } from '@/generated/client/enums';
 
 export interface DataToUpdate {
   title: string;
