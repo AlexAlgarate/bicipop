@@ -6,9 +6,9 @@ import { ProductStatus } from '@/generated/client/enums';
 import type { ProductFormState, Category } from '@/features/items/shared/types';
 import { uploadProductAction } from '@/features/items/upload/action';
 import { updateProductAction } from '@/features/items/edit/action';
+import { FormField } from '@/components/ui/FormField';
 
 import { ImageField } from './ProductForm/ImageField';
-import { FormField } from './ProductForm/FormField';
 import { SubmitButton } from './ProductForm/SubmitButton';
 import { SelectField } from './ProductForm/SelectField';
 

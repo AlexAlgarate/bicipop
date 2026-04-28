@@ -4,11 +4,11 @@ import { type ReactNode, useActionState, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/Button';
+import { FormField } from '@/components/ui/FormField';
 
 import { type AuthFormState, initialRegisterState } from '../types';
 import { isPasswordValid } from '../validation';
 
-import { FormField } from './FormField';
 import { PasswordRules } from './PasswordRules';
 
 type FieldConfig = {
@@ -54,19 +54,28 @@ export const AuthForm = ({
       {fields.map(field => (
         <div key={field.name}>
           <FormField
-            name={field.name}
             label={field.label}
-            type={field.type}
-            defaultValue={state.values?.[field.name]}
-            error={state.errors?.[field.name]?.[0]}
-            placeholder={field.placeholder}
-            onChange={e => {
-              if (field.name === 'password') {
-                setPasswordValue(e.target.value);
+            htmlFor={field.name}
+            error={state.errors?.[field.name]}
+          >
+            <input
+              id={field.name}
+              name={field.name}
+              type={field.type}
+              defaultValue={state.values?.[field.name]}
+              placeholder={field.placeholder}
+              onChange={e => {
+                if (field.name === 'password') {
+                  setPasswordValue(e.target.value);
+                }
+              }}
+              className={
+                field.showPasswordRules && passwordInvalidRules
+                  ? 'border-red-500 focus:outline-none focus:ring-2 focus:ring-red-500'
+                  : ''
               }
-            }}
-            clientError={field.showPasswordRules ? passwordInvalidRules : undefined}
-          />
+            />
+          </FormField>
           {field.showPasswordRules && <PasswordRules password={passwordValue} />}
         </div>
       ))}
