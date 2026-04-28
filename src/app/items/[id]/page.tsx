@@ -2,14 +2,14 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 import { getProductById } from '@/features/items/shared/api';
-import { getRelatedProducts } from '@/features/items/item-detail/api';
+import { getRelatedProducts } from '@/features/items/detail/api';
 import { getSession } from '@/infrastructure/auth/session';
-import { ProductImage } from '@/features/items/item-detail/components/ProductImage';
-import { ProductHeader } from '@/features/items/item-detail/components/ProductHeader';
-import { ProductMetaInfo } from '@/features/items/item-detail/components/ProductMetaInfo';
-import { ProductSellerInfo } from '@/features/items/item-detail/components/ProductSellerInfo';
-import { ProductActions } from '@/features/items/item-detail/components/ProductActions';
-import { RelatedProducts } from '@/features/items/item-detail/components/RelatedProducts';
+import { ProductImage } from '@/features/items/detail/components/ProductImage';
+import { ProductHeader } from '@/features/items/detail/components/ProductHeader';
+import { ProductMetaInfo } from '@/features/items/detail/components/ProductMetaInfo';
+import { ProductSellerInfo } from '@/features/items/detail/components/ProductSellerInfo';
+import { ProductActions } from '@/features/items/detail/components/ProductActions';
+import { RelatedProducts } from '@/features/items/detail/components/RelatedProducts';
 import { BackToHomeLink } from '@/components/BackToHomeLink';
 import { routes } from '@/utils/constants';
 
