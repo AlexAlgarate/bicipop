@@ -1,19 +1,19 @@
 import { findProducts } from '@/features/items/_shared/api';
-import { getSession } from '@/infrastructure/auth/session';
 
 import { getPagination } from './utils/get-pagination';
 import type { FilterProducts, ProductsResultDto } from './types';
 
-export async function getProducts(filters: FilterProducts): Promise<ProductsResultDto> {
+export async function getProducts(
+  filters: FilterProducts,
+  userId: string | null = null
+): Promise<ProductsResultDto> {
   const { page, pageSize } = getPagination(filters.page, filters.pageSize);
-
-  const session = await getSession();
 
   const { items, totalCount } = await findProducts(
     page,
     pageSize,
     filters.order,
-    session?.userId ?? null,
+    userId ?? null,
     filters.query
   );
 

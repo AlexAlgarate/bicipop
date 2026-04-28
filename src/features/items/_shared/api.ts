@@ -1,17 +1,14 @@
 import { cache } from 'react';
 
 import prisma from '@/infrastructure/db/prisma/client';
-import { getSession } from '@/infrastructure/auth/session';
 import { mapToProductDTO } from '@/domain/products/mappers';
 import type { ProductDTO } from '@/domain/products/types';
 
 export const getProductById = cache(
   async (
-    id: string
+    id: string,
+    userId: string | null = null
   ): Promise<(ProductDTO & { isOwner: boolean; isLiked: boolean }) | null> => {
-    const session = await getSession();
-    const userId = session?.userId ?? null;
-
     const product = await prisma.product.findUnique({
       where: { id },
       include: {

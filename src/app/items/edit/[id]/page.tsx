@@ -4,6 +4,7 @@ import { getCategories, getProductById } from '@/features/items/_shared/api';
 import ProductForm from '@/features/items/_shared/components/ProductForm';
 import { BackToHomeLink } from '@/components/BackToHomeLink';
 import { routes } from '@/utils/constants';
+import { getSession } from '@/infrastructure/auth/session';
 
 interface EditProductPageProps {
   params: Promise<{ id: string }>;
@@ -11,8 +12,13 @@ interface EditProductPageProps {
 
 const EditProductPage = async ({ params }: EditProductPageProps) => {
   const { id } = await params;
+  const session = await getSession();
+  const userId = session?.userId;
 
-  const [product, categories] = await Promise.all([getProductById(id), getCategories()]);
+  const [product, categories] = await Promise.all([
+    getProductById(id, userId),
+    getCategories(),
+  ]);
 
   if (!product) notFound();
 
