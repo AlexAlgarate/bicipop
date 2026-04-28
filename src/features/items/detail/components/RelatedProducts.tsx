@@ -1,5 +1,5 @@
 import { ProductsGrid } from '@/features/items/_shared/components/ProductsGrid';
-import type { ProductsWithFavoriteStatus } from '@/features/items/_shared/api';
+import type { ProductsWithFavoriteStatus } from '../../_shared/types';
 
 interface RelatedProductsProps {
   relatedProducts: ProductsWithFavoriteStatus[];

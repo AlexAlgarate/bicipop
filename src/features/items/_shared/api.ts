@@ -4,6 +4,8 @@ import prisma from '@/infrastructure/db/prisma/client';
 import { mapToProductDTO } from '@/domain/products/mappers';
 import type { ProductDTO } from '@/domain/products/types';
 
+import type { ProductsWithFavoriteStatus } from './types';
+
 export const getProductById = cache(
   async (
     id: string,
@@ -63,11 +65,6 @@ export const toggleFavorite = async (
 
     return { liked: !existing };
   });
-};
-
-export type ProductsWithFavoriteStatus = ProductDTO & {
-  isLiked: boolean;
-  isOwner: boolean;
 };
 
 export const findProducts = async (

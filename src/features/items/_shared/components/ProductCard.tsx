@@ -19,7 +19,7 @@ interface ProductCardProps {
   isLiked?: boolean;
   isOwner?: boolean;
   status: ProductStatus;
-  category: string;
+  categoryName: string;
 }
 
 interface FavoriteButtonProps {
