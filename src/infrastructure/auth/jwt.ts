@@ -1,5 +1,3 @@
-import 'dotenv/config';
-
 import { SignJWT, jwtVerify } from 'jose';
 
 import type { SessionTokenPayload } from './types';
