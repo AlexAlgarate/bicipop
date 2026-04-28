@@ -1,6 +1,5 @@
 import { ProductsGrid } from '@/features/items/_shared/components/ProductsGrid';
-
-import type { ProductsWithFavoriteStatus } from '../../_shared/types';
+import type { ProductsWithFavoriteStatus } from '@/domain/products/types';
 
 interface RelatedProductsProps {
   relatedProducts: ProductsWithFavoriteStatus[];

@@ -1,5 +1,3 @@
-import type { ProductDTO } from '@/domain/products/types';
-
 export type ProductFormState = {
   success: boolean;
   message: string;
@@ -13,7 +11,3 @@ export interface Category {
   name: string;
   slug: string;
 }
-export type ProductsWithFavoriteStatus = ProductDTO & {
-  isLiked: boolean;
-  isOwner: boolean;
-};

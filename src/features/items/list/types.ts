@@ -1,4 +1,4 @@
-import type { ProductsWithFavoriteStatus } from '../_shared/types';
+import type { ProductsWithFavoriteStatus } from '@/domain/products/types';
 
 export interface ProductsResultDto {
   items: ProductsWithFavoriteStatus[];

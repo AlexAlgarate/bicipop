@@ -24,3 +24,7 @@ export type ProductWithRelations = Prisma.ProductGetPayload<{
     user: { select: { username: true } };
   };
 }>;
+export type ProductsWithFavoriteStatus = ProductDTO & {
+  isLiked: boolean;
+  isOwner: boolean;
+};

@@ -46,7 +46,7 @@ const resolveImageUrl = async (
     return await uploadImgInSupabaseBucket(file);
   }
 
-  return errorState('Inavlid image mode');
+  return errorState('Invalid image mode');
 };
 
 export const uploadProductAction = async (
