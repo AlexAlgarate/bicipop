@@ -4,9 +4,9 @@ import { type ReactNode, useActionState, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/Button';
-import { PROD_PASSWORD_LENGTH } from '@/utils/constants';
 
 import { type AuthFormState, initialRegisterState } from '../types';
+import { isPasswordValid } from '../validation';
 
 import { FormField } from './FormField';
 import { PasswordRules } from './PasswordRules';
@@ -44,15 +44,7 @@ export const AuthForm = ({
     }
   }, [router, state.success, redirectTo]);
 
-  const passwordTouched = passwordValue.length > PROD_PASSWORD_LENGTH;
-  const passwordInvalidRules =
-    passwordTouched &&
-    !(
-      passwordValue.length >= PROD_PASSWORD_LENGTH &&
-      /[A-Z]/.test(passwordValue) &&
-      /[a-z]/.test(passwordValue) &&
-      /[0-9]/.test(passwordValue)
-    );
+  const passwordInvalidRules = passwordValue.length > 0 && !isPasswordValid(passwordValue);
 
   return (
     <form

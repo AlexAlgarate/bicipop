@@ -36,3 +36,20 @@ export const loginSchema = z.object({
   email: z.email('Invalid email format').transform(val => val.toLowerCase()),
   password: z.string().min(1),
 });
+
+export const isPasswordValid = (password: string): boolean => {
+  const isDev = process.env.NODE_ENV !== 'production';
+  const minLength = isDev ? DEV_PASSWORD_LENGTH : PROD_PASSWORD_LENGTH;
+
+  if (password.length < minLength) return false;
+  if (!/[A-Z]/.test(password)) return false;
+  if (!/[a-z]/.test(password)) return false;
+  if (!/[0-9]/.test(password)) return false;
+
+  if (!isDev) {
+    if (password.length > 16) return false;
+    if (!/[^A-Za-z0-9]/.test(password)) return false;
+  }
+
+  return true;
+};
