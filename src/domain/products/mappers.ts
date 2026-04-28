@@ -1,3 +1,5 @@
+import type { ProductsWithFavoriteStatus } from '@/features/items/_shared/types';
+
 import type { ProductDTO, ProductWithRelations } from './types';
 
 export const mapToProductDTO = (product: ProductWithRelations): ProductDTO => {
@@ -18,3 +20,12 @@ export const mapToProductDTO = (product: ProductWithRelations): ProductDTO => {
     categoryName: product.category.name,
   };
 };
+
+export const mapToProductWithFavoriteStatus = (
+  product: ProductWithRelations & { favorites: { userId: string }[] },
+  currentUserId: string | null
+): ProductsWithFavoriteStatus => ({
+  ...mapToProductDTO(product),
+  isLiked: product.favorites.length > 0,
+  isOwner: product.userId === currentUserId,
+});

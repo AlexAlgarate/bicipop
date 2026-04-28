@@ -7,6 +7,7 @@ import { getCurrentUser } from '@/infrastructure/auth/session';
 import { routes } from '@/utils/constants';
 import { getUserProducts } from '@/features/dashboard/api';
 import DashboardProductList from '@/features/dashboard/components/DashboardProductList';
+import { ProductStatus } from '@/generated/client/enums';
 
 export const metadata: Metadata = {
   title: 'Dashboard',
@@ -22,9 +23,11 @@ const DashboardPage = async () => {
 
   const products = await getUserProducts(user.id);
 
-  const activeProducts = products.filter(p => p.status === 'ACTIVE').length;
-  const reservedProducts = products.filter(p => p.status === 'RESERVED').length;
-  const soldProducts = products.filter(p => p.status === 'SOLD').length;
+  const activeProducts = products.filter(p => p.status === ProductStatus.ACTIVE).length;
+  const reservedProducts = products.filter(
+    p => p.status === ProductStatus.RESERVED
+  ).length;
+  const soldProducts = products.filter(p => p.status === ProductStatus.SOLD).length;
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Header */}

@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Edit, Trash2, MoreVertical, Loader2 } from 'lucide-react';
 
-import type { ProductStatus } from '@/generated/client/enums';
+import { ProductStatus } from '@/generated/client/enums';
 import { formatPrice, timeAgo } from '@/utils/format';
 import { routes } from '@/utils/constants';
 
@@ -148,9 +148,9 @@ function ProductRow({ product }: { product: Product }) {
                   >
                     <span
                       className={`mr-2 inline-block h-2 w-2 rounded-full ${
-                        status === 'ACTIVE'
+                        status === ProductStatus.ACTIVE
                           ? 'bg-green-500'
-                          : status === 'RESERVED'
+                          : status === ProductStatus.RESERVED
                             ? 'bg-yellow-500'
                             : 'bg-red-500'
                       }`}

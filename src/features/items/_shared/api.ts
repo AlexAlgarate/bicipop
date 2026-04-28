@@ -1,7 +1,7 @@
 import { cache } from 'react';
 
 import prisma from '@/infrastructure/db/prisma/client';
-import { mapToProductDTO } from '@/domain/products/mappers';
+import { mapToProductWithFavoriteStatus } from '@/domain/products/mappers';
 import { mapToCategoryDTO } from '@/domain/category/mappers';
 import type { ProductDTO } from '@/domain/products/types';
 import type { CategoryDTO } from '@/domain/category/types';
@@ -25,12 +25,7 @@ export const getProductById = cache(
 
     if (!product) return null;
 
-    const { _count, favorites, ...productData } = product;
-    return {
-      ...mapToProductDTO(productData),
-      isLiked: (favorites?.length ?? 0) > 0,
-      isOwner: product.userId === userId,
-    };
+    return mapToProductWithFavoriteStatus(product, userId) as ProductDTO & { isOwner: boolean; isLiked: boolean };
   }
 );
 
@@ -104,11 +99,9 @@ export const findProducts = async (
     }),
   ]);
 
-  const mappedItems = items.map(({ _count, favorites, ...item }) => ({
-    ...mapToProductDTO(item),
-    isLiked: (favorites?.length ?? 0) > 0,
-    isOwner: item.userId === userId,
-  }));
+  const mappedItems = items.map(item =>
+    mapToProductWithFavoriteStatus(item, userId)
+  );
 
   return { items: mappedItems, totalCount };
 };
