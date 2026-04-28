@@ -2,7 +2,7 @@
 import { type ChangeEventHandler, useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 
-import { FieldError } from '@/features/items/shared/components/ProductForm/FieldError';
+import { FieldError } from '@/components/ui/FieldError';
 
 type Props = {
   label: string;

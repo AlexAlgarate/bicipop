@@ -1,6 +1,6 @@
 import { cloneElement, isValidElement } from 'react';
 
-import { FieldError } from './FieldError';
+import { FieldError } from '@/components/ui/FieldError';
 import { FIELD_STYLE } from './field-style';
 
 interface FormFieldProps {
