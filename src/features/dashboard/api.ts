@@ -1,12 +1,15 @@
+import { mapToProductDTO } from '@/domain/products/mappers';
 import type { ProductStatus } from '@/generated/client/enums';
 import prisma from '@/infrastructure/db/prisma/client';
 
 export const getUserProducts = async (userId: string) => {
-  return await prisma.product.findMany({
+  const products = await prisma.product.findMany({
     where: { userId },
-    include: { category: true },
+    include: { category: true, user: true },
     orderBy: { createdAt: 'desc' },
   });
+
+  return products.map(mapToProductDTO);
 };
 
 export const deleteProduct = async (productId: string) => {

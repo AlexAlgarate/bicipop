@@ -1,9 +1,10 @@
 import prisma from '@/infrastructure/db/prisma/client';
 import { mapToProductDTO } from '@/domain/products/mappers';
+import type { ProductDTO } from '@/domain/products/types';
 
 import type { CreateProductDto } from './types';
 
-export const createProduct = async (data: CreateProductDto) => {
+export const createProduct = async (data: CreateProductDto): Promise<ProductDTO> => {
   const product = await prisma.product.create({
     data: {
       title: data.title,
