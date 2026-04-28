@@ -35,7 +35,7 @@ export const updateProductAction = async (
 
   const existingProduct = await getProductById(rawValues.productId);
 
-  if (!existingProduct || existingProduct.userId !== session.userId) {
+  if (!existingProduct || !existingProduct.isOwner) {
     return {
       success: false,
       message: 'You are not authorized to edit this product',

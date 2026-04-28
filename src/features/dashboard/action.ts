@@ -21,7 +21,7 @@ export async function deleteProductAction(productId: string): Promise<ProductSta
 
   const existingProduct = await getProductById(productId);
 
-  if (!existingProduct || existingProduct.userId !== currentUser.id) {
+  if (!existingProduct || !existingProduct.isOwner) {
     return {
       success: false,
       message: 'You are not authorized to delete this product',
@@ -62,7 +62,7 @@ export async function updateProductStatusAction(
 
   const existingProduct = await getProductById(productId);
 
-  if (!existingProduct || existingProduct.userId !== currentUser.id) {
+  if (!existingProduct || !existingProduct.isOwner) {
     return {
       success: false,
       message: 'You are not authorized to update this product',

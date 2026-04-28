@@ -1,7 +1,6 @@
 import { notFound, redirect } from 'next/navigation';
 
 import { getCategories, getProductById } from '@/features/items/shared/api';
-import { getCurrentUser } from '@/infrastructure/auth/session';
 import ProductForm from '@/features/items/shared/components/ProductForm';
 import { BackToHomeLink } from '@/components/BackToHomeLink';
 import { routes } from '@/utils/constants';
@@ -13,17 +12,14 @@ interface EditProductPageProps {
 const EditProductPage = async ({ params }: EditProductPageProps) => {
   const { id } = await params;
 
-  const [product, categories, currentUser] = await Promise.all([
+  const [product, categories] = await Promise.all([
     getProductById(id),
     getCategories(),
-    getCurrentUser(),
   ]);
 
   if (!product) notFound();
 
-  if (!currentUser) redirect('/login');
-
-  if (product.userId !== currentUser.id) redirect('/dashboard');
+  if (!product.isOwner) redirect('/dashboard');
 
   return (
     <div className="container mx-auto px-4 py-8">

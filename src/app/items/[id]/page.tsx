@@ -45,9 +45,8 @@ export async function generateMetadata({
 export const ProductDetailPage = async ({ params }: ProductDetailProps) => {
   const { id } = await params;
   const session = await getSession();
-  const userId = session?.userId ?? null;
 
-  const product = await getProductById(id, userId);
+  const product = await getProductById(id);
   if (!product) notFound();
 
   const relatedProducts = await getRelatedProducts({
