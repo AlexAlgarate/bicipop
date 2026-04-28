@@ -1,10 +1,8 @@
 import { findProducts } from '@/features/items/shared/api';
 import { getSession } from '@/infrastructure/auth/session';
 
-import type { FilterProducts } from '../shared/types';
-import { getPagination } from '../shared/utils/get-pagination';
-
-import type { ProductsResultDto } from './types';
+import { getPagination } from './utils/get-pagination';
+import type { FilterProducts, ProductsResultDto } from './types';
 
 export async function getProducts(filters: FilterProducts): Promise<ProductsResultDto> {
   const { page, pageSize } = getPagination(filters.page, filters.pageSize);
