@@ -1,7 +1,9 @@
 import { SignJWT, jwtVerify } from 'jose';
 
 import type { SessionTokenPayload } from './types';
-import { JWT_ALGORITHM, JWT_SECRET_KEY } from './constants';
+import { getJwtSecretKey, JWT_ALGORITHM } from './constants';
+
+const jwtSecret = getJwtSecretKey();
 
 export const signSessionToken = async (
   payload: SessionTokenPayload,
@@ -11,14 +13,14 @@ export const signSessionToken = async (
     .setProtectedHeader({ alg: JWT_ALGORITHM })
     .setIssuedAt()
     .setExpirationTime(expiresAt)
-    .sign(JWT_SECRET_KEY);
+    .sign(jwtSecret);
 };
 
 export const verifySessionToken = async (
   token: string
 ): Promise<SessionTokenPayload | null> => {
   try {
-    const { payload } = await jwtVerify(token, JWT_SECRET_KEY, {
+    const { payload } = await jwtVerify(token, jwtSecret, {
       algorithms: [JWT_ALGORITHM],
     });
     if (typeof payload.userId !== 'string') return null;
