@@ -16,3 +16,8 @@ export const createProductSchema = z.object({
     .min(3, 'Location is too short, try again')
     .max(30, 'Location is too long, max 20 characters'),
 });
+
+const VALID_IMAGE_TYPES = new Set(['image/jpeg', 'image/png', 'image/jpg']);
+
+export const isValidImage = (image: File | null): image is File =>
+  !!image && VALID_IMAGE_TYPES.has(image.type);

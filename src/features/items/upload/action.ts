@@ -12,10 +12,10 @@ import {
   isNextControlFlowError,
 } from '@/infrastructure/validations/error-handler';
 import { uploadImgInSupabaseBucket } from '@/infrastructure/db/supabase/uploadImage';
-import { isValidImage, type ProductFormState } from '@/features/items/shared/types';
+import { type ProductFormState } from '@/features/items/shared/types';
 
 import { createProduct } from './api';
-import { createProductSchema } from './validation';
+import { createProductSchema, isValidImage } from './validation';
 
 const errorState = (
   message: string,
