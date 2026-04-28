@@ -1,6 +1,6 @@
 import type { ProductStatus } from '@/generated/client/client';
 
-export interface dataToUpdate {
+export interface DataToUpdate {
   title: string;
   description: string;
   price: number;

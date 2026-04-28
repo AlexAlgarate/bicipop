@@ -3,7 +3,7 @@ import z from 'zod';
 import type {
   SearchParamValue,
   ProductsSearchParams,
-} from '../types/search-params.types';
+} from '../types';
 
 const searchParamsSchema = z.object({
   query: z.string().default(''),

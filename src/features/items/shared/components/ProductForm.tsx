@@ -3,7 +3,7 @@
 import { useActionState } from 'react';
 
 import { ProductStatus } from '@/generated/client/enums';
-import type { ProductFormState } from '@/features/items/shared/types';
+import type { ProductFormState, Category } from '@/features/items/shared/types';
 import { uploadProductAction } from '@/features/items/upload/action';
 import { updateProductAction } from '@/features/items/edit/action';
 
@@ -11,12 +11,6 @@ import { ImageField } from './ProductForm/ImageField';
 import { FormField } from './ProductForm/FormField';
 import { SubmitButton } from './ProductForm/SubmitButton';
 import { SelectField } from './ProductForm/SelectField';
-
-interface Category {
-  id: string;
-  name: string;
-  slug: string;
-}
 
 interface ProductFormProps {
   categories: Category[];

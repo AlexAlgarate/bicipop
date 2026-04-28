@@ -1,7 +1,7 @@
 import { findProducts } from '@/features/items/shared/api';
 import { getSession } from '@/infrastructure/auth/session';
 
-import type { FilterProducts } from '../shared/types/filter.types';
+import type { FilterProducts } from '../shared/types';
 import { getPagination } from '../shared/utils/get-pagination';
 
 import type { ProductsResultDto } from './types';
