@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation';
 
 import { getSession } from '@/infrastructure/auth/session';
 import { routes } from '@/utils/constants';
-import { getProductByOwner, toggleFavorite } from '@/features/items/_shared/api';
+import { verifyProductOwnership, toggleFavorite } from '@/features/items/_shared/api';
 
 export const toggleFavoriteAction = async (
   productId: string
@@ -13,8 +13,8 @@ export const toggleFavoriteAction = async (
   const session = await getSession();
   if (!session?.userId) redirect('/login');
 
-  const ad = await getProductByOwner(productId, session.userId);
-  if (ad) {
+  const product = await verifyProductOwnership(productId, session.userId);
+  if (product) {
     throw new Error('Cannot favorite your own product');
   }
 

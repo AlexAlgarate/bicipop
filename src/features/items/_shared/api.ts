@@ -38,14 +38,16 @@ export const getCategories = async () => {
   });
 };
 
-export const getProductByOwner = async (
-  adId: string,
+export const verifyProductOwnership = async (
+  productId: string,
   userId: string
-): Promise<{ id: string } | null> => {
-  return prisma.product.findUnique({
-    where: { id: adId, userId },
+): Promise<boolean> => {
+  const product = prisma.product.findUnique({
+    where: { id: productId, userId },
     select: { id: true },
   });
+
+  return product !== null;
 };
 
 export const toggleFavorite = async (
