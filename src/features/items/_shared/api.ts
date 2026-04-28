@@ -78,7 +78,7 @@ export const findProducts = async (
     ? {
         OR: [
           { title: { contains: query, mode: 'insensitive' as const } },
-          { description: { contains: query } },
+          { description: { contains: query, mode: 'insensitive' as const } },
         ],
       }
     : {};
