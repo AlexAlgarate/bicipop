@@ -7,7 +7,7 @@ import { type ProductFormState } from '@/features/items/shared/types';
 import { getSession } from '@/infrastructure/auth/session';
 import { routes } from '@/utils/constants';
 import type { ProductStatus } from '@/generated/client/client';
-import { getFieldErrorsFromTree } from '@/infrastructure/validations/validation-errors';
+import { getFieldErrorsFromTree } from '@/utils/validation-errors';
 
 import { getProductById } from '../shared/api';
 

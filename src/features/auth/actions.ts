@@ -6,7 +6,7 @@ import { revalidatePath } from 'next/cache';
 
 import type { AuthFormState } from '@/features/auth/types';
 import { loginSchema, registerSchema } from '@/features/auth/validation';
-import { getFieldErrorsFromTree } from '@/infrastructure/validations/validation-errors';
+import { getFieldErrorsFromTree } from '@/utils/validation-errors';
 import { createSession, deleteSession } from '@/infrastructure/auth/session';
 import {
   comparePassword,

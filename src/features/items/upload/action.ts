@@ -5,12 +5,12 @@ import { revalidatePath } from 'next/cache';
 
 import { getSession } from '@/infrastructure/auth/session';
 import { routes } from '@/utils/constants';
-import { getFieldErrorsFromTree } from '@/infrastructure/validations/validation-errors';
+import { getFieldErrorsFromTree } from '@/utils/validation-errors';
 import {
   logAndSerializeError,
   toErrorArray,
   isNextControlFlowError,
-} from '@/infrastructure/validations/error-handler';
+} from '@/utils/error-handler';
 import { uploadImgInSupabaseBucket } from '@/infrastructure/db/supabase/uploadImage';
 import { type ProductFormState } from '@/features/items/shared/types';
 
