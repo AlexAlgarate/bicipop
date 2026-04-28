@@ -19,10 +19,8 @@ interface Product {
   location: string;
   status: ProductStatus;
   createdAt: Date;
-  category: {
-    name: string;
-    slug: string;
-  };
+  categoryName: string;
+  categorySlug: string;
 }
 
 interface DashboardProductListProps {
@@ -88,7 +86,7 @@ function ProductRow({ product }: { product: Product }) {
         <div className="mt-1 flex flex-wrap items-center gap-2 text-sm text-muted">
           <span>{formatPrice(product.price)}</span>
           <span className="text-border">|</span>
-          <span>{product.category.name}</span>
+          <span>{product.categoryName}</span>
           <span className="text-border">|</span>
           <span>{timeAgo(product.createdAt)}</span>
         </div>
