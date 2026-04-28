@@ -25,7 +25,10 @@ export const getProductById = cache(
 
     if (!product) return null;
 
-    return mapToProductWithFavoriteStatus(product, userId) as ProductDTO & { isOwner: boolean; isLiked: boolean };
+    return mapToProductWithFavoriteStatus(product, userId) as ProductDTO & {
+      isOwner: boolean;
+      isLiked: boolean;
+    };
   }
 );
 
@@ -99,9 +102,7 @@ export const findProducts = async (
     }),
   ]);
 
-  const mappedItems = items.map(item =>
-    mapToProductWithFavoriteStatus(item, userId)
-  );
+  const mappedItems = items.map(item => mapToProductWithFavoriteStatus(item, userId));
 
   return { items: mappedItems, totalCount };
 };
