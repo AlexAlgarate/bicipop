@@ -1,5 +1,6 @@
 export const PRODUCTS_PER_PAGE = 12;
-export const MIN_PASSWORD_LENGTH = 8;
+export const PROD_PASSWORD_LENGTH = 8;
+export const DEV_PASSWORD_LENGTH = 3;
 
 export const routes = {
   home: '/',

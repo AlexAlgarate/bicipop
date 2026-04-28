@@ -2,7 +2,7 @@
 
 import { Check, X } from 'lucide-react';
 
-import { MIN_PASSWORD_LENGTH } from '@/utils/constants';
+import { PROD_PASSWORD_LENGTH } from '@/utils/constants';
 
 interface PasswordRulesProps {
   password: string;
@@ -12,7 +12,7 @@ export const PasswordRules = ({ password }: PasswordRulesProps) => {
   const hasInput = password.length > 0;
 
   const rules = {
-    length: password.length >= MIN_PASSWORD_LENGTH,
+    length: password.length >= PROD_PASSWORD_LENGTH,
     upperLowerNumber:
       /[A-Z]/.test(password) && /[a-z]/.test(password) && /[0-9]/.test(password),
     symbol: /[^A-Za-z0-9]/.test(password),

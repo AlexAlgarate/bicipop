@@ -4,7 +4,7 @@ import { type ReactNode, useActionState, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/Button';
-import { MIN_PASSWORD_LENGTH } from '@/utils/constants';
+import { PROD_PASSWORD_LENGTH } from '@/utils/constants';
 
 import { type AuthFormState, initialRegisterState } from '../types';
 
@@ -44,11 +44,11 @@ export const AuthForm = ({
     }
   }, [router, state.success, redirectTo]);
 
-  const passwordTouched = passwordValue.length > MIN_PASSWORD_LENGTH;
+  const passwordTouched = passwordValue.length > PROD_PASSWORD_LENGTH;
   const passwordInvalidRules =
     passwordTouched &&
     !(
-      passwordValue.length >= MIN_PASSWORD_LENGTH &&
+      passwordValue.length >= PROD_PASSWORD_LENGTH &&
       /[A-Z]/.test(passwordValue) &&
       /[a-z]/.test(passwordValue) &&
       /[0-9]/.test(passwordValue)
