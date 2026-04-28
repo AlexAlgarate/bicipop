@@ -65,33 +65,6 @@ export const toggleFavorite = async (
   });
 };
 
-export const getProductWithFavoriteStatus = cache(
-  async (
-    id: string,
-    userId: string | null
-  ): Promise<(ProductDTO & { isLiked: boolean; isOwner: boolean }) | null> => {
-    const product = await prisma.product.findUnique({
-      where: { id },
-      include: {
-        category: true,
-        user: true,
-        _count: { select: { favorites: true } },
-        favorites: userId ? { where: { userId } } : false,
-      },
-    });
-
-    if (!product) return null;
-
-    const { _count, favorites, ...productData } = product;
-
-    return {
-      ...mapToProductDTO(productData),
-      isLiked: (favorites?.length ?? 0) > 0,
-      isOwner: product.userId === userId,
-    };
-  }
-);
-
 export type ProductsWithFavoriteStatus = ProductDTO & {
   isLiked: boolean;
   isOwner: boolean;

@@ -1,6 +1,5 @@
 import { FieldError } from '@/components/ui/FieldError';
-
-import { FIELD_STYLE } from './field-style';
+import { FIELD_STYLE } from '@/components/ui/FormField';
 
 interface SelectFieldProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   label: string;
