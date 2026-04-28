@@ -1,6 +1,8 @@
 import { Search } from 'lucide-react';
 import Link from 'next/link';
 
+import { routes } from '@/utils/constants';
+
 interface EmptyStateProps {
   query?: string;
 }
@@ -29,7 +31,7 @@ export const EmptyState = ({ query }: EmptyStateProps) => {
             It looks like no one has posted anything yet. Be the first to sell your bike!
           </p>
           <Link
-            href="/products/create"
+            href={routes.items.upload}
             className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium rounded-lg py-2.5 px-6 shadow-lg transition-transform hover:-translate-y-0.5"
           >
             Sell your bike

@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { SearchX } from 'lucide-react';
 
+import { routes } from '@/utils/constants';
+
 const ProductNotFound = () => {
   return (
     <div className="min-h-[calc(75vh-64px)] flex items-center justify-center px-4">
@@ -18,7 +20,7 @@ const ProductNotFound = () => {
         </p>
 
         <Link
-          href="/"
+          href={routes.home}
           className="
           inline-flex items-center gap-2 bg-primary hover:bg-primary-hover
           text-primary-foreground font-medium px-6 py-2.5

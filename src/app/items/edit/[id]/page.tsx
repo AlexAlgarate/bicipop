@@ -1,10 +1,10 @@
 import { notFound, redirect } from 'next/navigation';
-import Link from 'next/link';
-import { ArrowLeft } from 'lucide-react';
 
 import { getCategories, getProductById } from '@/features/items/shared/api';
 import { getCurrentUser } from '@/infrastructure/auth/session';
 import ProductForm from '@/features/items/shared/components/ProductForm';
+import { BackToHomeLink } from '@/components/BackToHomeLink';
+import { routes } from '@/utils/constants';
 
 interface EditProductPageProps {
   params: Promise<{ id: string }>;
@@ -29,13 +29,7 @@ const EditProductPage = async ({ params }: EditProductPageProps) => {
     <div className="container mx-auto px-4 py-8">
       <div className="mx-auto max-w-2xl">
         {/* Back link */}
-        <Link
-          href="/dashboard"
-          className="mb-6 inline-flex items-center gap-2 text-sm text-muted hover:text-foreground"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back to Dashboard
-        </Link>
+        <BackToHomeLink title="dashboard" url={routes.dashboard} />
 
         <div className="mb-8">
           <h1 className="text-3xl font-bold">Edit Product</h1>
