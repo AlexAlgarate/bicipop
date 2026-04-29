@@ -8,6 +8,7 @@ import { getSession } from '@/infrastructure/auth/session';
 import { routes } from '@/config/routes';
 import type { ProductStatus } from '@/generated/client/client';
 import { getFieldErrorsFromTree } from '@/utils/validation-errors';
+import { isNextControlFlowError } from '@/utils/error-handler';
 
 import { getProductById } from '../_shared/api';
 
@@ -85,15 +86,8 @@ export const updateProductAction = async (
     revalidatePath(`/items/${rawValues.productId}`, 'page');
     redirect(`/items/${rawValues.productId}`);
   } catch (error) {
-    if (
-      typeof error === 'object' &&
-      error !== null &&
-      'digest' in error &&
-      typeof error.digest === 'string' &&
-      error.digest.startsWith('NEXT_REDIRECT')
-    ) {
-      throw error;
-    }
+    if (isNextControlFlowError(error)) throw error;
+
     return errorState('Failed to update product. Please try again', {
       errors: error instanceof Error ? { general: [error.message] } : undefined,
     });
