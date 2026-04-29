@@ -24,32 +24,32 @@ export const categories = [
 
 export const users = [
   {
-    username: 'example',
+    username: 'Example',
     email: 'example@example.com',
     avatar: 1,
   },
   {
-    username: 'user 1',
+    username: 'Pepe',
     email: 'example1@example.com',
     avatar: 2,
   },
   {
-    username: 'user 2',
+    username: 'Paco',
     email: 'example2@example.com',
     avatar: 3,
   },
   {
-    username: 'user 3',
+    username: 'Antonia',
     email: 'example3@example.com',
     avatar: 4,
   },
   {
-    username: 'user 4',
+    username: 'Pilar',
     email: 'example4@example.com',
     avatar: 5,
   },
   {
-    username: 'user 5',
+    username: 'Txus',
     email: 'example5@example.com',
     avatar: 6,
   },

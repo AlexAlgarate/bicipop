@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { Edit, Trash2, MoreVertical, Loader2 } from 'lucide-react';
 
 import { ProductStatus } from '@/generated/client/enums';
-import { formatPrice, timeAgo } from '@/utils/format';
+import { formatPrice, formatDate } from '@/utils/format';
 import { routes } from '@/config/routes';
 import {
   deleteProductAction,
@@ -90,7 +90,7 @@ function ProductRow({ product }: { product: Product }) {
           <span className="text-border">|</span>
           <span>{product.categoryName}</span>
           <span className="text-border">|</span>
-          <span>{timeAgo(product.createdAt)}</span>
+          <span>{formatDate(product.createdAt)}</span>
         </div>
       </div>
 

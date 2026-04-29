@@ -1,7 +1,9 @@
 import { findProducts } from '@/features/items/_shared/api';
 
+import type { FilterProducts } from '../_shared/types';
+
 import { getPagination } from './utils/get-pagination';
-import type { FilterProducts, ProductsResultDto } from './types';
+import type { ProductsResultDto } from './types';
 
 export async function getProducts(
   filters: FilterProducts,

@@ -21,7 +21,8 @@ const DashboardPage = async () => {
 
   if (!user) redirect(routes.auth.login);
 
-  const products = await getUserProducts(user.id);
+  const userId = user.id as string;
+  const products = await getUserProducts(userId);
 
   const activeProducts = products.filter(p => p.status === ProductStatus.ACTIVE).length;
   const reservedProducts = products.filter(
