@@ -2,7 +2,7 @@ import { type NextRequest, NextResponse } from 'next/server';
 
 import { SESSION_COOKIE_NAME } from '@/infrastructure/auth/constants';
 import { verifyToken } from '@/infrastructure/auth/jwt';
-import { routes } from '@/utils/constants';
+import { routes } from '@/config/routes';
 
 const protectedRoutes = [routes.dashboard, routes.items.upload, routes.items.edit];
 const authRoutes = [routes.auth.login, routes.auth.register];

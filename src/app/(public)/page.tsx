@@ -3,10 +3,11 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 
 import { HeroSection } from '@/features/items/list/components/HeroSection';
-import { PRODUCTS_PER_PAGE, routes } from '@/utils/constants';
+import { routes } from '@/config/routes';
 import { ProductsGrid } from '@/features/items/_shared/components/ProductsGrid';
 import { getProducts } from '@/features/items/list/api';
 import { getSession } from '@/infrastructure/auth/session';
+import { PRODUCTS_PER_PAGE } from '@/utils/constants';
 
 export const metadata: Metadata = {
   title: 'BiciPop',

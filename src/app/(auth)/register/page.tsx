@@ -1,7 +1,7 @@
 import { registerAction } from '@/features/auth/actions';
 import { AuthFooter } from '@/features/auth/components/AuthFooter';
 import { AuthForm } from '@/features/auth/components/AuthForm';
-import { routes } from '@/utils/constants';
+import { routes } from '@/config/routes';
 
 const RegisterPage = () => {
   return (

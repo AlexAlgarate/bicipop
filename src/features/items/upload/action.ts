@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 
 import { getSession } from '@/infrastructure/auth/session';
-import { routes } from '@/utils/constants';
+import { routes } from '@/config/routes';
 import { getFieldErrorsFromTree } from '@/utils/validation-errors';
 import {
   logAndSerializeError,

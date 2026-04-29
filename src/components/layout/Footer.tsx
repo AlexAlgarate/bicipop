@@ -1,10 +1,10 @@
 import Link from 'next/link';
 
 import {
-  GITHUB_SVG_PATH,
-  GITHUB_URL,
-  LINKEDIN_SVG_PATH,
   LINKEDIN_URL,
+  GITHUB_SVG_PATH,
+  LINKEDIN_SVG_PATH,
+  GITHUB_URL,
 } from '@/utils/constants';
 
 export const Footer = () => {

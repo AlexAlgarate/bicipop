@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { User } from 'lucide-react';
 
 import type { ProductDTO } from '@/domain/products/types';
-import { routes } from '@/utils/constants';
+import { routes } from '@/config/routes';
 
 interface SellerInfoProps {
   product: ProductDTO;

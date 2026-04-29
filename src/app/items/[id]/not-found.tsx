@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { SearchX } from 'lucide-react';
 
-import { routes } from '@/utils/constants';
+import { routes } from '@/config/routes';
 
 const ProductNotFound = () => {
   return (

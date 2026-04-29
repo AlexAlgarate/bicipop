@@ -1,7 +1,7 @@
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
-import { routes } from '@/utils/constants';
+import { routes } from '@/config/routes';
 
 interface BackToProps {
   url?: string;

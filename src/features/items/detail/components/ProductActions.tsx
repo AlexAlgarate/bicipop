@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 import type { ProductDTO } from '@/domain/products/types';
 import { ProductStatus } from '@/generated/client/enums';
-import { routes } from '@/utils/constants';
+import { routes } from '@/config/routes';
 
 interface ProductActionsProps {
   product: ProductDTO;

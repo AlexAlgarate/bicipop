@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 import { getSession } from '@/infrastructure/auth/session';
-import { routes } from '@/utils/constants';
+import { routes } from '@/config/routes';
 import { verifyProductOwnership, toggleFavorite } from '@/features/items/_shared/api';
 
 export const toggleFavoriteAction = async (

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { routes } from '@/utils/constants';
+import { routes } from '@/config/routes';
 
 export const NavbarLogin = async () => {
   return (

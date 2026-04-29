@@ -11,7 +11,7 @@ import { ProductSellerInfo } from '@/features/items/detail/components/ProductSel
 import { ProductActions } from '@/features/items/detail/components/ProductActions';
 import { RelatedProducts } from '@/features/items/detail/components/RelatedProducts';
 import { BackToHomeLink } from '@/components/BackToHomeLink';
-import { routes } from '@/utils/constants';
+import { routes } from '@/config/routes';
 
 interface ProductDetailProps {
   params: Promise<{ id: string }>;
