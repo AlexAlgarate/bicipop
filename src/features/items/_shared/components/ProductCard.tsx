@@ -85,6 +85,10 @@ const STATUS_BADGE: Partial<Record<ProductStatus, { label: string; className: st
       label: 'Reserved',
       className: 'bg-amber-400/90 text-gray-900 ring-amber-300/50',
     },
+    [ProductStatus.SOLD]: {
+      label: 'Sold',
+      className: 'bg-gray-500/90 text-white ring-gray-400/50',
+    },
   };
 
 const StatusBadge = ({ status }: { status: ProductStatus }) => {
