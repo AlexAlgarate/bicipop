@@ -3,13 +3,14 @@
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 
-import { type ProductFormState } from '@/features/items/shared/types';
+import { type ProductFormState } from '@/features/items/_shared/types';
 import { getSession } from '@/infrastructure/auth/session';
-import { routes } from '@/utils/constants';
-import type { ProductStatus } from '@/generated/client/client';
-import { getFieldErrorsFromTree } from '@/infrastructure/validations/validation-errors';
+import { routes } from '@/config/routes';
+import type { ProductStatus } from '@/generated/client/enums';
+import { getFieldErrorsFromTree } from '@/utils/validation-errors';
+import { isNextControlFlowError } from '@/utils/error-handler';
 
-import { getProductById } from '../shared/api';
+import { getProductById } from '../_shared/api';
 
 import { updateProductSchema } from './validation';
 import { updateProduct } from './api';
@@ -33,9 +34,9 @@ export const updateProductAction = async (
     status: (formData.get('status') as ProductStatus) || 'ACTIVE',
   };
 
-  const existingProduct = await getProductById(rawValues.productId);
+  const existingProduct = await getProductById(rawValues.productId, session.userId);
 
-  if (!existingProduct || existingProduct.userId !== session.userId) {
+  if (!existingProduct || !existingProduct.isOwner) {
     return {
       success: false,
       message: 'You are not authorized to edit this product',
@@ -85,15 +86,8 @@ export const updateProductAction = async (
     revalidatePath(`/items/${rawValues.productId}`, 'page');
     redirect(`/items/${rawValues.productId}`);
   } catch (error) {
-    if (
-      typeof error === 'object' &&
-      error !== null &&
-      'digest' in error &&
-      typeof error.digest === 'string' &&
-      error.digest.startsWith('NEXT_REDIRECT')
-    ) {
-      throw error;
-    }
+    if (isNextControlFlowError(error)) throw error;
+
     return errorState('Failed to update product. Please try again', {
       errors: error instanceof Error ? { general: [error.message] } : undefined,
     });

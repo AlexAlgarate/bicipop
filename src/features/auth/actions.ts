@@ -1,24 +1,18 @@
 'use server';
 
-import 'dotenv/config';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 
 import type { AuthFormState } from '@/features/auth/types';
 import { loginSchema, registerSchema } from '@/features/auth/validation';
-import { getFieldErrorsFromTree } from '@/infrastructure/validations/validation-errors';
+import { getFieldErrorsFromTree } from '@/utils/validation-errors';
 import { createSession, deleteSession } from '@/infrastructure/auth/session';
 import {
   comparePassword,
   hashPassword,
 } from '@/infrastructure/security/bcrypt-password-hasher';
 
-import {
-  getAuthUserByEmail,
-  getUserByEmail,
-  getUserByUsername,
-  registerUser,
-} from './api';
+import { getUserForAuth, getUserByEmail, getUserByUsername, registerUser } from './api';
 
 export async function loginAction(
   _prevState: AuthFormState,
@@ -41,7 +35,7 @@ export async function loginAction(
     };
   }
 
-  const user = await getAuthUserByEmail(parsed.data.email);
+  const user = await getUserForAuth(parsed.data.email);
   if (!user) return invalidCredentials(emailInput);
 
   const validPassword = await comparePassword(parsed.data.password, user.password);

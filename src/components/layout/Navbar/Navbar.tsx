@@ -4,8 +4,8 @@ import { Plus, User, LogOut, LayoutDashboard, Search } from 'lucide-react';
 import { getCurrentUser } from '@/infrastructure/auth/session';
 import { SearchBar } from '@/components/layout/Navbar/SearchBar';
 import { logout } from '@/features/auth/actions';
-import { routes } from '@/utils/constants';
-import type { CurrentUser } from '@/domain/user/types';
+import { routes } from '@/config/routes';
+import type { UserDTO } from '@/domain/user/types';
 
 export const Navbar = async () => {
   const user = await getCurrentUser();
@@ -21,7 +21,7 @@ export const Navbar = async () => {
 
         <nav className="flex items-center gap-2">
           <Link
-            href="/search"
+            href={routes.search}
             className="btn btn-ghost p-2 md:hidden"
             aria-label="Search"
           >
@@ -59,7 +59,10 @@ export const Navbar = async () => {
 
 const LogoSection = () => {
   return (
-    <Link href="/" className="text-2xl font-bold text-foreground flex items-center gap-2">
+    <Link
+      href={routes.home}
+      className="text-2xl font-bold text-foreground flex items-center gap-2"
+    >
       <div
         className="w-12 h-12 bg-primary rounded-full flex items-center
         justify-center text-primary-foreground font-bold hover:scale-105
@@ -90,7 +93,7 @@ const DashboardButton = () => {
   );
 };
 
-const UserButton = ({ id, username }: CurrentUser) => {
+const UserButton = ({ id, username }: UserDTO) => {
   return (
     <Link href={`${routes.profile}/${id}`} className="btn btn-ghost gap-2 px-3">
       <User className="h-5 w-5" />

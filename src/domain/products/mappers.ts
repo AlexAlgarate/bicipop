@@ -1,4 +1,8 @@
-import type { ProductDTO, ProductWithRelations } from './types';
+import type {
+  ProductDTO,
+  ProductWithRelations,
+  ProductsWithFavoriteStatus,
+} from './types';
 
 export const mapToProductDTO = (product: ProductWithRelations): ProductDTO => {
   return {
@@ -12,10 +16,18 @@ export const mapToProductDTO = (product: ProductWithRelations): ProductDTO => {
     location: product.location,
     createdAt: product.createdAt,
     updatedAt: product.updatedAt,
-    category: product.category.name,
     userName: product.user.username,
     status: product.status,
     categorySlug: product.category.slug,
     categoryName: product.category.name,
   };
 };
+
+export const mapToProductWithFavoriteStatus = (
+  product: ProductWithRelations & { favorites: { userId: string }[] },
+  currentUserId: string | null
+): ProductsWithFavoriteStatus => ({
+  ...mapToProductDTO(product),
+  isLiked: product.favorites?.length > 0,
+  isOwner: product.userId === currentUserId,
+});

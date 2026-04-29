@@ -2,10 +2,12 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 
-import { HeroSection } from '@/features/items/items/components/HeroSection';
-import { PRODUCTS_PER_PAGE, routes } from '@/utils/constants';
-import { ProductsGrid } from '@/features/items/shared/components/ProductsGrid';
-import { getProducts } from '@/features/items/items/api';
+import { HeroSection } from '@/features/items/list/components/HeroSection';
+import { routes } from '@/config/routes';
+import { ProductsGrid } from '@/features/items/_shared/components/ProductsGrid';
+import { getProducts } from '@/features/items/list/api';
+import { getSession } from '@/infrastructure/auth/session';
+import { PRODUCTS_PER_PAGE } from '@/utils/constants';
 
 export const metadata: Metadata = {
   title: 'BiciPop',
@@ -20,16 +22,22 @@ export default async function Home({
   const { page: pageParam, query } = await searchParams;
   const page = pageParam ? parseInt(pageParam, 10) : 1;
 
+  const session = await getSession();
+  const userId = session?.userId;
+
   const {
     items: products,
     currentPage,
     totalPages,
-  } = await getProducts({
-    page,
-    pageSize: PRODUCTS_PER_PAGE,
-    order: 'desc',
-    query: query,
-  });
+  } = await getProducts(
+    {
+      page,
+      pageSize: PRODUCTS_PER_PAGE,
+      order: 'desc',
+      query: query,
+    },
+    userId
+  );
 
   return (
     <div className="pb-20 space-y-12">

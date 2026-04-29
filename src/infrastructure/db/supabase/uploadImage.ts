@@ -1,8 +1,8 @@
 import { supabase } from './supabase';
 
-export const uploadImgInSupabaseBucket = async (file: File): Promise<string> => {
-  const BUCKET_NAME = 'products';
+const BUCKET_NAME = 'products';
 
+export const uploadImgInSupabaseBucket = async (file: File): Promise<string> => {
   const extension = file.name.split('.').pop()?.toLowerCase() ?? 'bin';
   const filename = `${Date.now()}-${crypto.randomUUID()}.${extension}`;
 

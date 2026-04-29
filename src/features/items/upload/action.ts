@@ -4,18 +4,18 @@ import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 
 import { getSession } from '@/infrastructure/auth/session';
-import { routes } from '@/utils/constants';
-import { getFieldErrorsFromTree } from '@/infrastructure/validations/validation-errors';
+import { routes } from '@/config/routes';
+import { getFieldErrorsFromTree } from '@/utils/validation-errors';
 import {
   logAndSerializeError,
   toErrorArray,
   isNextControlFlowError,
-} from '@/infrastructure/validations/error-handler';
+} from '@/utils/error-handler';
 import { uploadImgInSupabaseBucket } from '@/infrastructure/db/supabase/uploadImage';
-import { isValidImage, type ProductFormState } from '@/features/items/shared/types';
+import { type ProductFormState } from '@/features/items/_shared/types';
 
 import { createProduct } from './api';
-import { createProductSchema } from './validation';
+import { createProductSchema, isValidImage } from './validation';
 
 const errorState = (
   message: string,
@@ -46,7 +46,7 @@ const resolveImageUrl = async (
     return await uploadImgInSupabaseBucket(file);
   }
 
-  return errorState('Inavlid image mode');
+  return errorState('Invalid image mode');
 };
 
 export const uploadProductAction = async (

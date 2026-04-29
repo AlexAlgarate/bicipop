@@ -5,9 +5,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Edit, Trash2, MoreVertical, Loader2 } from 'lucide-react';
 
-import type { ProductStatus } from '@/generated/client/enums';
+import { ProductStatus } from '@/generated/client/enums';
 import { formatPrice, timeAgo } from '@/utils/format';
-import { routes } from '@/utils/constants';
+import { routes } from '@/config/routes';
 
 import { deleteProductAction, updateProductStatusAction } from '../action';
 
@@ -19,10 +19,8 @@ interface Product {
   location: string;
   status: ProductStatus;
   createdAt: Date;
-  category: {
-    name: string;
-    slug: string;
-  };
+  categoryName: string;
+  categorySlug: string;
 }
 
 interface DashboardProductListProps {
@@ -88,7 +86,7 @@ function ProductRow({ product }: { product: Product }) {
         <div className="mt-1 flex flex-wrap items-center gap-2 text-sm text-muted">
           <span>{formatPrice(product.price)}</span>
           <span className="text-border">|</span>
-          <span>{product.category.name}</span>
+          <span>{product.categoryName}</span>
           <span className="text-border">|</span>
           <span>{timeAgo(product.createdAt)}</span>
         </div>
@@ -150,9 +148,9 @@ function ProductRow({ product }: { product: Product }) {
                   >
                     <span
                       className={`mr-2 inline-block h-2 w-2 rounded-full ${
-                        status === 'ACTIVE'
+                        status === ProductStatus.ACTIVE
                           ? 'bg-green-500'
-                          : status === 'RESERVED'
+                          : status === ProductStatus.RESERVED
                             ? 'bg-yellow-500'
                             : 'bg-red-500'
                       }`}
