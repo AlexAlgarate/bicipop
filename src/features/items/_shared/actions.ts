@@ -19,7 +19,7 @@ export const toggleFavoriteAction = async (
   }
 
   const result = await toggleFavorite(session.userId, productId);
-  revalidatePath(`${routes.items.detail}/${productId}`);
+  revalidatePath(routes.items.detail(productId));
   revalidatePath(routes.home);
 
   return result;

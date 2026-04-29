@@ -74,7 +74,7 @@ const ProductInfo = ({ product }: { product: ProductsWithFavoriteStatus }) => {
   return (
     <div className="min-w-0 flex-1">
       <Link
-        href={`${routes.items.detail}/${product.id}`}
+        href={routes.items.detail(product.id)}
         className="font-medium hover:text-primary"
       >
         {product.title}
@@ -121,7 +121,7 @@ const ProductActions = ({ product }: { product: ProductsWithFavoriteStatus }) =>
   return (
     <div className="flex items-center gap-2">
       <Link
-        href={`${routes.items.edit}/${product.id}`}
+        href={routes.items.edit(product.id)}
         className="btn btn-ghost p-2"
         title="Edit"
       >

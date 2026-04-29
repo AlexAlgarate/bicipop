@@ -148,7 +148,7 @@ export const ProductCard = ({ product }: { product: ProductCardProps }) => {
 
   return (
     <Link
-      href={`${routes.items.detail}/${product.id}`}
+      href={routes.items.detail(product.id)}
       className="group flex flex-col h-full bg-card rounded-xl shadow-sm hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300 ease-out overflow-hidden p-3"
     >
       <ProductImage product={product} />

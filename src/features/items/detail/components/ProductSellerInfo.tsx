@@ -13,7 +13,7 @@ export const ProductSellerInfo = ({ product }: SellerInfoProps) => {
     <div className="card">
       <h2 className="mb-3 pl-2 text-lg font-semibold">Seller</h2>
       <Link
-        href={`${routes.user}/${product.userName}`}
+        href={routes.user(product.userName)}
         className="flex items-center gap-3 rounded-lg p-2 transition-colors hover:bg-card-hover cursor-pointer"
       >
         <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 hover:bg-border/20 border-border">
