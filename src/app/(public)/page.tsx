@@ -43,7 +43,7 @@ export default async function Home({
     <div className="pb-20 space-y-12">
       <HeroSection />
 
-      <section className="container mx-auto px-4">
+      <section className="container mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold text-foreground tracking-tight mb-6">
             Latest Products

@@ -9,8 +9,7 @@ import { routes } from '@/config/routes';
 import type { ProductStatus } from '@/generated/client/enums';
 import { getFieldErrorsFromTree } from '@/utils/validation-errors';
 import { isNextControlFlowError } from '@/utils/error-handler';
-
-import { getProductById } from '../_shared/api';
+import { getProductById } from '@/features/items/_shared/api';
 
 import { updateProductSchema } from './validation';
 import { updateProduct } from './api';

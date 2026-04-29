@@ -5,9 +5,8 @@ import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/Button';
 import { FormField } from '@/components/ui/FormField';
-
-import { type AuthFormState, initialRegisterState } from '../types';
-import { isPasswordValid } from '../validation';
+import { type AuthFormState, initialRegisterState } from '@/features/auth/types';
+import { isPasswordValid } from '@/features/auth/validation';
 
 import { PasswordRules } from './PasswordRules';
 

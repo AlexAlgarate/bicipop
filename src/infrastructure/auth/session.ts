@@ -3,13 +3,10 @@
 import { cookies } from 'next/headers';
 import { cache } from 'react';
 
-import type { UserDTO } from '@/domain/user/types';
 import {
   SESSION_COOKIE_NAME,
   SESSION_DURATION_MS,
 } from '@/infrastructure/auth/constants';
-
-import prisma from '../db/prisma/client';
 
 import { signSessionToken, verifySessionToken } from './jwt';
 import type { SessionTokenPayload } from './types';
@@ -40,17 +37,6 @@ export const getSession = cache(async (): Promise<SessionTokenPayload | null> =>
   if (!token) return null;
 
   return verifySessionToken(token);
-});
-
-export const getCurrentUser = cache(async (): Promise<UserDTO | null> => {
-  const session = await getSession();
-
-  if (!session) return null;
-
-  return prisma.user.findUnique({
-    where: { id: session.userId },
-    select: { id: true, email: true, username: true, createdAt: true },
-  });
 });
 
 export const deleteSession = async (): Promise<void> => {

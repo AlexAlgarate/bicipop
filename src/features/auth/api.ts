@@ -1,3 +1,7 @@
+import { cache } from 'react';
+
+import type { UserDTO } from '@/domain/user/types';
+import { getSession } from '@/infrastructure/auth/session';
 import prisma from '@/infrastructure/db/prisma/client';
 
 export const registerUser = async (username: string, email: string, password: string) => {
@@ -18,3 +22,14 @@ export const getUserForAuth = async (email: string) => {
     select: { id: true, email: true, password: true },
   });
 };
+
+export const getCurrentUser = cache(async (): Promise<UserDTO | null> => {
+  const session = await getSession();
+
+  if (!session) return null;
+
+  return prisma.user.findUnique({
+    where: { id: session.userId },
+    select: { id: true, email: true, username: true, createdAt: true },
+  });
+});

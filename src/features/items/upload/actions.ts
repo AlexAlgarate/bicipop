@@ -11,7 +11,7 @@ import {
   toErrorArray,
   isNextControlFlowError,
 } from '@/utils/error-handler';
-import { uploadImgInSupabaseBucket } from '@/infrastructure/db/supabase/uploadImage';
+import { uploadImgInSupabaseBucket } from '@/infrastructure/db/supabase/upload-image';
 import { type ProductFormState } from '@/features/items/_shared/types';
 
 import { createProduct } from './api';

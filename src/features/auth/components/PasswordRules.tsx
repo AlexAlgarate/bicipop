@@ -2,7 +2,7 @@
 
 import { Check, X } from 'lucide-react';
 
-import { getPasswordRulesStatus } from '../validation';
+import { getPasswordRulesStatus } from '@/features/auth/validation';
 
 interface PasswordRulesProps {
   password: string;

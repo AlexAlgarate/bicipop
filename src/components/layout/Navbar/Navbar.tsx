@@ -1,11 +1,11 @@
 import Link from 'next/link';
 import { Plus, User, LogOut, LayoutDashboard, Search } from 'lucide-react';
 
-import { getCurrentUser } from '@/infrastructure/auth/session';
 import { SearchBar } from '@/components/layout/Navbar/SearchBar';
 import { logout } from '@/features/auth/actions';
 import { routes } from '@/config/routes';
 import type { UserDTO } from '@/domain/user/types';
+import { getCurrentUser } from '@/features/auth/api';
 
 export const Navbar = async () => {
   const user = await getCurrentUser();
@@ -33,7 +33,7 @@ export const Navbar = async () => {
               <UploadButton />
               <DashboardButton />
               <div className="flex items-center gap-2 border-l border-border pl-2">
-                <UserButton id={user.id} username={user.username} />
+                <UserButton username={user.username} />
                 <LogoutButton />
               </div>
             </>
@@ -93,9 +93,9 @@ const DashboardButton = () => {
   );
 };
 
-const UserButton = ({ id, username }: UserDTO) => {
+const UserButton = ({ username }: UserDTO) => {
   return (
-    <Link href={`${routes.profile}/${id}`} className="btn btn-ghost gap-2 px-3">
+    <Link href={`${routes.user}/${username}`} className="btn btn-ghost gap-2 px-3">
       <User className="h-5 w-5" />
       <span className="hidden sm:inline">{username}</span>
     </Link>

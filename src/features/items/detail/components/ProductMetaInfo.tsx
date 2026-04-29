@@ -1,7 +1,7 @@
 import { Clock, MapPin, Tag } from 'lucide-react';
 
 import type { ProductDTO } from '@/domain/products/types';
-import { timeAgo } from '@/utils/format';
+import { formatDate } from '@/utils/format';
 
 interface ProductHeaderProps {
   product: ProductDTO;
@@ -16,7 +16,7 @@ export const ProductMetaInfo = ({ product }: ProductHeaderProps) => {
       </span>
       <span className="flex items-center gap-1">
         <Clock className="h-4 w-4" />
-        {timeAgo(product.createdAt)}
+        {formatDate(product.createdAt)}
       </span>
       <span className="flex items-center gap-1">
         <Tag className="h-4 w-4" />

@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Ad-Marketplace',
+  title: 'BiciPop',
   description: 'Marketplace website for a Next project Web KeepCoding XIX Bootcamp',
 };
 
