@@ -26,10 +26,10 @@ export const ProductImage = ({ product }: ProductImageProps) => {
         sizes="(max-width: 1024px) 100vw, 50vw"
       />
       {productStatus && (
-        <div
-          className={`absolute inset-0 flex items-center justify-center bg-black/50 ${productStatus.color}`}
-        >
-          <span className="rounded-full bg-black/70 px-6 py-3 text-xl font-bold uppercase tracking-wide">
+        <div className={`absolute inset-0 flex items-center justify-center bg-black/50 `}>
+          <span
+            className={`${productStatus.color} rounded-full bg-black/70 px-6 py-3 text-xl font-bold uppercase tracking-wide`}
+          >
             {productStatus.label}
           </span>
         </div>

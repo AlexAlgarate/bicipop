@@ -80,18 +80,33 @@ const ProductInfo = ({
   );
 };
 
-const StatusBadge = ({ status }: { status: ProductStatus }) => (
-  <span className="absolute top-3 left-3 z-10 px-3 py-1 text-[11px] uppercase font-semibold rounded-full tracking-wide shadow-sm backdrop-blur-md transition-all duration-300 group-hover:scale-105 bg-amber-400/90 text-gray-900 ring-1 ring-amber-300/50">
-    {status}
-  </span>
-);
+const STATUS_BADGE: Partial<Record<ProductStatus, { label: string; className: string }>> =
+  {
+    [ProductStatus.RESERVED]: {
+      label: 'Reserved',
+      className: 'bg-amber-400/90 text-gray-900 ring-amber-300/50',
+    },
+  };
 
-const ProductImage = ({ product }: { product: ProductCardProps }) => {
-  const isReserved = product.status === ProductStatus.RESERVED;
+const StatusBadge = ({ status }: { status: ProductStatus }) => {
+  const config = STATUS_BADGE[status];
+  if (!config) return null;
 
   return (
+    <span
+      className={`
+        absolute top-3 left-3 z-10 px-3 py-1 text-[11px] uppercase font-semibold
+        rounded-full tracking-wide shadow-sm backdrop-blur-md ring-1 ${config.className}
+        `}
+    >
+      {config.label}
+    </span>
+  );
+};
+const ProductImage = ({ product }: { product: ProductCardProps }) => {
+  return (
     <div className="relative aspect-square overflow-hidden rounded-lg">
-      {isReserved && <StatusBadge status={product.status} />}
+      <StatusBadge status={product.status} />
       <Image
         src={product.imageUrl}
         alt={product.title}
