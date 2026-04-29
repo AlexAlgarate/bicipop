@@ -11,7 +11,7 @@ export const routes = {
   },
   category: '/category',
   dashboard: '/dashboard',
-  profile: '/profile',
+  user: '/user',
   aboutUs: '/about',
   termsOfService: '/terms',
   search: '/search',
