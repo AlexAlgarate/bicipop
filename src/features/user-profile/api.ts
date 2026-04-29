@@ -4,8 +4,7 @@ import prisma from '@/infrastructure/db/prisma/client';
 import type { ProductsWithFavoriteStatus } from '@/domain/products/types';
 import { mapToProductWithFavoriteStatus } from '@/domain/products/mappers';
 import { ProductStatus } from '@/generated/client/enums';
-
-import { getPagination } from '../items/list/utils/get-pagination';
+import { getPagination } from '@/features/items/_shared/utils/get-pagination';
 
 import type { UserProfile } from './types';
 
@@ -76,7 +75,9 @@ export const getUserProducts = cache(
       }),
     ]);
 
-    const items = products.map(product => mapToProductWithFavoriteStatus(product, userId));
+    const items = products.map(product =>
+      mapToProductWithFavoriteStatus(product, userId)
+    );
 
     return { items, totalCount };
   }
