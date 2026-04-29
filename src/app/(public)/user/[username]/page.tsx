@@ -4,9 +4,11 @@ import type { Metadata } from 'next';
 import { getUserProfileByUsername, getUserProducts } from '@/features/user-profile/api';
 import { UserProfileHeader } from '@/features/user-profile/components/UserProfileHeader';
 import { ProductsGrid } from '@/features/items/_shared/components/ProductsGrid';
+import { PRODUCTS_PER_PAGE } from '@/utils/constants';
 
 interface UserProfilePageProps {
   params: Promise<{ username: string }>;
+  searchParams: Promise<{ page?: string }>;
 }
 
 export const generateMetada = async ({
@@ -22,23 +24,30 @@ export const generateMetada = async ({
 
   return {
     title: `${user.username}'s Profile`,
-    description: `View ${user.username}'s profile and products on Wallapop`,
+    description: `View ${user.username}'s profile and products on BiciPop`,
   };
 };
 
 export const dynamic = 'force-dynamic';
 
-export const UserProfilePage = async ({ params }: UserProfilePageProps) => {
+export default async function UserProfilePage({
+  params,
+  searchParams,
+}: UserProfilePageProps) {
   const { username } = await params;
+  const { page: pageParam } = await searchParams;
+  const page = pageParam ? parseInt(pageParam, 10) : 1;
 
-  const [profile, products] = await Promise.all([
+  const [profile, result] = await Promise.all([
     getUserProfileByUsername(username),
-    getUserProducts(username),
+    getUserProducts(username, null, { page, pageSize: PRODUCTS_PER_PAGE }),
   ]);
 
   if (!profile) {
     notFound();
   }
+
+  const totalPages = Math.ceil(result.totalCount / PRODUCTS_PER_PAGE);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -49,10 +58,12 @@ export const UserProfilePage = async ({ params }: UserProfilePageProps) => {
       />
       <div>
         <h2 className="text-2xl font-bold mb-6">Products by {profile.username}</h2>
-        <ProductsGrid products={products} currentPage={1} totalPages={1} />
+        <ProductsGrid
+          products={result.items}
+          currentPage={page}
+          totalPages={totalPages}
+        />
       </div>
     </div>
   );
-};
-
-export default UserProfilePage;
+}

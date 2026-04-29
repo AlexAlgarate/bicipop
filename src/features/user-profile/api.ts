@@ -5,7 +5,14 @@ import type { ProductsWithFavoriteStatus } from '@/domain/products/types';
 import { mapToProductWithFavoriteStatus } from '@/domain/products/mappers';
 import { ProductStatus } from '@/generated/client/enums';
 
+import { getPagination } from '../items/list/utils/get-pagination';
+
 import type { UserProfile } from './types';
+
+interface PaginationParams {
+  page: number;
+  pageSize: number;
+}
 
 export const getUserProfileByUsername = cache(
   async (username: string): Promise<UserProfile | null> => {
@@ -33,22 +40,34 @@ export const getUserProfileByUsername = cache(
 export const getUserProducts = cache(
   async (
     username: string,
-    userId: string | null = null
-  ): Promise<ProductsWithFavoriteStatus[]> => {
-    const products = await prisma.product.findMany({
-      where: {
-        user: { username },
-        status: ProductStatus.ACTIVE,
-      },
-      include: {
-        category: true,
-        user: true,
-        _count: { select: { favorites: true } },
-        favorites: userId ? { where: { userId } } : false,
-      },
-      orderBy: { createdAt: 'desc' },
-    });
+    userId: string | null = null,
+    filters: PaginationParams
+  ): Promise<{ items: ProductsWithFavoriteStatus[]; totalCount: number }> => {
+    const { page, pageSize } = getPagination(filters.page, filters.pageSize);
 
-    return products.map(product => mapToProductWithFavoriteStatus(product, userId));
+    const where = {
+      user: { username },
+      status: ProductStatus.ACTIVE,
+    };
+
+    const [totalCount, products] = await Promise.all([
+      prisma.product.count({ where }),
+      prisma.product.findMany({
+        where,
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+        orderBy: { createdAt: 'desc' },
+        include: {
+          category: true,
+          user: true,
+          _count: { select: { favorites: true } },
+          favorites: userId ? { where: { userId } } : false,
+        },
+      }),
+    ]);
+
+    const items = products.map(product => mapToProductWithFavoriteStatus(product, userId));
+
+    return { items, totalCount };
   }
 );
