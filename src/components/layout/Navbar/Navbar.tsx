@@ -1,11 +1,11 @@
 import Link from 'next/link';
 import { Plus, User, LogOut, LayoutDashboard, Search } from 'lucide-react';
 
-import { getCurrentUser } from '@/infrastructure/auth/session';
 import { SearchBar } from '@/components/layout/Navbar/SearchBar';
 import { logout } from '@/features/auth/actions';
 import { routes } from '@/config/routes';
 import type { UserDTO } from '@/domain/user/types';
+import { getCurrentUser } from '@/features/auth/api';
 
 export const Navbar = async () => {
   const user = await getCurrentUser();

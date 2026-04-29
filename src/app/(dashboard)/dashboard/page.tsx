@@ -3,11 +3,11 @@ import { redirect } from 'next/navigation';
 import { Plus, Package, TrendingUp, Clock } from 'lucide-react';
 import Link from 'next/link';
 
-import { getCurrentUser } from '@/infrastructure/auth/session';
 import { routes } from '@/config/routes';
 import { getUserProducts } from '@/features/dashboard/api';
 import DashboardProductList from '@/features/dashboard/components/DashboardProductList';
 import { ProductStatus } from '@/generated/client/enums';
+import { getCurrentUser } from '@/features/auth/api';
 
 export const metadata: Metadata = {
   title: 'Dashboard',

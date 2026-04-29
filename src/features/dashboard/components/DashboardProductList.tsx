@@ -8,8 +8,10 @@ import { Edit, Trash2, MoreVertical, Loader2 } from 'lucide-react';
 import { ProductStatus } from '@/generated/client/enums';
 import { formatPrice, timeAgo } from '@/utils/format';
 import { routes } from '@/config/routes';
-
-import { deleteProductAction, updateProductStatusAction } from '../action';
+import {
+  deleteProductAction,
+  updateProductStatusAction,
+} from '@/features/dashboard/action';
 
 interface Product {
   id: string;
