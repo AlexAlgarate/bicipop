@@ -6,7 +6,7 @@ import { useOptimistic, useTransition } from 'react';
 import { Star } from 'lucide-react';
 
 import { Button } from '@/components/ui/Button';
-import { toggleFavoriteAction } from '@/features/items/_shared/action';
+import { toggleFavoriteAction } from '@/features/items/_shared/actions';
 import { routes } from '@/config/routes';
 import { ProductStatus } from '@/generated/client/enums';
 import { formatPrice } from '@/utils/format';

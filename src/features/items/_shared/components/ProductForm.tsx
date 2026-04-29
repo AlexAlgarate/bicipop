@@ -4,8 +4,8 @@ import { useActionState } from 'react';
 
 import { ProductStatus } from '@/generated/client/enums';
 import type { ProductFormState } from '@/features/items/_shared/types';
-import { uploadProductAction } from '@/features/items/upload/action';
-import { updateProductAction } from '@/features/items/edit/action';
+import { uploadProductAction } from '@/features/items/upload/actions';
+import { updateProductAction } from '@/features/items/edit/actions';
 import { FormField } from '@/components/ui/FormField';
 import type { CategoryDTO } from '@/domain/category/types';
 

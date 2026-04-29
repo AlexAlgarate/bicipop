@@ -11,7 +11,7 @@ import { routes } from '@/config/routes';
 import {
   deleteProductAction,
   updateProductStatusAction,
-} from '@/features/dashboard/action';
+} from '@/features/dashboard/actions';
 
 interface Product {
   id: string;
