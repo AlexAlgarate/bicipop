@@ -5,5 +5,15 @@ interface FieldErrorProps {
 export const FieldError = ({ error }: FieldErrorProps) => {
   if (!error) return null;
 
-  return <p className="text-xs md:text-sm text-red-500">{error}</p>;
+  const errors = Array.isArray(error) ? error : [error];
+
+  return (
+    <>
+      {errors.map((e, i) => (
+        <p key={i} className="text-xs md:text-sm text-red-500">
+          {e}
+        </p>
+      ))}
+    </>
+  );
 };

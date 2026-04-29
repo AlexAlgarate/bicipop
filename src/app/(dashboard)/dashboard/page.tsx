@@ -11,7 +11,7 @@ import { ProductStatus } from '@/generated/client/enums';
 
 export const metadata: Metadata = {
   title: 'Dashboard',
-  description: 'Manage your products on Wallapop',
+  description: 'Manage your products on Bicipop',
 };
 
 export const dynamic = 'force-dynamic';

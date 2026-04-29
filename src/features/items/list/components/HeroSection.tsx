@@ -3,14 +3,16 @@ import Link from 'next/link';
 import { routes } from '@/config/routes';
 
 export const HeroSection = () => {
+  const HERO_IMAGE_URL =
+    "url('https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=2070&auto=format&fit=crop')";
+
   return (
     <section className="relative bg-zinc-900 text-white py-20 overflow-hidden">
       <div className="absolute inset-0 bg-linear-to-r from-black/80 to-transparent z-10" />
       <div
         className="absolute inset-0 bg-cover bg-center opacity-40 grayscale"
         style={{
-          backgroundImage:
-            "url('https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=2070&auto=format&fit=crop')",
+          backgroundImage: HERO_IMAGE_URL,
         }}
       />
 

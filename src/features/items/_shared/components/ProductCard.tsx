@@ -36,7 +36,6 @@ const FavoriteButton = ({ onClick, isDisabled, isFavorite }: FavoriteButtonProps
     className={`flex items-center gap-1.5 bg-gray-100 px-2.5 py-1.5 text-gray-600 rounded-full
       hover:text-yellow-500 hover:bg-yellow-50 transition-all duration-200 w-fit
       ${isFavorite ? 'text-yellow-500 bg-yellow-50' : ''}`}
-    title={isFavorite ? 'Quitar de favoritos' : 'Añadir a favoritos'}
   >
     <Star
       className={`w-5 h-5 ${isFavorite ? 'fill-current scale-110 transition-all duration-200' : ''}`}

@@ -15,21 +15,17 @@ export const ProductActions = ({ product, isOwner }: ProductActionsProps) => {
   return (
     <div className="flex gap-3">
       {isOwner ? (
-        <>
-          <Link
-            href={`${routes.items.edit}/${product.id}`}
-            className="btn btn-primary flex-1 py-3"
-          >
-            Edit Product
-          </Link>
-        </>
+        <Link
+          href={`${routes.items.edit}/${product.id}`}
+          className="btn btn-primary flex-1 py-3"
+        >
+          Edit Product
+        </Link>
       ) : (
-        <>
-          <button className="btn btn-primary flex-1 gap-2 py-3" disabled={isSold}>
-            <MessageCircle className="h-5 w-5" />
-            Contact Seller
-          </button>
-        </>
+        <button className="btn btn-primary flex-1 gap-2 py-3" disabled={isSold}>
+          <MessageCircle className="h-5 w-5" />
+          Contact Seller
+        </button>
       )}
     </div>
   );
