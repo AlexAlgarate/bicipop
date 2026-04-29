@@ -12,6 +12,7 @@ import type { UserProfile } from './types';
 interface PaginationParams {
   page: number;
   pageSize: number;
+  query?: string;
 }
 
 export const getUserProfileByUsername = cache(
@@ -45,10 +46,19 @@ export const getUserProducts = cache(
   ): Promise<{ items: ProductsWithFavoriteStatus[]; totalCount: number }> => {
     const { page, pageSize } = getPagination(filters.page, filters.pageSize);
 
-    const where = {
-      user: { username },
-      status: ProductStatus.ACTIVE,
-    };
+    const where = filters.query
+      ? {
+          user: { username },
+          status: ProductStatus.ACTIVE,
+          OR: [
+            { title: { contains: filters.query, mode: 'insensitive' as const } },
+            { description: { contains: filters.query, mode: 'insensitive' as const } },
+          ],
+        }
+      : {
+          user: { username },
+          status: ProductStatus.ACTIVE,
+        };
 
     const [totalCount, products] = await Promise.all([
       prisma.product.count({ where }),

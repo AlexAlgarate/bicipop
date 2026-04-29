@@ -8,7 +8,7 @@ import { PRODUCTS_PER_PAGE } from '@/utils/constants';
 
 interface UserProfilePageProps {
   params: Promise<{ username: string }>;
-  searchParams: Promise<{ page?: string }>;
+  searchParams: Promise<{ page?: string; query?: string }>;
 }
 
 export const generateMetada = async ({
@@ -35,12 +35,12 @@ export default async function UserProfilePage({
   searchParams,
 }: UserProfilePageProps) {
   const { username } = await params;
-  const { page: pageParam } = await searchParams;
+  const { page: pageParam, query } = await searchParams;
   const page = pageParam ? parseInt(pageParam, 10) : 1;
 
   const [profile, result] = await Promise.all([
     getUserProfileByUsername(username),
-    getUserProducts(username, null, { page, pageSize: PRODUCTS_PER_PAGE }),
+    getUserProducts(username, null, { page, pageSize: PRODUCTS_PER_PAGE, query }),
   ]);
 
   if (!profile) {
