@@ -2,9 +2,9 @@ import { Plus, Package } from 'lucide-react';
 import Link from 'next/link';
 
 import { routes } from '@/config/routes';
-import type { ProductsWithFavoriteStatus } from '@/domain/products/types';
+import type { ProductsWithFavoriteStatus } from '@/features/items/_shared/types';
 
-import DashboardProductList from './DashboardProductList';
+import { DashboardProductList } from './DashboardProductList';
 
 export const DashboardProductPanel = ({
   products,

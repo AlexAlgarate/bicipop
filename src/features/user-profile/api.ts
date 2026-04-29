@@ -1,10 +1,10 @@
 import { cache } from 'react';
 
 import prisma from '@/infrastructure/db/prisma/client';
-import type { ProductsWithFavoriteStatus } from '@/domain/products/types';
 import { mapToProductWithFavoriteStatus } from '@/domain/products/mappers';
 import { ProductStatus } from '@/generated/client/enums';
 import { getPagination } from '@/features/items/_shared/utils/get-pagination';
+import type { ProductsWithFavoriteStatus } from '@/features/items/_shared/types';
 
 import type { UserProfile } from './types';
 

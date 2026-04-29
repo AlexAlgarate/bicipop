@@ -1,7 +1,7 @@
 import { mapToProductWithFavoriteStatus } from '@/domain/products/mappers';
 import type { ProductStatus } from '@/generated/client/enums';
 import prisma from '@/infrastructure/db/prisma/client';
-import type { ProductsWithFavoriteStatus } from '@/domain/products/types';
+import type { ProductsWithFavoriteStatus } from '@/features/items/_shared/types';
 
 export const getUserProducts = async (
   userId: string

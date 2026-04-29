@@ -2,9 +2,9 @@ import { notFound } from 'next/navigation';
 
 import { BackToHomeLink } from '@/components/BackToHomeLink';
 import { routes } from '@/config/routes';
-import type { ProductsWithFavoriteStatus } from '@/domain/products/types';
 import { getProductById } from '@/features/items/_shared/api';
 import { getRelatedProducts } from '@/features/items/detail/api';
+import type { ProductsWithFavoriteStatus } from '@/features/items/_shared/types';
 
 import { ProductImage } from './ProductImage';
 import { ProductHeader } from './ProductHeader';

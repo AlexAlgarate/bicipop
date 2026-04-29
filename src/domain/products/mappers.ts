@@ -1,8 +1,6 @@
-import type {
-  ProductDTO,
-  ProductWithRelations,
-  ProductsWithFavoriteStatus,
-} from './types';
+import type { ProductsWithFavoriteStatus } from '@/features/items/_shared/types';
+
+import type { ProductDTO, ProductWithRelations } from './types';
 
 export const mapToProductDTO = (product: ProductWithRelations): ProductDTO => {
   return {

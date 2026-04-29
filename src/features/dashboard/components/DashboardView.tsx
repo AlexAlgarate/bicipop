@@ -2,7 +2,7 @@ import { Plus } from 'lucide-react';
 import Link from 'next/link';
 
 import { routes } from '@/config/routes';
-import type { ProductsWithFavoriteStatus } from '@/domain/products/types';
+import type { ProductsWithFavoriteStatus } from '@/features/items/_shared/types';
 import type { UserDTO } from '@/domain/user/types';
 
 import { DashboardStats } from './DashboardStats';

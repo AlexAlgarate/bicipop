@@ -1,7 +1,7 @@
 import { ProductCard } from '@/features/items/_shared/components/ProductCard';
 import { Pagination } from '@/components/Pagination';
 import { EmptyState } from '@/features/items/_shared/components/EmptyState';
-import type { ProductsWithFavoriteStatus } from '@/domain/products/types';
+import type { ProductsWithFavoriteStatus } from '@/features/items/_shared/types';
 
 interface ProductsGridProps {
   products: ProductsWithFavoriteStatus[];

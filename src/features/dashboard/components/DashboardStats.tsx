@@ -1,7 +1,7 @@
 import { type LucideIcon, Package, TrendingUp, Clock } from 'lucide-react';
 
 import { ProductStatus } from '@/generated/client/enums';
-import type { ProductsWithFavoriteStatus } from '@/domain/products/types';
+import type { ProductsWithFavoriteStatus } from '@/features/items/_shared/types';
 
 interface StatConfig {
   label: string;

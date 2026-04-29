@@ -3,8 +3,10 @@ import { cache } from 'react';
 import prisma from '@/infrastructure/db/prisma/client';
 import { mapToProductWithFavoriteStatus } from '@/domain/products/mappers';
 import { mapToCategoryDTO } from '@/domain/category/mappers';
-import type { ProductDTO, ProductsWithFavoriteStatus } from '@/domain/products/types';
+import type { ProductDTO } from '@/domain/products/types';
 import type { CategoryDTO } from '@/domain/category/types';
+
+import type { ProductsWithFavoriteStatus } from './types';
 
 export const getProductById = cache(
   async (
