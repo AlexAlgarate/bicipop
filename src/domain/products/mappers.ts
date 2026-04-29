@@ -28,6 +28,6 @@ export const mapToProductWithFavoriteStatus = (
   currentUserId: string | null
 ): ProductsWithFavoriteStatus => ({
   ...mapToProductDTO(product),
-  isLiked: product.favorites.length > 0,
+  isLiked: product.favorites?.length > 0,
   isOwner: product.userId === currentUserId,
 });
