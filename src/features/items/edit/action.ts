@@ -34,7 +34,7 @@ export const updateProductAction = async (
     status: (formData.get('status') as ProductStatus) || 'ACTIVE',
   };
 
-  const existingProduct = await getProductById(rawValues.productId);
+  const existingProduct = await getProductById(rawValues.productId, session.userId);
 
   if (!existingProduct || !existingProduct.isOwner) {
     return {
