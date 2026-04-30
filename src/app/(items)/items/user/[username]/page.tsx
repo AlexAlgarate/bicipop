@@ -1,8 +1,8 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 
-import { getUserProfileByUsername, getUserProducts } from '@/features/user-profile/api';
-import { UserProfileHeader } from '@/features/user-profile/components/UserProfileHeader';
+import { getUserProfileByUsername, getUserProducts } from '@/features/items/user/api';
+import { UserProfileHeader } from '@/features/items/user/components/UserProfileHeader';
 import { ProductsGrid } from '@/features/items/_shared/components/ProductsGrid';
 import { PRODUCTS_PER_PAGE } from '@/utils/constants';
 
