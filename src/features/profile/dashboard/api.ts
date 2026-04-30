@@ -1,23 +1,58 @@
 import { mapToProductWithFavoriteStatus } from '@/domain/products/mappers';
-import type { ProductStatus } from '@/generated/client/enums';
+import { ProductStatus } from '@/generated/client/enums';
 import prisma from '@/infrastructure/db/prisma/client';
-import type { ProductsWithFavoriteStatus } from '@/features/items/_shared/types';
+import { getPagination } from '@/features/items/_shared/utils/get-pagination';
 
-export const getUserProducts = async (
-  userId: string
-): Promise<ProductsWithFavoriteStatus[]> => {
-  const products = await prisma.product.findMany({
-    where: { userId },
-    include: {
-      category: true,
-      user: true,
-      _count: { select: { favorites: true } },
-      favorites: { where: { userId } },
-    },
-    orderBy: { createdAt: 'desc' },
-  });
+import type { DashboardData, PaginationParams } from './types';
 
-  return products.map(product => mapToProductWithFavoriteStatus(product, userId));
+export const getUserDashboardProducts = async (
+  userId: string,
+  filters: PaginationParams
+): Promise<DashboardData> => {
+  const { page, pageSize } = getPagination(filters.page, filters.pageSize);
+  const where = {
+    userId,
+    ...(filters.query && {
+      OR: [
+        { title: { contains: filters.query, mode: 'insensitive' as const } },
+        { description: { contains: filters.query, mode: 'insensitive' as const } },
+      ],
+    }),
+  };
+
+  const [totalCount, products, statusCounts] = await Promise.all([
+    prisma.product.count({ where }),
+    prisma.product.findMany({
+      where: where,
+      include: {
+        category: true,
+        user: true,
+        _count: { select: { favorites: true } },
+        favorites: { where: { userId } },
+      },
+      orderBy: { createdAt: 'desc' },
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+    }),
+    prisma.product.groupBy({
+      by: ['status'],
+      where: { userId },
+      _count: true,
+    }),
+  ]);
+
+  const counts = { active: 0, reserved: 0, sold: 0 };
+  for (const group of statusCounts) {
+    if (group.status === ProductStatus.ACTIVE) counts.active = group._count;
+    if (group.status === ProductStatus.RESERVED) counts.reserved = group._count;
+    if (group.status === ProductStatus.SOLD) counts.sold = group._count;
+  }
+
+  return {
+    items: products.map(product => mapToProductWithFavoriteStatus(product, userId)),
+    totalCount,
+    statusCounts: counts,
+  };
 };
 
 export const deleteProduct = async (productId: string) => {

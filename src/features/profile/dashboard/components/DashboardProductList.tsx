@@ -14,9 +14,7 @@ import {
 } from '@/features/profile/dashboard/actions';
 import type { ProductsWithFavoriteStatus } from '@/features/items/_shared/types';
 
-interface DashboardProductListProps {
-  products: ProductsWithFavoriteStatus[];
-}
+import type { DashboardProductProps } from '../types';
 
 const STATUS_CONFIG: Record<
   ProductStatus,
@@ -41,12 +39,14 @@ const STATUS_CONFIG: Record<
 
 const ALL_STATUSES = Object.values(ProductStatus);
 
-export const DashboardProductList = ({ products }: DashboardProductListProps) => {
+export const DashboardProductList = ({ products }: DashboardProductProps) => {
   return (
-    <div className="mt-4 divide-y divide-border">
-      {products.map(product => (
-        <ProductRow key={product.id} product={product} />
-      ))}
+    <div>
+      <div className="divide-y divide-border flex flex-col gap-2">
+        {products.map(product => (
+          <ProductRow key={product.id} product={product} />
+        ))}
+      </div>
     </div>
   );
 };

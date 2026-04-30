@@ -1,3 +1,5 @@
+import type { ProductsWithFavoriteStatus } from '@/features/items/_shared/types';
+
 export interface ProductState {
   success: boolean;
   message: string;
@@ -9,4 +11,22 @@ export interface ProductState {
     location?: string[];
     categoryId?: string[];
   };
+}
+
+export interface DashboardProductProps {
+  products: ProductsWithFavoriteStatus[];
+}
+export interface DashboardData {
+  items: ProductsWithFavoriteStatus[];
+  totalCount: number;
+  statusCounts: {
+    active: number;
+    reserved: number;
+    sold: number;
+  };
+}
+export interface PaginationParams {
+  page: number;
+  pageSize: number;
+  query?: string;
 }
