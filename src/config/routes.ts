@@ -11,10 +11,12 @@ export const routes = {
     user: (username: string) => `/items/user/${username}`,
   },
   category: (categorySlug: string) => `/category/${categorySlug}`,
-  dashboard: {
-    dashboard: '/dashboard',
-    settings: '/settings',
+  profile: {
+    dashboard: '/profile/dashboard',
+    settings: '/profile/settings',
+    favorites: '/profile/favorites',
   },
+
   aboutUs: '/about',
   termsOfService: '/terms',
   search: '/search',

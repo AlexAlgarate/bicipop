@@ -23,7 +23,7 @@ export const ProductDetailView = ({
 }: ProductDetailViewProps) => {
   return (
     <div className="container mx-auto px-4 py-8">
-      <BackToHomeLink title="dashboard" url={routes.dashboard.dashboard} />
+      <BackToHomeLink title="dashboard" url={routes.profile.dashboard} />
 
       <div className="grid gap-8 lg:grid-cols-2">
         <ProductImage product={product} />

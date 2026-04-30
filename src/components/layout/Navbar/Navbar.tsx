@@ -86,7 +86,7 @@ const UploadButton = () => {
 
 const DashboardButton = () => {
   return (
-    <Link href={routes.dashboard.dashboard} className="btn btn-ghost gap-2 px-3">
+    <Link href={routes.profile.dashboard} className="btn btn-ghost gap-2 px-3">
       <LayoutDashboard className="h-5 w-5" />
       <span className="hidden sm:inline">Dashboard</span>
     </Link>
