@@ -11,7 +11,7 @@ import { routes } from '@/config/routes';
 import {
   deleteProductAction,
   updateProductStatusAction,
-} from '@/features/dashboard/actions';
+} from '@/features/profile/dashboard/actions';
 import type { ProductsWithFavoriteStatus } from '@/features/items/_shared/types';
 
 interface DashboardProductListProps {

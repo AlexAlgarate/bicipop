@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 
 import { routes } from '@/config/routes';
-import { getUserProducts } from '@/features/dashboard/api';
-import { DashboardView } from '@/features/dashboard/components/DashboardView';
+import { getUserProducts } from '@/features/profile/dashboard/api';
+import { DashboardView } from '@/features/profile/dashboard/components/DashboardView';
 import { getCurrentUser } from '@/features/auth/api';
 
 export const metadata: Metadata = {
