@@ -21,17 +21,17 @@ const STATUS_CONFIG: Record<
   { badge: string; dot: string; label: string }
 > = {
   [ProductStatus.ACTIVE]: {
-    badge: 'bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400',
+    badge: 'bg-green-500/10 text-green-400 ring-1 ring-green-500/20',
     dot: 'bg-green-500',
     label: 'Active',
   },
   [ProductStatus.RESERVED]: {
-    badge: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400',
+    badge: 'bg-yellow-500/10 text-yellow-400 ring-1 ring-yellow-500/20',
     dot: 'bg-yellow-500',
     label: 'Reserved',
   },
   [ProductStatus.SOLD]: {
-    badge: 'bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400',
+    badge: 'bg-red-500/10 text-red-400 ring-1 ring-red-500/20',
     dot: 'bg-red-500',
     label: 'Sold',
   },
@@ -39,66 +39,57 @@ const STATUS_CONFIG: Record<
 
 const ALL_STATUSES = Object.values(ProductStatus);
 
-export const DashboardProductList = ({ products }: DashboardProductProps) => {
-  return (
-    <div>
-      <div className="divide-y divide-border flex flex-col gap-2">
-        {products.map(product => (
-          <ProductRow key={product.id} product={product} />
-        ))}
-      </div>
-    </div>
-  );
-};
+export const DashboardProductList = ({ products }: DashboardProductProps) => (
+  <div className="divide-y divide-border">
+    {products.map(product => (
+      <ProductRow key={product.id} product={product} />
+    ))}
+  </div>
+);
 
-const ProductRow = ({ product }: { product: ProductsWithFavoriteStatus }) => {
-  return (
-    <div className="flex items-center gap-4 py-4">
-      <ProductThumbnail title={product.title} imageUrl={product.imageUrl} />
-      <ProductInfo product={product} />
-      <ProductStatusBadge status={product.status} />
-      <ProductActions product={product} />
-    </div>
-  );
-};
-
-const ProductThumbnail = ({ title, imageUrl }: { title: string; imageUrl: string }) => {
-  return (
-    <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg">
-      <Image src={imageUrl} alt={title} fill className="object-cover" sizes="64px" />
-    </div>
-  );
-};
-
-const ProductInfo = ({ product }: { product: ProductsWithFavoriteStatus }) => {
-  return (
-    <div className="min-w-0 flex-1">
-      <Link
-        href={routes.items.detail(product.id)}
-        className="font-medium hover:text-primary"
-      >
-        {product.title}
-      </Link>
-      <div className="mt-1 flex flex-wrap items-center gap-2 text-sm text-muted">
-        <span>{formatPrice(product.price)}</span>
-        <span className="text-border">|</span>
-        <span>{product.categoryName}</span>
-        <span className="text-border">|</span>
-        <span>{formatDate(product.createdAt)}</span>
-      </div>
-    </div>
-  );
-};
-
-const ProductStatusBadge = ({ status }: { status: ProductStatus }) => {
-  return (
-    <span
-      className={`rounded-full px-3 py-1 text-xs font-medium ${STATUS_CONFIG[status].badge}`}
+const ProductRow = ({ product }: { product: ProductsWithFavoriteStatus }) => (
+  <div className="flex items-stretch gap-3 py-3 px-2 rounded-lg hover:bg-background/20 transition-colors group">
+    <Link
+      href={routes.items.detail(product.id)}
+      className="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg"
     >
-      {status}
-    </span>
-  );
-};
+      <Image
+        src={product.imageUrl}
+        alt={product.title}
+        fill
+        className="object-cover"
+        sizes="80px"
+      />
+    </Link>
+    <div className="flex flex-1 min-w-0 justify-between gap-2">
+      <div className="flex flex-col justify-between min-w-0">
+        <Link
+          href={routes.items.detail(product.id)}
+          className="truncate font-medium hover:text-primary leading-snug text-sm sm:text-base"
+        >
+          {product.title}
+        </Link>
+        <span className="font-medium text-foreground text-sm sm:text-base">
+          {formatPrice(product.price)}
+        </span>
+
+        <div className="hidden sm:flex items-center gap-1.5 text-sm text-muted">
+          <span>{product.categoryName}</span>
+          <span className="text-border">·</span>
+          <span>{formatDate(product.createdAt)}</span>{' '}
+        </div>
+      </div>
+      <div className="flex flex-col items-end justify-between shrink-0">
+        <span
+          className={`rounded-full px-2 py-0.5 text-xs sm:text-base font-medium ${STATUS_CONFIG[product.status].badge}`}
+        >
+          {STATUS_CONFIG[product.status].label}
+        </span>
+        <ProductActions product={product} />
+      </div>
+    </div>
+  </div>
+);
 
 const ProductActions = ({ product }: { product: ProductsWithFavoriteStatus }) => {
   const [showMenu, setShowMenu] = useState(false);
@@ -112,17 +103,17 @@ const ProductActions = ({ product }: { product: ProductsWithFavoriteStatus }) =>
   };
 
   const handleStatusChange = (status: ProductStatus) => {
+    setShowMenu(false);
     startTransition(async () => {
       await updateProductStatusAction(product.id, status);
     });
-    setShowMenu(false);
   };
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex shrink-0 items-center">
       <Link
         href={routes.items.edit(product.id)}
-        className="btn btn-ghost p-2"
+        className="p-1.5 rounded-md text-muted hover:text-primary hover:bg-primary/10 transition-colors"
         title="Edit"
       >
         <Edit className="h-4 w-4" />
@@ -131,7 +122,7 @@ const ProductActions = ({ product }: { product: ProductsWithFavoriteStatus }) =>
       <button
         onClick={handleDelete}
         disabled={isPending}
-        className="btn btn-ghost p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20"
+        className="p-1.5 rounded-md text-muted hover:text-red-400 hover:bg-red-500/10 transition-colors disabled:opacity-50"
         title="Delete"
       >
         {isPending ? (
@@ -144,8 +135,8 @@ const ProductActions = ({ product }: { product: ProductsWithFavoriteStatus }) =>
       <StatusMenu
         currentStatus={product.status}
         isPending={isPending}
-        showMenu={showMenu}
-        onToggle={() => setShowMenu(!showMenu)}
+        isOpen={showMenu}
+        onToggle={() => setShowMenu(prev => !prev)}
         onStatusChange={handleStatusChange}
         onClose={() => setShowMenu(false)}
       />
@@ -156,45 +147,56 @@ const ProductActions = ({ product }: { product: ProductsWithFavoriteStatus }) =>
 const StatusMenu = ({
   currentStatus,
   isPending,
-  showMenu,
+  isOpen,
   onToggle,
   onStatusChange,
   onClose,
 }: {
   currentStatus: ProductStatus;
   isPending: boolean;
-  showMenu: boolean;
+  isOpen: boolean;
   onToggle: () => void;
   onStatusChange: (status: ProductStatus) => void;
   onClose: () => void;
-}) => {
-  return (
-    <div className="relative">
-      <button onClick={onToggle} className="btn btn-ghost p-2" title="More options">
-        <MoreVertical className="h-4 w-4" />
-      </button>
+}) => (
+  <div className="relative">
+    <button
+      onClick={onToggle}
+      className="p-1.5 rounded-md text-muted hover:text-foreground hover:bg-secondary transition-colors"
+      title="Change status"
+    >
+      <MoreVertical className="h-4 w-4" />
+    </button>
 
-      {showMenu && (
-        <>
-          <div className="fixed inset-0 z-10" onClick={onClose} />
-          <div className="absolute right-0 top-full z-20 mt-1 w-40 rounded-lg border border-border bg-card py-1 shadow-lg">
-            <p className="px-3 py-1 text-xs font-medium text-muted">Change Status</p>
-            {ALL_STATUSES.map(status => (
+    {isOpen && (
+      <>
+        <div className="fixed inset-0 z-10" onClick={onClose} />
+        <div className="absolute right-0 top-full z-20 mt-1 w-40 rounded-lg border border-border bg-card py-1 shadow-xl">
+          <p className="px-3 py-1.5 text-xs font-medium text-muted uppercase tracking-wide">
+            Change Status
+          </p>
+          {ALL_STATUSES.map(status => {
+            const isActive = currentStatus === status;
+            return (
               <button
                 key={status}
                 onClick={() => onStatusChange(status)}
-                disabled={currentStatus === status || isPending}
-                className="w-full px-3 py-2 text-left text-sm hover:bg-(--card-hover) disabled:opacity-50"
+                disabled={isActive || isPending}
+                className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm
+                  hover:bg-secondary disabled:opacity-40 disabled:cursor-default transition-colors"
               >
                 <span
-                  className={`mr-2 inline-block h-2 w-2 rounded-full ${STATUS_CONFIG[status].dot}`}
+                  className={`h-2 w-2 rounded-full shrink-0 ${STATUS_CONFIG[status].dot}`}
                 />
-                {STATUS_CONFIG[status].label}
+                <span className={isActive ? 'font-medium' : ''}>
+                  {STATUS_CONFIG[status].label}
+                </span>
+                {isActive && <span className="ml-auto text-xs text-muted">current</span>}
               </button>
-            ))}
-          </div>
-        </>
-      )}
-    </div>
-  );
-};
+            );
+          })}
+        </div>
+      </>
+    )}
+  </div>
+);
