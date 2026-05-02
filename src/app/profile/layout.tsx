@@ -1,7 +1,6 @@
 import { Navbar } from '@/components/layout/Navbar/Navbar';
 import { Footer } from '@/components/layout/Footer';
-
-import { Sidebar } from './components/Sidebar';
+import { Sidebar } from '@/app/profile/components/Sidebar';
 
 const DashboardLayout = async ({
   children,

@@ -14,8 +14,7 @@ import {
 } from '@/features/profile/dashboard/actions';
 import type { ProductsWithFavoriteStatus } from '@/features/items/_shared/types';
 import { Button } from '@/components/ui/Button';
-
-import type { DashboardProductProps } from '../types';
+import type { DashboardProductProps } from '@/features/profile/dashboard/types';
 
 const STATUS_CONFIG: Record<
   ProductStatus,

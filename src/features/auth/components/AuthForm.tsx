@@ -6,8 +6,7 @@ import { useRouter } from 'next/navigation';
 import { FormField } from '@/components/ui/FormField';
 import { type AuthFormState, initialRegisterState } from '@/features/auth/types';
 import { isPasswordValid } from '@/features/auth/validation';
-
-import { PasswordRules } from './PasswordRules';
+import { PasswordRules } from '@/features/auth/components/PasswordRules';
 
 type FieldConfig = {
   name: string;

@@ -95,7 +95,7 @@ const DashboardButton = () => {
 
 const UserButton = ({ username }: UserDTO) => {
   return (
-    <Link href={routes.items.user(username)} className="btn btn-ghost gap-2 px-3">
+    <Link href={routes.profile.settings} className="btn btn-ghost gap-2 px-3">
       <User className="h-5 w-5" />
       <span className="hidden sm:inline">{username}</span>
     </Link>

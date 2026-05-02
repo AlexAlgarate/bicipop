@@ -1,6 +1,6 @@
 import { Package, TrendingUp, Clock } from 'lucide-react';
 
-import type { DashboardData } from '../types';
+import type { DashboardData } from '@/features/profile/dashboard/types';
 
 const STATS_CONFIG = (
   statusCounts: DashboardData['statusCounts'],

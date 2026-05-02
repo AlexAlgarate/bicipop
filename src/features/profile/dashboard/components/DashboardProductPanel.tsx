@@ -1,4 +1,4 @@
-import type { DashboardProductProps } from '../types';
+import type { DashboardProductProps } from '@/features/profile/dashboard/types';
 
 import { DashboardProductList } from './DashboardProductList';
 import { NotUserProductsAvailable } from './DashboardNotProductsAvailable';

@@ -1,7 +1,6 @@
 import type { UserDTO } from '@/domain/user/types';
 import { Pagination } from '@/components/Pagination';
-
-import type { DashboardData } from '../types';
+import type { DashboardData } from '@/features/profile/dashboard/types';
 
 import { DashboardStats } from './DashboardStats';
 import { DashboardProductPanel } from './DashboardProductPanel';

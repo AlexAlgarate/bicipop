@@ -8,8 +8,7 @@ import {
   getFieldError,
   type ProfileFormState,
 } from '@/features/profile/settings/_shared/types';
-
-import { deleteUserAction } from '../actions';
+import { deleteUserAction } from '@/features/profile/settings/delete/actions';
 
 const initialState: ProfileFormState = { success: false, message: '', requestId: 0 };
 
