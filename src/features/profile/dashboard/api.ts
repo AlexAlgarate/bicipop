@@ -2,8 +2,9 @@ import { mapToProductWithFavoriteStatus } from '@/domain/products/mappers';
 import { ProductStatus } from '@/generated/client/enums';
 import prisma from '@/infrastructure/db/prisma/client';
 import { getPagination } from '@/features/items/_shared/utils/get-pagination';
+import type { PaginationParams } from '@/features/profile/_shared/types';
 
-import type { DashboardData, PaginationParams } from './types';
+import type { DashboardData } from './types';
 
 export const getUserDashboardProducts = async (
   userId: string,

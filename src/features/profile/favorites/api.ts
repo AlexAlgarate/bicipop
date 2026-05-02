@@ -1,8 +1,7 @@
 import prisma from '@/infrastructure/db/prisma/client';
 import { mapToProductWithFavoriteStatus } from '@/domain/products/mappers';
 import { getPagination } from '@/features/items/_shared/utils/get-pagination';
-
-import type { PaginationParams } from './types';
+import type { PaginationParams } from '@/features/profile/_shared/types';
 
 interface FavoritesData {
   items: Awaited<ReturnType<typeof mapToProductWithFavoriteStatus>>[];
