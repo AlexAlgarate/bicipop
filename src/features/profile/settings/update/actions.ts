@@ -30,7 +30,7 @@ export const updateUserProfileAction = async (
   if (!parsed.success) {
     return {
       success: false,
-      message: 'There are errors in the form. Please correct them and try again',
+      message: '',
       requestId: Date.now(),
       errors: getFieldErrorsFromTree(parsed.error),
       values: { email: rawValues.email, username: rawValues.username },

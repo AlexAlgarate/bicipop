@@ -1,118 +1,121 @@
 'use client';
 
 import { useActionState, useEffect, useState } from 'react';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { Pencil, User } from 'lucide-react';
 
 import { FormField } from '@/components/ui/FormField';
 import type { UserDTO } from '@/domain/user/types';
 import { updateUserProfileAction } from '@/features/profile/settings/update/actions';
-import type { ProfileFormState } from '@/features/profile/settings/_shared/types';
+import {
+  getFieldError,
+  type ProfileFormState,
+} from '@/features/profile/settings/_shared/types';
+import { routes } from '@/config/routes';
 
-const initialValues: ProfileFormState = {
+const initialState: ProfileFormState = {
   success: false,
   message: '',
   requestId: 0,
-  values: { email: '', username: '', password: '' },
 };
 
 export const ProfileSection = ({ user }: { user: UserDTO }) => {
   const [isEditing, setIsEditing] = useState(false);
 
   return (
-    <div className="bg-card rounded-xl shadow-sm p-6 md:p-8">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-semibold">Profile</h2>
+    <div className="rounded-xl border border-border bg-card overflow-hidden">
+      <div className="flex items-center justify-between px-6 py-4 border-b border-border">
+        <div className="flex items-center gap-2">
+          <User className="h-4 w-4 text-muted" />
+          <h2 className="font-semibold">Profile</h2>
+        </div>
         {!isEditing && (
-          <button className="btn btn-primary text-sm" onClick={() => setIsEditing(true)}>
+          <button
+            onClick={() => setIsEditing(true)}
+            className="flex items-center gap-1.5 text-sm text-primary hover:text-primary/80 transition-colors cursor-pointer"
+          >
+            <Pencil className="h-3.5 w-3.5" />
             Edit
           </button>
         )}
       </div>
 
-      {isEditing ? (
-        <ProfileForm
-          user={user}
-          onCancel={() => setIsEditing(false)}
-          action={updateUserProfileAction}
-        />
-      ) : (
-        <div className="flex justify-between items-center">
-          <div>
-            <p className="font-medium">{user.username}</p>
-            <p className="text-sm text-muted-foreground">{user.email}</p>
+      <div className="px-6 py-5">
+        {isEditing ? (
+          <ProfileForm user={user} onCancel={() => setIsEditing(false)} />
+        ) : (
+          <div className="flex items-center gap-4">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary font-semibold text-lg">
+              {user.username.charAt(0).toUpperCase()}
+            </div>
+            <div>
+              <p className="font-medium">{user.username}</p>
+              <p className="text-sm text-muted">{user.email}</p>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
 
-interface ProfileFormProps {
-  user: UserDTO;
-  onCancel: () => void;
-  action: (
-    _prevState: ProfileFormState | null,
-    formData: FormData
-  ) => Promise<ProfileFormState | null>;
-}
-const ProfileForm = ({ user, onCancel, action }: ProfileFormProps) => {
-  const [state, formAction] = useActionState(action, initialValues);
+const ProfileForm = ({ user, onCancel }: { user: UserDTO; onCancel: () => void }) => {
+  const router = useRouter();
+  const [state, formAction, isPending] = useActionState(
+    updateUserProfileAction,
+    initialState
+  );
 
   useEffect(() => {
     if (state?.success) {
-      redirect('/profile/settings');
+      router.push(routes.profile.settings);
+      router.refresh();
     }
-  }, [state]);
-
-  const usernameError = state?.errors?.username
-    ? ([state.errors.username[0]] as [string])
-    : undefined;
-  const emailError = state?.errors?.email
-    ? ([state.errors.email[0]] as [string])
-    : undefined;
-  const passwordError = state?.errors?.password
-    ? ([state.errors.password[0]] as [string])
-    : undefined;
-  const generalError = state?.errors?.general
-    ? ([state.errors.general[0]] as [string])
-    : undefined;
+  }, [state?.success, router]);
 
   return (
-    <form action={formAction} className="space-y-5">
-      <FormField label="Username" htmlFor="username" error={usernameError}>
+    <form action={formAction} className="space-y-4">
+      <FormField
+        label="Username"
+        htmlFor="username"
+        error={getFieldError(state, 'username')}
+      >
         <input
-          name="username"
-          defaultValue={user.username}
           id="username"
+          name="username"
+          type="text"
           className="input"
+          defaultValue={state?.values?.username ?? user.username}
         />
       </FormField>
 
-      <FormField label="Email" htmlFor="email" error={emailError}>
+      <FormField label="Email" htmlFor="email" error={getFieldError(state, 'email')}>
         <input
+          id="email"
           name="email"
           type="email"
-          defaultValue={user.email || ''}
-          id="email"
           className="input"
+          defaultValue={state?.values?.email ?? user.email}
         />
       </FormField>
 
-      <FormField label="Password" htmlFor="password" error={passwordError}>
-        <input name="password" type="password" id="password" className="input" required />
+      <FormField
+        label="Current password"
+        htmlFor="password"
+        error={getFieldError(state, 'password')}
+      >
+        <input id="password" name="password" type="password" className="input" />
       </FormField>
-
-      {generalError && <p className="text-sm text-destructive">{generalError}</p>}
 
       {state?.message && !state.success && (
         <p className="text-sm text-destructive">{state.message}</p>
       )}
 
-      <div className="flex gap-3">
-        <button type="submit" className="btn btn-primary">
-          Save
+      <div className="flex gap-2 pt-1">
+        <button type="submit" disabled={isPending} className="btn btn-primary text-sm">
+          {isPending ? 'Saving...' : 'Save changes'}
         </button>
-        <button type="button" className="btn btn-secondary" onClick={onCancel}>
+        <button type="button" onClick={onCancel} className="btn btn-secondary text-sm">
           Cancel
         </button>
       </div>

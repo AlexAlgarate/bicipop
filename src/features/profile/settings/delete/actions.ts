@@ -17,16 +17,14 @@ export const deleteUserAction = async (
   formData: FormData
 ): Promise<ProfileFormState | null> => {
   const password = String(formData.get('password'));
-
   const parsed = deleteUserSchema.safeParse({ password });
 
   if (!parsed.success) {
     return {
       success: false,
-      message: 'There are errors in the form. Please correct them and try again',
+      message: '',
       requestId: Date.now(),
       errors: getFieldErrorsFromTree(parsed.error),
-      values: { password },
     };
   }
 
@@ -35,16 +33,15 @@ export const deleteUserAction = async (
 
     const cookieStore = await cookies();
     cookieStore.delete(SESSION_COOKIE_NAME);
-
-    revalidatePath(routes.home);
-    redirect(routes.home);
   } catch (error) {
     return {
       success: false,
       message: error instanceof Error ? error.message : 'Failed to delete account',
       requestId: Date.now(),
       errors: error instanceof Error ? { general: [error.message] } : undefined,
-      values: { password },
     };
   }
+
+  revalidatePath(routes.home);
+  redirect(routes.home);
 };
