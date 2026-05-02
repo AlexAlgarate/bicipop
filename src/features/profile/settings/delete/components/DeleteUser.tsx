@@ -1,31 +1,27 @@
 'use client';
 
-import { useState } from 'react';
+import { useActionState, useState } from 'react';
 
-import { deleteUserAction } from '@/features/profile/settings/delete/actions';
+import { FormField } from '@/components/ui/FormField';
+import type { ProfileFormState } from '@/features/profile/settings/_shared/types';
+
+import { deleteUserAction } from '../actions';
+
+const initialState: ProfileFormState = {
+  success: false,
+  message: '',
+  requestId: 0,
+  values: { password: '' },
+};
 
 export const DeleteUserButton = () => {
-  const [isLoading, setIsLoading] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [state, formAction] = useActionState(deleteUserAction, initialState);
 
-  const handleDelete = async () => {
-    setIsLoading(true);
+  const passwordError = state?.errors?.password
+    ? ([state.errors.password[0]] as [string])
+    : undefined;
 
-    try {
-      await deleteUserAction();
-    } catch (error) {
-      if (error instanceof Error && error.message.includes('NEXT_REDIRECT')) {
-        return;
-      }
-
-      setIsLoading(false);
-      setShowConfirm(false);
-    }
-  };
-
-  const handleCancel = () => {
-    if (!isLoading) setShowConfirm(false);
-  };
   if (showConfirm) {
     return (
       <div className="p-6 bg-destructive/10 border border-destructive rounded-lg">
@@ -38,23 +34,41 @@ export const DeleteUserButton = () => {
           be recovered.
         </p>
 
-        <div className="flex gap-3">
-          <button
-            onClick={handleDelete}
-            disabled={isLoading}
-            className="btn bg-destructive hover:bg-destructive/90 text-white"
+        <form action={formAction}>
+          <FormField
+            label="Password"
+            htmlFor="password"
+            error={passwordError}
           >
-            {isLoading ? 'Deleting...' : 'Yes, delete my account'}
-          </button>
+            <input
+              name="password"
+              type="password"
+              className="input"
+              required
+            />
+          </FormField>
 
-          <button
-            onClick={handleCancel}
-            disabled={isLoading}
-            className="btn btn-secondary"
-          >
-            Cancel
-          </button>
-        </div>
+          {state?.message && !state.success && (
+            <p className="text-sm text-destructive mb-2">{state.message}</p>
+          )}
+
+          <div className="flex gap-3">
+            <button
+              type="submit"
+              className="btn bg-destructive hover:bg-destructive/90 text-white"
+            >
+              Yes, delete my account
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setShowConfirm(false)}
+              className="btn btn-secondary"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
       </div>
     );
   }

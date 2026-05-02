@@ -1,12 +1,24 @@
-import { getCurrentUser } from '@/features/auth/api';
+import { getSession } from '@/infrastructure/auth/session';
 import prisma from '@/infrastructure/db/prisma/client';
+import { comparePassword } from '@/infrastructure/security/bcrypt-password-hasher';
 
-export const deleteUserAccount = async (): Promise<void> => {
-  const user = await getCurrentUser();
+export const deleteUserAccount = async (password: string): Promise<void> => {
+  const session = await getSession();
+
+  if (!session?.userId) throw new Error('User not found');
+
+  const user = await prisma.user.findUnique({
+    where: { id: session.userId },
+    select: { password: true },
+  });
 
   if (!user) throw new Error('User not found');
 
+  const isValid = await comparePassword(password, user.password);
+
+  if (!isValid) throw new Error('Incorrect password');
+
   await prisma.user.delete({
-    where: { id: user.id },
+    where: { id: session.userId },
   });
 };
