@@ -19,11 +19,14 @@ export const UserSettingsPage = async () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <SettingsHeader user={user} />
-      <div className="card flex flex-col gap-4">
-        <ProfileSection user={user} />
-        <PasswordSection />
-        <DeleteUserButton />
+      <div className="mx-auto max-w-2xl">
+        <SettingsHeader user={user} />
+
+        <div className="space-y-6">
+          <ProfileSection user={user} />
+          <PasswordSection />
+          <DeleteUserButton />
+        </div>
       </div>
     </div>
   );

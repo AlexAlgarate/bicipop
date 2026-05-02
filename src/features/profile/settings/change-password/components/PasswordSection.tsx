@@ -21,43 +21,103 @@ export const PasswordSection = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div>
-      <h2 className="text-2xl mb-2">Password</h2>
+    <div className="bg-card rounded-xl shadow-sm p-6 md:p-8">
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-xl font-semibold">Password</h2>
+        {!isOpen && (
+          <button
+            className="btn btn-primary text-sm"
+            onClick={() => setIsOpen(true)}
+          >
+            Change password
+          </button>
+        )}
+      </div>
 
-      {isOpen ? (
-        <PasswordForm onCancel={() => setIsOpen(false)} />
-      ) : (
-        <button className="btn btn-primary" onClick={() => setIsOpen(true)}>
-          Change password
-        </button>
+      {!isOpen && (
+        <p className="text-sm text-muted-foreground">
+          Update your password to keep your account secure
+        </p>
       )}
+
+      {isOpen && <PasswordForm onCancel={() => setIsOpen(false)} />}
     </div>
   );
 };
 
-const PasswordForm = ({ onCancel }: { onCancel: () => void }) => {
+interface PasswordFormProps {
+  onCancel: () => void;
+}
+const PasswordForm = ({ onCancel }: PasswordFormProps) => {
   const [state, formAction] = useActionState(changePasswordAction, initialValues);
 
+  const currentPasswordError = state?.errors?.currentPassword
+    ? ([state.errors.currentPassword[0]] as [string])
+    : undefined;
+  const newPasswordError = state?.errors?.newPassword
+    ? ([state.errors.newPassword[0]] as [string])
+    : undefined;
+  const confirmPasswordError = state?.errors?.confirmPassword
+    ? ([state.errors.confirmPassword[0]] as [string])
+    : undefined;
+  const generalError = state?.errors?.general
+    ? ([state.errors.general[0]] as [string])
+    : undefined;
+
   return (
-    <form action={formAction} className="flex flex-col gap-4">
-      <FormField label="Current password" htmlFor="currentPassword">
-        <input name="currentPassword" type="password" className="input" />
+    <form action={formAction} className="space-y-5">
+      <FormField
+        label="Current password"
+        htmlFor="currentPassword"
+        error={currentPasswordError}
+      >
+        <input
+          name="currentPassword"
+          type="password"
+          id="currentPassword"
+          className="input"
+          required
+        />
       </FormField>
 
-      <FormField label="New password" htmlFor="newPassword">
-        <input name="newPassword" type="password" className="input" />
+      <FormField
+        label="New password"
+        htmlFor="newPassword"
+        error={newPasswordError}
+      >
+        <input
+          name="newPassword"
+          type="password"
+          id="newPassword"
+          className="input"
+          required
+        />
       </FormField>
 
-      <FormField label="Confirm password" htmlFor="confirmPassword">
-        <input name="confirmPassword" type="password" className="input" />
+      <FormField
+        label="Confirm password"
+        htmlFor="confirmPassword"
+        error={confirmPasswordError}
+      >
+        <input
+          name="confirmPassword"
+          type="password"
+          id="confirmPassword"
+          className="input"
+          required
+        />
       </FormField>
 
-      {state?.message && !state.success && (
-        <p className="text-sm text-destructive">{state.message}</p>
+      {(generalError || (state?.message && !state.success)) && (
+        <p className="text-sm text-destructive">
+          {generalError || state?.message}
+        </p>
       )}
 
-      <div className="flex gap-2">
-        <button className="btn btn-primary">Update password</button>
+      <div className="flex gap-3">
+        <button type="submit" className="btn btn-primary">
+          Update password
+        </button>
         <button type="button" className="btn btn-secondary" onClick={onCancel}>
           Cancel
         </button>

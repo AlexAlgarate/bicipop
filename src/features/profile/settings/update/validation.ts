@@ -6,4 +6,5 @@ export const updateUserProfileSchema = z.object({
     .string()
     .min(3, 'Username must be at least 3 characters')
     .max(20, 'Username cannot have more than 20 characters'),
+  password: z.string().min(1, 'Password is required to make changes'),
 });

@@ -22,6 +22,7 @@ export const updateUserProfileAction = async (
   const rawValues = {
     email: String(formData.get('email')),
     username: String(formData.get('username')),
+    password: String(formData.get('password')),
   };
 
   const parsed = updateUserProfileSchema.safeParse(rawValues);
@@ -32,7 +33,7 @@ export const updateUserProfileAction = async (
       message: 'There are errors in the form. Please correct them and try again',
       requestId: Date.now(),
       errors: getFieldErrorsFromTree(parsed.error),
-      values: rawValues,
+      values: { email: rawValues.email, username: rawValues.username },
     };
   }
 
@@ -40,6 +41,7 @@ export const updateUserProfileAction = async (
     await updateUserProfile({
       email: parsed.data.email,
       username: parsed.data.username,
+      password: parsed.data.password,
     });
     revalidatePath(routes.profile.settings);
     redirect(routes.profile.settings);
@@ -48,10 +50,10 @@ export const updateUserProfileAction = async (
 
     return {
       success: false,
-      message: 'Failed to update profile. Please try again',
+      message: error instanceof Error ? error.message : 'Failed to update profile. Please try again',
       requestId: Date.now(),
       errors: error instanceof Error ? { general: [error.message] } : undefined,
-      values: rawValues,
+      values: { email: rawValues.email, username: rawValues.username },
     };
   }
 };

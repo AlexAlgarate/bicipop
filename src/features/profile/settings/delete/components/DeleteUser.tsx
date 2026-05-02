@@ -21,20 +21,23 @@ export const DeleteUserButton = () => {
   const passwordError = state?.errors?.password
     ? ([state.errors.password[0]] as [string])
     : undefined;
+  const generalError = state?.errors?.general
+    ? ([state.errors.general[0]] as [string])
+    : undefined;
 
   if (showConfirm) {
     return (
-      <div className="p-6 bg-destructive/10 border border-destructive rounded-lg">
-        <h3 className="text-lg font-semibold text-destructive mb-2">
-          Confirm account deletion
-        </h3>
+      <div className="bg-destructive/5 border border-destructive rounded-xl p-6 md:p-8">
+        <h2 className="text-xl font-semibold text-destructive mb-2">
+          Delete account
+        </h2>
 
-        <p className="text-sm text-muted-foreground mb-4">
-          This action is permanent. All your data will be deleted and your account cannot
-          be recovered.
+        <p className="text-sm text-muted-foreground mb-6">
+          This action is permanent. All your data will be deleted and your account cannot be
+          recovered.
         </p>
 
-        <form action={formAction}>
+        <form action={formAction} className="space-y-5">
           <FormField
             label="Password"
             htmlFor="password"
@@ -43,13 +46,16 @@ export const DeleteUserButton = () => {
             <input
               name="password"
               type="password"
+              id="password"
               className="input"
               required
             />
           </FormField>
 
-          {state?.message && !state.success && (
-            <p className="text-sm text-destructive mb-2">{state.message}</p>
+          {(generalError || (state?.message && !state.success)) && (
+            <p className="text-sm text-destructive">
+              {generalError || state?.message}
+            </p>
           )}
 
           <div className="flex gap-3">
@@ -72,12 +78,23 @@ export const DeleteUserButton = () => {
       </div>
     );
   }
+
   return (
-    <button
-      onClick={() => setShowConfirm(true)}
-      className="btn bg-destructive hover:bg-destructive/90 text-white"
-    >
-      Delete my account
-    </button>
+    <div className="bg-card rounded-xl shadow-sm p-6 md:p-8">
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-xl font-semibold">Danger zone</h2>
+          <p className="text-sm text-muted-foreground mt-1">
+            Permanently delete your account and all data
+          </p>
+        </div>
+        <button
+          onClick={() => setShowConfirm(true)}
+          className="btn bg-destructive hover:bg-destructive/90 text-white"
+        >
+          Delete account
+        </button>
+      </div>
+    </div>
   );
 };
