@@ -1,51 +1,30 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 
 import type { ProductStatus } from '@/generated/client/enums';
 import { getProductById } from '@/features/items/_shared/api';
 import { getCurrentUser } from '@/features/auth/api';
 import { routes } from '@/config/routes';
+import { getSession } from '@/infrastructure/auth/session';
 
 import { deleteProduct, updateProductStatus } from './api';
 import type { ProductState } from './types';
 
-export async function deleteProductAction(productId: string): Promise<ProductState> {
-  const currentUser = await getCurrentUser();
+export async function deleteProductAction(productId: string): Promise<void> {
+  const session = await getSession();
 
-  if (!currentUser) {
-    return {
-      success: false,
-      message: 'You must be logged in to delete a product',
-    };
-  }
+  if (!session?.userId) redirect(routes.auth.login);
 
-  const existingProduct = await getProductById(productId, currentUser.id);
+  const existingProduct = await getProductById(productId, session.userId);
 
-  if (!existingProduct || !existingProduct.isOwner) {
-    return {
-      success: false,
-      message: 'You are not authorized to delete this product',
-    };
-  }
+  if (!existingProduct) redirect(routes.home);
 
-  try {
-    await deleteProduct(productId);
+  await deleteProduct(productId);
 
-    revalidatePath(routes.home, 'layout');
-    revalidatePath(routes.profile.dashboard, 'page');
-
-    return {
-      success: true,
-      message: 'Product deleted successfully',
-    };
-  } catch (error) {
-    console.error('Error deleting product:', error);
-    return {
-      success: false,
-      message: 'Failed to delete product. Please try again.',
-    };
-  }
+  revalidatePath(routes.home, 'layout');
+  revalidatePath(routes.profile.dashboard, 'page');
 }
 
 export async function updateProductStatusAction(

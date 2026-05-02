@@ -13,6 +13,7 @@ import {
   updateProductStatusAction,
 } from '@/features/profile/dashboard/actions';
 import type { ProductsWithFavoriteStatus } from '@/features/items/_shared/types';
+import { Button } from '@/components/ui/Button';
 
 import type { DashboardProductProps } from '../types';
 
@@ -94,13 +95,7 @@ const ProductRow = ({ product }: { product: ProductsWithFavoriteStatus }) => (
 const ProductActions = ({ product }: { product: ProductsWithFavoriteStatus }) => {
   const [showMenu, setShowMenu] = useState(false);
   const [isPending, startTransition] = useTransition();
-
-  const handleDelete = () => {
-    if (!confirm('Are you sure you want to delete this product?')) return;
-    startTransition(async () => {
-      await deleteProductAction(product.id);
-    });
-  };
+  const [showModal, setShowModal] = useState(false);
 
   const handleStatusChange = (status: ProductStatus) => {
     setShowMenu(false);
@@ -118,20 +113,62 @@ const ProductActions = ({ product }: { product: ProductsWithFavoriteStatus }) =>
       >
         <Edit className="h-4 w-4" />
       </Link>
+      <>
+        <Button
+          onClick={() => setShowModal(true)}
+          disabled={isPending}
+          className="p-1.5 rounded-md text-muted hover:text-red-400 hover:bg-red-500/10 transition-colors disabled:opacity-50"
+          title="Delete"
+        >
+          {isPending ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <Trash2 className="h-4 w-4" />
+          )}
+        </Button>
+        {showModal && (
+          <div className=" fixed inset-0 z-50 flex items-center justify-center">
+            <div
+              className="absolute inset-0 bg-black/50 shadow-lg"
+              onClick={() => setShowModal(false)}
+            ></div>
 
-      <button
-        onClick={handleDelete}
-        disabled={isPending}
-        className="p-1.5 rounded-md text-muted hover:text-red-400 hover:bg-red-500/10 transition-colors disabled:opacity-50"
-        title="Delete"
-      >
-        {isPending ? (
-          <Loader2 className="h-4 w-4 animate-spin" />
-        ) : (
-          <Trash2 className="h-4 w-4" />
+            <div className="relative z-10 bg-card border border-border rounded-xl p-6 max-w-sm w-full mx-4 shadow-xl">
+              <h2 className="text-lg font-semibold mb-2">Eliminar anuncio</h2>
+              <p className=" text-sm text-muted-foreground mb-6">
+                ¿Estás seguro de que quieres eliminar el anuncio? Esta acción no se puede
+                deshacer.
+              </p>
+              <div className="flex gap-3">
+                <Button
+                  onClick={() => setShowModal(false)}
+                  className="
+                flex-1 flex items-center justify-center gap-2
+                border border-gary-200 hover:bg-gray-200 hover:border-gray-400
+                text-gay-700 font-medium py-2.5 rounded-lg
+              dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800
+                "
+                >
+                  Cancelar
+                </Button>
+                <form
+                  action={async (_formData: FormData) => {
+                    await deleteProductAction(product.id);
+                  }}
+                  className="flex-1"
+                >
+                  <Button
+                    type="submit"
+                    className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2.5 rounded-lg"
+                  >
+                    Sí, eliminar
+                  </Button>
+                </form>
+              </div>
+            </div>
+          </div>
         )}
-      </button>
-
+      </>
       <StatusMenu
         currentStatus={product.status}
         isPending={isPending}
