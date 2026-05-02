@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 import { getUserProfileByUsername, getUserProducts } from '@/features/items/user/api';
 import { UserProfileHeader } from '@/features/items/user/components/UserProfileHeader';
 import { ProductsGrid } from '@/features/items/_shared/components/ProductsGrid';
+import { getSession } from '@/infrastructure/auth/session';
 import { PRODUCTS_PER_PAGE } from '@/utils/constants';
 
 interface UserProfilePageProps {
@@ -38,9 +39,12 @@ export default async function UserProfilePage({
   const { page: pageParam, query } = await searchParams;
   const page = pageParam ? parseInt(pageParam, 10) : 1;
 
+  const session = await getSession();
+  const userId = session?.userId;
+
   const [profile, result] = await Promise.all([
     getUserProfileByUsername(username),
-    getUserProducts(username, null, { page, pageSize: PRODUCTS_PER_PAGE, query }),
+    getUserProducts(username, userId, { page, pageSize: PRODUCTS_PER_PAGE, query }),
   ]);
 
   if (!profile) {
@@ -62,6 +66,11 @@ export default async function UserProfilePage({
           products={result.items}
           currentPage={page}
           totalPages={totalPages}
+          emptyMessage={{
+            title: `No products yet`,
+            description: `${profile.username} hasn't posted any products.`,
+            showLink: false,
+          }}
         />
       </div>
     </div>

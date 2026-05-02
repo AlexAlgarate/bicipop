@@ -48,6 +48,11 @@ const FavoritesPage = async ({
         products={data.items}
         currentPage={currentPage}
         totalPages={totalPages}
+        emptyMessage={{
+          title: 'No favorites yet',
+          description: 'Browse the catalog and save products you like!',
+          showLink: true,
+        }}
       />
     </div>
   );
