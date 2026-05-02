@@ -7,9 +7,8 @@ import {
   SESSION_COOKIE_NAME,
   SESSION_DURATION_MS,
 } from '@/infrastructure/auth/constants';
-
-import { signSessionToken, verifySessionToken } from './jwt';
-import type { SessionTokenPayload } from './types';
+import { signSessionToken, verifySessionToken } from '@/infrastructure/auth/jwt';
+import type { SessionTokenPayload } from '@/infrastructure/auth/types';
 
 const getSessionExpiresAt = (): Date => {
   return new Date(Date.now() + SESSION_DURATION_MS);

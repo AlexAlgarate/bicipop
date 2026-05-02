@@ -6,12 +6,17 @@ export const routes = {
   },
   items: {
     upload: '/items/upload',
-    edit: '/items/edit',
-    detail: '/items',
+    edit: (id: string) => `/items/edit/${id}`,
+    detail: (id: string) => `/items/${id}`,
+    user: (username: string) => `/items/user/${username}`,
   },
-  category: '/category',
-  dashboard: '/dashboard',
-  user: '/user',
+  category: (categorySlug: string) => `/category/${categorySlug}`,
+  profile: {
+    dashboard: '/profile/dashboard',
+    settings: '/profile/settings',
+    favorites: '/profile/favorites',
+  },
+
   aboutUs: '/about',
   termsOfService: '/terms',
   search: '/search',

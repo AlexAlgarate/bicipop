@@ -1,4 +1,4 @@
-import { supabase } from './supabase';
+import { supabase } from '@/infrastructure/db/supabase/supabase';
 
 const BUCKET_NAME = 'products';
 

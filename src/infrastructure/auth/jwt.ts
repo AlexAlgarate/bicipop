@@ -1,7 +1,7 @@
 import { SignJWT, jwtVerify } from 'jose';
 
-import type { SessionTokenPayload } from './types';
-import { getJwtSecretKey, JWT_ALGORITHM } from './constants';
+import type { SessionTokenPayload } from '@/infrastructure/auth/types';
+import { getJwtSecretKey, JWT_ALGORITHM } from '@/infrastructure/auth/constants';
 
 const jwtSecret = getJwtSecretKey();
 

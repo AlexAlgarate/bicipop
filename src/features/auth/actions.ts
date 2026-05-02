@@ -11,6 +11,7 @@ import {
   comparePassword,
   hashPassword,
 } from '@/infrastructure/security/bcrypt-password-hasher';
+import { routes } from '@/config/routes';
 
 import { getUserForAuth, getUserByEmail, getUserByUsername, registerUser } from './api';
 
@@ -43,7 +44,7 @@ export async function loginAction(
 
   try {
     await createSession(user.id);
-    revalidatePath('/');
+    revalidatePath(routes.home);
 
     return {
       success: true,
@@ -153,6 +154,6 @@ export async function registerAction(
 
 export const logout = async (): Promise<void> => {
   await deleteSession();
-  revalidatePath('/');
-  redirect('/');
+  revalidatePath(routes.home);
+  redirect(routes.home);
 };

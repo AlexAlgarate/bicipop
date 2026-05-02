@@ -26,9 +26,15 @@ interface FavoriteButtonProps {
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
   isDisabled: boolean;
   isFavorite: boolean;
+  isOwner: boolean;
 }
 
-const FavoriteButton = ({ onClick, isDisabled, isFavorite }: FavoriteButtonProps) => (
+const FavoriteButton = ({
+  onClick,
+  isDisabled,
+  isFavorite,
+  isOwner,
+}: FavoriteButtonProps) => (
   <Button
     onClick={onClick}
     disabled={isDisabled}
@@ -38,7 +44,7 @@ const FavoriteButton = ({ onClick, isDisabled, isFavorite }: FavoriteButtonProps
       ${isFavorite ? 'text-yellow-500 bg-yellow-50' : ''}`}
   >
     <Star
-      className={`w-5 h-5 ${isFavorite ? 'fill-current scale-110 transition-all duration-200' : ''}`}
+      className={`${isOwner ? 'hidden' : ''} w-5 h-5 ${isFavorite ? 'fill-current scale-110 transition-all duration-200' : ''}`}
     />
   </Button>
 );
@@ -69,6 +75,7 @@ const ProductInfo = ({
             onClick={onFavoriteClick}
             isDisabled={isDisabled}
             isFavorite={isFavorite}
+            isOwner={product.isOwner ?? false}
           />
         )}
       </div>
@@ -148,7 +155,7 @@ export const ProductCard = ({ product }: { product: ProductCardProps }) => {
 
   return (
     <Link
-      href={`${routes.items.detail}/${product.id}`}
+      href={routes.items.detail(product.id)}
       className="group flex flex-col h-full bg-card rounded-xl shadow-sm hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300 ease-out overflow-hidden p-3"
     >
       <ProductImage product={product} />

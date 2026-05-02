@@ -82,8 +82,8 @@ export const uploadProductAction = async (
       userId: session.userId,
     });
 
-    revalidatePath(`/`);
-    redirect('/');
+    revalidatePath(routes.home);
+    redirect(routes.home);
   } catch (error) {
     if (isNextControlFlowError(error)) {
       throw error;

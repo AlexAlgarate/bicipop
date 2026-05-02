@@ -16,7 +16,7 @@ export const ProductActions = ({ product, isOwner }: ProductActionsProps) => {
     <div className="flex gap-3">
       {isOwner ? (
         <Link
-          href={`${routes.items.edit}/${product.id}`}
+          href={routes.items.edit(product.id)}
           className="btn btn-primary flex-1 py-3"
         >
           Edit Product

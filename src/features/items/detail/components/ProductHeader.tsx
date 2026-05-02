@@ -27,7 +27,7 @@ export const ProductHeader = ({ product }: ProductHeaderProps) => {
     <div>
       <div className="mb-2 flex items-center gap-2">
         <Link
-          href={`${routes.category}/${product.categorySlug}`}
+          href={routes.category(product.categorySlug)}
           className="rounded-full bg-primary/10 px-3 py-1 font-medium text-primary"
         >
           {product.categoryName}

@@ -10,18 +10,17 @@ interface SellerInfoProps {
 
 export const ProductSellerInfo = ({ product }: SellerInfoProps) => {
   return (
-    <div className="card">
-      <h2 className="mb-3 pl-2 text-lg font-semibold">Seller</h2>
+    <div className="rounded-xl border border-border bg-card p-4 shadow-sm transition-all hover:shadow-md hover:bg-card-hover">
       <Link
-        href={`${routes.user}/${product.userName}`}
-        className="flex items-center gap-3 rounded-lg p-2 transition-colors hover:bg-card-hover cursor-pointer"
+        href={routes.items.user(product.userName)}
+        className="flex items-center gap-3 rounded-lg p-2 transition-colors hover:bg-secondary/20 cursor-pointer"
       >
-        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 hover:bg-border/20 border-border">
+        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary-soft border border-border transition-colors hover:bg-primary-ring/30">
           <User className="h-6 w-6 text-primary" />
         </div>
-        <div>
-          <p className="font-medium text-lg">{product.userName}</p>
-          <p className="text-muted">
+        <div className="flex-1">
+          <p className="font-semibold text-card-foreground">{product.userName}</p>
+          <p className="text-sm text-muted-foreground">
             Member since{' '}
             {new Date(product.createdAt).toLocaleDateString('en-US', {
               month: 'long',

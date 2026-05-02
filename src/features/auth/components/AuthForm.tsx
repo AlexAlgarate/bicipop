@@ -3,12 +3,10 @@
 import { type ReactNode, useActionState, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-import { Button } from '@/components/ui/Button';
 import { FormField } from '@/components/ui/FormField';
 import { type AuthFormState, initialRegisterState } from '@/features/auth/types';
 import { isPasswordValid } from '@/features/auth/validation';
-
-import { PasswordRules } from './PasswordRules';
+import { PasswordRules } from '@/features/auth/components/PasswordRules';
 
 type FieldConfig = {
   name: string;
@@ -80,12 +78,9 @@ export const AuthForm = ({
         </div>
       ))}
 
-      <Button
-        type="submit"
-        className="w-full rounded-lg bg-primary text-sm font-semibold text-primary-foreground py-2.5 mt-2"
-      >
+      <button type="submit" className="btn btn-primary w-full text font-semibold mt-2">
         {submitText}
-      </Button>
+      </button>
 
       {footer && <div>{footer}</div>}
 

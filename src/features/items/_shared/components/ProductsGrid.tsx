@@ -7,14 +7,20 @@ interface ProductsGridProps {
   products: ProductsWithFavoriteStatus[];
   currentPage: number;
   totalPages: number;
+  emptyMessage?: {
+    title: string;
+    description: string;
+    showLink?: boolean;
+  };
 }
 
 export const ProductsGrid = ({
   products,
   currentPage,
   totalPages,
+  emptyMessage,
 }: ProductsGridProps) => {
-  if (products.length === 0) return <EmptyState query="" />;
+  if (products.length === 0) return <EmptyState {...emptyMessage} />;
 
   return (
     <>

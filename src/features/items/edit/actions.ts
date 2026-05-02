@@ -79,11 +79,10 @@ export const updateProductAction = async (
       status: rawValues.status,
       productId: rawValues.productId,
     });
-
-    revalidatePath('/', 'layout');
-    revalidatePath('/dashboard', 'page');
-    revalidatePath(`/items/${rawValues.productId}`, 'page');
-    redirect(`/items/${rawValues.productId}`);
+    revalidatePath(routes.home, 'layout');
+    revalidatePath(routes.profile.dashboard, 'page');
+    revalidatePath(routes.items.detail(rawValues.productId), 'page');
+    redirect(routes.profile.dashboard);
   } catch (error) {
     if (isNextControlFlowError(error)) throw error;
 
