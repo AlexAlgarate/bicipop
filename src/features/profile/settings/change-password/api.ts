@@ -1,6 +1,9 @@
 import prisma from '@/infrastructure/db/prisma/client';
 import { getSession } from '@/infrastructure/auth/session';
-import { comparePassword, hashPassword } from '@/infrastructure/security/bcrypt-password-hasher';
+import {
+  comparePassword,
+  hashPassword,
+} from '@/infrastructure/security/bcrypt-password-hasher';
 
 export const changeUserPassword = async (
   currentPassword: string,

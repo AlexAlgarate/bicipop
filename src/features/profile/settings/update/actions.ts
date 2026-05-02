@@ -50,7 +50,10 @@ export const updateUserProfileAction = async (
 
     return {
       success: false,
-      message: error instanceof Error ? error.message : 'Failed to update profile. Please try again',
+      message:
+        error instanceof Error
+          ? error.message
+          : 'Failed to update profile. Please try again',
       requestId: Date.now(),
       errors: error instanceof Error ? { general: [error.message] } : undefined,
       values: { email: rawValues.email, username: rawValues.username },

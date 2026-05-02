@@ -23,10 +23,7 @@ export const ProfileSection = ({ user }: { user: UserDTO }) => {
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-semibold">Profile</h2>
         {!isEditing && (
-          <button
-            className="btn btn-primary text-sm"
-            onClick={() => setIsEditing(true)}
-          >
+          <button className="btn btn-primary text-sm" onClick={() => setIsEditing(true)}>
             Edit
           </button>
         )}
@@ -82,11 +79,7 @@ const ProfileForm = ({ user, onCancel, action }: ProfileFormProps) => {
 
   return (
     <form action={formAction} className="space-y-5">
-      <FormField
-        label="Username"
-        htmlFor="username"
-        error={usernameError}
-      >
+      <FormField label="Username" htmlFor="username" error={usernameError}>
         <input
           name="username"
           defaultValue={user.username}
@@ -95,11 +88,7 @@ const ProfileForm = ({ user, onCancel, action }: ProfileFormProps) => {
         />
       </FormField>
 
-      <FormField
-        label="Email"
-        htmlFor="email"
-        error={emailError}
-      >
+      <FormField label="Email" htmlFor="email" error={emailError}>
         <input
           name="email"
           type="email"
@@ -109,23 +98,11 @@ const ProfileForm = ({ user, onCancel, action }: ProfileFormProps) => {
         />
       </FormField>
 
-      <FormField
-        label="Password"
-        htmlFor="password"
-        error={passwordError}
-      >
-        <input
-          name="password"
-          type="password"
-          id="password"
-          className="input"
-          required
-        />
+      <FormField label="Password" htmlFor="password" error={passwordError}>
+        <input name="password" type="password" id="password" className="input" required />
       </FormField>
 
-      {generalError && (
-        <p className="text-sm text-destructive">{generalError}</p>
-      )}
+      {generalError && <p className="text-sm text-destructive">{generalError}</p>}
 
       {state?.message && !state.success && (
         <p className="text-sm text-destructive">{state.message}</p>
@@ -135,11 +112,7 @@ const ProfileForm = ({ user, onCancel, action }: ProfileFormProps) => {
         <button type="submit" className="btn btn-primary">
           Save
         </button>
-        <button
-          type="button"
-          className="btn btn-secondary"
-          onClick={onCancel}
-        >
+        <button type="button" className="btn btn-secondary" onClick={onCancel}>
           Cancel
         </button>
       </div>

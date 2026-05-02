@@ -25,10 +25,7 @@ export const PasswordSection = () => {
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-semibold">Password</h2>
         {!isOpen && (
-          <button
-            className="btn btn-primary text-sm"
-            onClick={() => setIsOpen(true)}
-          >
+          <button className="btn btn-primary text-sm" onClick={() => setIsOpen(true)}>
             Change password
           </button>
         )}
@@ -80,11 +77,7 @@ const PasswordForm = ({ onCancel }: PasswordFormProps) => {
         />
       </FormField>
 
-      <FormField
-        label="New password"
-        htmlFor="newPassword"
-        error={newPasswordError}
-      >
+      <FormField label="New password" htmlFor="newPassword" error={newPasswordError}>
         <input
           name="newPassword"
           type="password"
@@ -109,9 +102,7 @@ const PasswordForm = ({ onCancel }: PasswordFormProps) => {
       </FormField>
 
       {(generalError || (state?.message && !state.success)) && (
-        <p className="text-sm text-destructive">
-          {generalError || state?.message}
-        </p>
+        <p className="text-sm text-destructive">{generalError || state?.message}</p>
       )}
 
       <div className="flex gap-3">

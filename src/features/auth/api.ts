@@ -23,20 +23,22 @@ export const getUserForAuth = async (email: string) => {
   });
 };
 
-export const getCurrentUserWithPassword = cache(async (): Promise<{ id: string; passwordHash: string } | null> => {
-  const session = await getSession();
+export const getCurrentUserWithPassword = cache(
+  async (): Promise<{ id: string; passwordHash: string } | null> => {
+    const session = await getSession();
 
-  if (!session) return null;
+    if (!session) return null;
 
-  const user = await prisma.user.findUnique({
-    where: { id: session.userId },
-    select: { id: true, password: true },
-  });
+    const user = await prisma.user.findUnique({
+      where: { id: session.userId },
+      select: { id: true, password: true },
+    });
 
-  if (!user) return null;
+    if (!user) return null;
 
-  return { id: user.id, passwordHash: user.password };
-});
+    return { id: user.id, passwordHash: user.password };
+  }
+);
 
 export const getCurrentUser = cache(async (): Promise<UserDTO | null> => {
   const session = await getSession();

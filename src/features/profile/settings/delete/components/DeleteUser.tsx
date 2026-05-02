@@ -28,21 +28,15 @@ export const DeleteUserButton = () => {
   if (showConfirm) {
     return (
       <div className="bg-destructive/5 border border-destructive rounded-xl p-6 md:p-8">
-        <h2 className="text-xl font-semibold text-destructive mb-2">
-          Delete account
-        </h2>
+        <h2 className="text-xl font-semibold text-destructive mb-2">Delete account</h2>
 
         <p className="text-sm text-muted-foreground mb-6">
-          This action is permanent. All your data will be deleted and your account cannot be
-          recovered.
+          This action is permanent. All your data will be deleted and your account cannot
+          be recovered.
         </p>
 
         <form action={formAction} className="space-y-5">
-          <FormField
-            label="Password"
-            htmlFor="password"
-            error={passwordError}
-          >
+          <FormField label="Password" htmlFor="password" error={passwordError}>
             <input
               name="password"
               type="password"
@@ -53,9 +47,7 @@ export const DeleteUserButton = () => {
           </FormField>
 
           {(generalError || (state?.message && !state.success)) && (
-            <p className="text-sm text-destructive">
-              {generalError || state?.message}
-            </p>
+            <p className="text-sm text-destructive">{generalError || state?.message}</p>
           )}
 
           <div className="flex gap-3">
