@@ -3,8 +3,10 @@ import { redirect } from 'next/navigation';
 
 import { routes } from '@/config/routes';
 import { getCurrentUser } from '@/features/auth/api';
-import { SettingsHeader } from '@/features/profile/settings/components/SettingsHeader';
-import { DeleteUserButton } from '@/features/profile/settings/components/DeleteUser';
+import { SettingsHeader } from '@/features/profile/settings/_shared/components/SettingsHeader';
+import { DeleteUserButton } from '@/features/profile/settings/delete/components/DeleteUser';
+import { ProfileSection } from '@/features/profile/settings/update/components/ProfileSection';
+import { PasswordSection } from '@/features/profile/settings/change-password/components/PasswordSection';
 
 export const metadata: Metadata = {
   title: 'Settings',
@@ -18,11 +20,10 @@ export const UserSettingsPage = async () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <SettingsHeader user={user} />
-      <div className="card">
-        <div>
-          <h2 className="text-2xl">Borrar usuario</h2>
-          <DeleteUserButton />
-        </div>
+      <div className="card flex flex-col gap-4">
+        <ProfileSection user={user} />
+        <PasswordSection />
+        <DeleteUserButton />
       </div>
     </div>
   );

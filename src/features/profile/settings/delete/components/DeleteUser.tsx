@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { deleteUserAction } from '../action';
+import { deleteUserAction } from '@/features/profile/settings/delete/actions';
 
 export const DeleteUserButton = () => {
   const [isLoading, setIsLoading] = useState(false);
