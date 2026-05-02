@@ -22,7 +22,7 @@ const EditProductPage = async ({ params }: EditProductPageProps) => {
 
   if (!product) notFound();
 
-  if (!product.isOwner) redirect('/dashboard');
+  if (!product.isOwner) redirect(routes.profile.dashboard);
 
   return (
     <div className="container mx-auto px-4 py-8">

@@ -5,6 +5,7 @@ import { revalidatePath } from 'next/cache';
 import type { ProductStatus } from '@/generated/client/enums';
 import { getProductById } from '@/features/items/_shared/api';
 import { getCurrentUser } from '@/features/auth/api';
+import { routes } from '@/config/routes';
 
 import { deleteProduct, updateProductStatus } from './api';
 import type { ProductState } from './types';
@@ -19,7 +20,7 @@ export async function deleteProductAction(productId: string): Promise<ProductSta
     };
   }
 
-  const existingProduct = await getProductById(productId);
+  const existingProduct = await getProductById(productId, currentUser.id);
 
   if (!existingProduct || !existingProduct.isOwner) {
     return {
@@ -31,8 +32,8 @@ export async function deleteProductAction(productId: string): Promise<ProductSta
   try {
     await deleteProduct(productId);
 
-    revalidatePath('/', 'layout');
-    revalidatePath('/dashboard', 'page');
+    revalidatePath(routes.home, 'layout');
+    revalidatePath(routes.profile.dashboard, 'page');
 
     return {
       success: true,
@@ -72,8 +73,8 @@ export async function updateProductStatusAction(
   try {
     await updateProductStatus(productId, status);
 
-    revalidatePath('/', 'layout');
-    revalidatePath('/dashboard', 'page');
+    revalidatePath(routes.home, 'layout');
+    revalidatePath(routes.profile.dashboard, 'page');
 
     return {
       success: true,

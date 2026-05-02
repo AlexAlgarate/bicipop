@@ -56,7 +56,7 @@ export const getUserDashboardProducts = async (
 };
 
 export const deleteProduct = async (productId: string) => {
-  await prisma.product.delete({
+  return await prisma.product.delete({
     where: { id: productId },
   });
 };

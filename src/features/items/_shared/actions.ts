@@ -11,7 +11,7 @@ export const toggleFavoriteAction = async (
   productId: string
 ): Promise<{ liked: boolean }> => {
   const session = await getSession();
-  if (!session?.userId) redirect('/login');
+  if (!session?.userId) redirect(routes.auth.login);
 
   const product = await verifyProductOwnership(productId, session.userId);
   if (product) {
