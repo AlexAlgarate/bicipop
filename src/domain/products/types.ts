@@ -11,7 +11,7 @@ export interface ProductDTO {
   location: string;
   createdAt: Date;
   updatedAt: Date;
-  userName: string;
+  username: string;
   status: ProductStatus;
   categorySlug: string;
   categoryName: string;

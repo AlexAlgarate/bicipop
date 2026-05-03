@@ -1,6 +1,7 @@
-import { findProducts } from '@/features/items/_shared/api';
-import { validatePagination } from '@/features/items/_shared/utils/validate-pagination';
-import type { FilterProducts } from '@/features/items/_shared/types';
+import type { FilterProducts, SearchFilters } from '@/features/items/_shared/types';
+
+import { validatePagination } from '../_shared/utils/validate-pagination';
+import { findProducts } from '../_shared/api';
 
 import type { ProductsResultDto } from './types';
 
@@ -10,12 +11,16 @@ export async function getProducts(
 ): Promise<ProductsResultDto> {
   const { page, pageSize } = validatePagination(filters.page, filters.pageSize);
 
+  const searchFilters: SearchFilters = {
+    query: filters.query,
+  };
+
   const { items, totalCount } = await findProducts(
     page,
     pageSize,
     filters.order,
     userId ?? null,
-    filters.query
+    searchFilters
   );
 
   const totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
