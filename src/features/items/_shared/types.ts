@@ -8,21 +8,16 @@ export type ProductFormState = FormState<{
   categoryId: string;
 }>;
 
-export interface FilterProducts {
-  query?: string;
-  order: 'asc' | 'desc';
-  page: number;
-  pageSize: number;
-  category?: string;
-  minPrice?: number;
-  maxPrice?: number;
-  location?: string;
-}
-
 export interface SearchFilters {
   query?: string;
   category?: string;
   location?: string;
   minPrice?: number;
   maxPrice?: number;
+}
+
+export interface FilterProducts extends SearchFilters {
+  order: 'asc' | 'desc';
+  page: number;
+  pageSize: number;
 }

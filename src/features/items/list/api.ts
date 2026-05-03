@@ -1,4 +1,4 @@
-import type { FilterProducts, SearchFilters } from '@/features/items/_shared/types';
+import type { FilterProducts } from '@/features/items/_shared/types';
 
 import { validatePagination } from '../_shared/utils/validate-pagination';
 import { findProducts } from '../_shared/api';
@@ -9,16 +9,18 @@ export async function getProducts(
   filters: FilterProducts,
   userId: string | null = null
 ): Promise<ProductsResultDto> {
-  const { page, pageSize } = validatePagination(filters.page, filters.pageSize);
-
-  const searchFilters: SearchFilters = {
-    query: filters.query,
-  };
+  const {
+    page: requestedPage,
+    pageSize: requestedPageSize,
+    order,
+    ...searchFilters
+  } = filters;
+  const { page, pageSize } = validatePagination(requestedPage, requestedPageSize);
 
   const { items, totalCount } = await findProducts(
     page,
     pageSize,
-    filters.order,
+    order,
     userId ?? null,
     searchFilters
   );
