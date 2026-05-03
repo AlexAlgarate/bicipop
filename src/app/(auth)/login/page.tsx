@@ -1,6 +1,7 @@
 import { loginAction } from '@/features/auth/actions';
 import { AuthFooter } from '@/features/auth/components/AuthFooter';
 import { AuthForm } from '@/features/auth/components/AuthForm';
+import { routes } from '@/config/routes';
 
 const LoginPage = () => {
   return (
@@ -30,7 +31,7 @@ const LoginPage = () => {
           footer={
             <AuthFooter
               footerText="Don't you have an account? "
-              href="/register"
+              href={routes.auth.register}
               linkText="Signup here"
             />
           }

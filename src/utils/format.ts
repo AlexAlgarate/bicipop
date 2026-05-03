@@ -6,12 +6,17 @@ export const formatPrice = (price: number) => {
   }).format(price);
 };
 
-export const timeAgo = (input: Date | string): string => {
+const languaje = {
+  english: 'en',
+  spanish: 'es',
+};
+
+export const formatDate = (input: Date | string): string => {
   const date = typeof input === 'string' ? new Date(input) : input;
   const now = new Date();
   const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
 
-  const rtf = new Intl.RelativeTimeFormat('es', { numeric: 'auto' });
+  const rtf = new Intl.RelativeTimeFormat(languaje.english, { numeric: 'auto' });
 
   // Manejo de tiempos futuros o muy recientes
   if (seconds < 0) return 'Hace un momento';

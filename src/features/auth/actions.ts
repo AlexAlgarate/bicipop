@@ -1,19 +1,19 @@
 'use server';
 
-import 'dotenv/config';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 
 import type { AuthFormState } from '@/features/auth/types';
 import { loginSchema, registerSchema } from '@/features/auth/validation';
-import { getFieldErrorsFromTree } from '@/infrastructure/validations/validation-errors';
+import { getFieldErrorsFromTree } from '@/utils/validation-errors';
 import { createSession, deleteSession } from '@/infrastructure/auth/session';
 import {
   comparePassword,
   hashPassword,
 } from '@/infrastructure/security/bcrypt-password-hasher';
+import { routes } from '@/config/routes';
 
-import { getAuthUserByEmail, getUserByEmail, registerUser } from './api';
+import { getUserForAuth, getUserByEmail, getUserByUsername, registerUser } from './api';
 
 export async function loginAction(
   _prevState: AuthFormState,
@@ -36,7 +36,7 @@ export async function loginAction(
     };
   }
 
-  const user = await getAuthUserByEmail(parsed.data.email);
+  const user = await getUserForAuth(parsed.data.email);
   if (!user) return invalidCredentials(emailInput);
 
   const validPassword = await comparePassword(parsed.data.password, user.password);
@@ -44,7 +44,7 @@ export async function loginAction(
 
   try {
     await createSession(user.id);
-    revalidatePath('/');
+    revalidatePath(routes.home);
 
     return {
       success: true,
@@ -75,6 +75,7 @@ export async function registerAction(
 ): Promise<AuthFormState> {
   const emailInput = String(formData.get('email'));
   const passwordInput = String(formData.get('password'));
+  const confirmPasswordInput = String(formData.get('confirmPassword'));
   const usernameInput = String(formData.get('username'));
 
   const parsed = registerSchema.safeParse({
@@ -97,6 +98,18 @@ export async function registerAction(
 
   const { email, password, username } = parsed.data;
 
+  if (confirmPasswordInput !== password) {
+    return {
+      success: false,
+      message: 'Las contraseñas no coinciden',
+      errors: {},
+      values: {
+        email: emailInput,
+        username: usernameInput,
+      },
+    };
+  }
+
   const existingUser = await getUserByEmail(email);
 
   if (existingUser) {
@@ -105,6 +118,17 @@ export async function registerAction(
       message: 'User already exists',
       errors: {},
       values: { username: usernameInput },
+    };
+  }
+
+  const existingUsername = await getUserByUsername(username);
+
+  if (existingUsername) {
+    return {
+      success: false,
+      message: 'Username already taken',
+      errors: {},
+      values: { email: emailInput, username: usernameInput },
     };
   }
 
@@ -130,6 +154,6 @@ export async function registerAction(
 
 export const logout = async (): Promise<void> => {
   await deleteSession();
-  revalidatePath('/');
-  redirect('/');
+  revalidatePath(routes.home);
+  redirect(routes.home);
 };

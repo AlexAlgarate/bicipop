@@ -1,6 +1,7 @@
 import { registerAction } from '@/features/auth/actions';
 import { AuthFooter } from '@/features/auth/components/AuthFooter';
 import { AuthForm } from '@/features/auth/components/AuthForm';
+import { routes } from '@/config/routes';
 
 const RegisterPage = () => {
   return (
@@ -45,7 +46,7 @@ const RegisterPage = () => {
           footer={
             <AuthFooter
               footerText="Do you have an account? "
-              href="/login"
+              href={routes.auth.login}
               linkText="Log in"
             />
           }

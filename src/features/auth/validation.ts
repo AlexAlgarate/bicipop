@@ -1,11 +1,10 @@
 import z from 'zod';
 
+import { DEV_PASSWORD_LENGTH, PROD_PASSWORD_LENGTH } from '@/utils/constants';
+
 type PasswordMode = 'dev' | 'prod';
 
 const createPasswordSchema = (mode: PasswordMode) => {
-  const DEV_PASSWORD_LENGTH = 3;
-  const PROD_PASSWORD_LENGTH = 8;
-
   const base = z
     .string()
     .min(mode === 'dev' ? DEV_PASSWORD_LENGTH : PROD_PASSWORD_LENGTH);
@@ -37,3 +36,26 @@ export const loginSchema = z.object({
   email: z.email('Invalid email format').transform(val => val.toLowerCase()),
   password: z.string().min(1),
 });
+
+export interface PasswordRulesStatus {
+  length: boolean;
+  upperLowerNumber: boolean;
+  symbol: boolean;
+}
+
+export const getPasswordRulesStatus = (password: string): PasswordRulesStatus => {
+  const isDev = process.env.NODE_ENV !== 'production';
+  const minLength = isDev ? DEV_PASSWORD_LENGTH : PROD_PASSWORD_LENGTH;
+
+  return {
+    length: password.length >= minLength,
+    upperLowerNumber:
+      /[A-Z]/.test(password) && /[a-z]/.test(password) && /[0-9]/.test(password),
+    symbol: isDev ? true : /[^A-Za-z0-9]/.test(password),
+  };
+};
+
+export const isPasswordValid = (password: string): boolean => {
+  const rules = getPasswordRulesStatus(password);
+  return rules.length && rules.upperLowerNumber && rules.symbol;
+};

@@ -3,7 +3,7 @@ import { Pool } from 'pg';
 
 import { hashPassword } from '@/infrastructure/security/bcrypt-password-hasher';
 
-import { PrismaClient } from '../src/generated/client/client';
+import { PrismaClient } from '@/generated/client/client';
 
 import { bikeImages, categories, productsData, users } from './data';
 const pool = new Pool({

@@ -1,51 +1,36 @@
-import 'dotenv/config';
-
 import { SignJWT, jwtVerify } from 'jose';
 
-const JWT_SECRET = process.env.JWT_SECRET;
-if (!JWT_SECRET) throw new Error('AUTH_COOKIE_NAME must bedeclared in .env file');
+import { getJwtSecretKey, JWT_ALGORITHM } from '@/infrastructure/auth/constants';
 
-const secret = new TextEncoder().encode(JWT_SECRET);
-
-export type SessionTokenPayload = {
-  userId: string;
-};
-export const verifyToken = async (token: string): Promise<boolean> => {
-  try {
-    await jwtVerify(token, secret, {
-      algorithms: ['HS256'],
-    });
-    return true;
-  } catch {
-    return false;
-  }
-};
+const jwtSecret = getJwtSecretKey();
 
 export const signSessionToken = async (
-  payload: SessionTokenPayload,
+  payload: { userId: string },
   expiresAt: Date
 ): Promise<string> => {
   return await new SignJWT(payload)
-    .setProtectedHeader({ alg: 'HS256' })
+    .setProtectedHeader({ alg: JWT_ALGORITHM })
     .setIssuedAt()
     .setExpirationTime(expiresAt)
-    .sign(secret);
+    .sign(jwtSecret);
 };
 
 export const verifySessionToken = async (
   token: string
-): Promise<SessionTokenPayload | null> => {
+): Promise<{ userId: string } | null> => {
   try {
-    const { payload } = await jwtVerify(token, secret, {
-      algorithms: ['HS256'],
+    const { payload } = await jwtVerify(token, jwtSecret, {
+      algorithms: [JWT_ALGORITHM],
     });
-
     if (typeof payload.userId !== 'string') return null;
 
-    return {
-      userId: payload.userId,
-    };
+    return { userId: payload.userId };
   } catch {
     return null;
   }
+};
+
+export const verifyToken = async (token: string): Promise<boolean> => {
+  const result = await verifySessionToken(token);
+  return result !== null;
 };

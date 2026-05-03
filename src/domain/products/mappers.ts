@@ -1,4 +1,13 @@
-import type { ProductDTO, ProductWithRelations } from './types';
+import type { Prisma } from '@/generated/client/client';
+
+import type { ProductDTO, ProductWithUserContext } from './types';
+
+type ProductWithRelations = Prisma.ProductGetPayload<{
+  include: {
+    category: { select: { name: true; slug: true } };
+    user: { select: { username: true } };
+  };
+}>;
 
 export const mapToProductDTO = (product: ProductWithRelations): ProductDTO => {
   return {
@@ -12,8 +21,18 @@ export const mapToProductDTO = (product: ProductWithRelations): ProductDTO => {
     location: product.location,
     createdAt: product.createdAt,
     updatedAt: product.updatedAt,
-    category: product.category.name,
-    userName: product.user.username,
+    username: product.user.username,
     status: product.status,
+    categorySlug: product.category.slug,
+    categoryName: product.category.name,
   };
 };
+
+export const mapToProductWithUserContext = (
+  product: ProductWithRelations & { favorites: { userId: string }[] },
+  currentUserId: string | null
+): ProductWithUserContext => ({
+  ...mapToProductDTO(product),
+  isLiked: product.favorites?.length > 0,
+  isOwner: product.userId === currentUserId,
+});

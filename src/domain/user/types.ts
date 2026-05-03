@@ -1,6 +1,6 @@
-export interface CurrentUser {
+export interface UserDTO {
   id: string;
   username: string;
-  email?: string;
-  createdAt?: Date;
+  email: string;
+  createdAt: Date;
 }
