@@ -4,7 +4,7 @@ import { BackToHomeLink } from '@/components/BackToHomeLink';
 import { routes } from '@/config/routes';
 import { getProductById } from '@/features/items/_shared/api';
 import { getRelatedProducts } from '@/features/items/detail/api';
-import type { ProductsWithFavoriteStatus } from '@/features/items/_shared/types';
+import type { ProductWithUserContext } from '@/domain/products/types';
 
 import { ProductImage } from './ProductImage';
 import { ProductHeader } from './ProductHeader';
@@ -13,8 +13,8 @@ import { ProductSellerInfo } from './ProductSellerInfo';
 import { ProductActions } from './ProductActions';
 import { RelatedProducts } from './RelatedProducts';
 interface ProductDetailViewProps {
-  product: ProductsWithFavoriteStatus;
-  relatedProducts: ProductsWithFavoriteStatus[];
+  product: ProductWithUserContext;
+  relatedProducts: ProductWithUserContext[];
 }
 
 export const ProductDetailView = ({
@@ -38,7 +38,7 @@ export const ProductDetailView = ({
           </div>
 
           <ProductSellerInfo product={product} />
-          <ProductActions product={product} isOwner={product.isOwner} />
+          <ProductActions product={product} />
         </div>
       </div>
 

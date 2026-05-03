@@ -1,7 +1,7 @@
 import { mapToProductDTO } from '@/domain/products/mappers';
 import { ProductStatus } from '@/generated/client/enums';
 import prisma from '@/infrastructure/db/prisma/client';
-import type { ProductsWithFavoriteStatus } from '@/features/items/_shared/types';
+import type { ProductWithUserContext } from '@/domain/products/types';
 
 interface GetRelatedProductsOptions {
   categoryId: string;
@@ -17,7 +17,7 @@ export const getRelatedProducts = async ({
   excludeUserId,
   limit = 4,
   currentUserId = null,
-}: GetRelatedProductsOptions): Promise<ProductsWithFavoriteStatus[]> => {
+}: GetRelatedProductsOptions): Promise<ProductWithUserContext[]> => {
   const items = await prisma.product.findMany({
     where: {
       categoryId,

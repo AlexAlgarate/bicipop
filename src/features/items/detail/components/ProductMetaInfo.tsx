@@ -1,13 +1,9 @@
 import { Clock, MapPin, Tag } from 'lucide-react';
 
-import type { ProductDTO } from '@/domain/products/types';
 import { formatDate } from '@/utils/format';
+import type { ProductDetailProps } from '@/features/items/detail/types';
 
-interface ProductHeaderProps {
-  product: ProductDTO;
-}
-
-export const ProductMetaInfo = ({ product }: ProductHeaderProps) => {
+export const ProductMetaInfo = ({ product }: ProductDetailProps) => {
   return (
     <div className="flex flex-wrap gap-4 text-sm text-muted">
       <span className="flex items-center gap-1">

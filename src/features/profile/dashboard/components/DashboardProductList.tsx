@@ -12,9 +12,9 @@ import {
   deleteProductAction,
   updateProductStatusAction,
 } from '@/features/profile/dashboard/actions';
-import type { ProductsWithFavoriteStatus } from '@/features/items/_shared/types';
 import { Button } from '@/components/ui/Button';
 import type { DashboardProductProps } from '@/features/profile/dashboard/types';
+import type { ProductWithUserContext } from '@/domain/products/types';
 
 const STATUS_CONFIG: Record<
   ProductStatus,
@@ -47,7 +47,7 @@ export const DashboardProductList = ({ products }: DashboardProductProps) => (
   </div>
 );
 
-const ProductRow = ({ product }: { product: ProductsWithFavoriteStatus }) => (
+const ProductRow = ({ product }: { product: ProductWithUserContext }) => (
   <div className="flex items-stretch gap-3 py-3 px-2 rounded-lg hover:bg-background/20 transition-colors group">
     <Link
       href={routes.items.detail(product.id)}
@@ -91,7 +91,7 @@ const ProductRow = ({ product }: { product: ProductsWithFavoriteStatus }) => (
   </div>
 );
 
-const ProductActions = ({ product }: { product: ProductsWithFavoriteStatus }) => {
+const ProductActions = ({ product }: { product: ProductWithUserContext }) => {
   const [showMenu, setShowMenu] = useState(false);
   const [isPending, startTransition] = useTransition();
   const [showModal, setShowModal] = useState(false);

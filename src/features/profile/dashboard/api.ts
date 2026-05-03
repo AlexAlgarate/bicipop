@@ -1,4 +1,4 @@
-import { mapToProductWithFavoriteStatus } from '@/domain/products/mappers';
+import { mapToProductWithUserContext } from '@/domain/products/mappers';
 import { ProductStatus } from '@/generated/client/enums';
 import prisma from '@/infrastructure/db/prisma/client';
 import { getPagination } from '@/features/items/_shared/utils/get-pagination';
@@ -50,7 +50,7 @@ export const getUserDashboardProducts = async (
   }
 
   return {
-    items: products.map(product => mapToProductWithFavoriteStatus(product, userId)),
+    items: products.map(product => mapToProductWithUserContext(product, userId)),
     totalCount,
     statusCounts: counts,
   };

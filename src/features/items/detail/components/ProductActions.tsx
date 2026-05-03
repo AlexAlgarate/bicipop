@@ -1,20 +1,15 @@
 import { MessageCircle } from 'lucide-react';
 import Link from 'next/link';
 
-import type { ProductDTO } from '@/domain/products/types';
 import { ProductStatus } from '@/generated/client/enums';
 import { routes } from '@/config/routes';
+import type { ProductDetailProps } from '@/features/items/detail/types';
 
-interface ProductActionsProps {
-  product: ProductDTO;
-  isOwner: boolean;
-}
-
-export const ProductActions = ({ product, isOwner }: ProductActionsProps) => {
+export const ProductActions = ({ product }: ProductDetailProps) => {
   const isSold = product.status === ProductStatus.SOLD;
   return (
     <div className="flex gap-3">
-      {isOwner ? (
+      {product.isOwner ? (
         <Link
           href={routes.items.edit(product.id)}
           className="btn btn-primary flex-1 py-3"

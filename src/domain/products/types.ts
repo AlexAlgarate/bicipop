@@ -18,6 +18,11 @@ export interface ProductDTO {
   categoryName: string;
 }
 
+export type ProductWithUserContext = ProductDTO & {
+  isOwner: boolean;
+  isLiked: boolean;
+};
+
 export type ProductWithRelations = Prisma.ProductGetPayload<{
   include: {
     category: { select: { name: true; slug: true } };

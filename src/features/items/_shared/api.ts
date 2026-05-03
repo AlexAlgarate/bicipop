@@ -1,12 +1,10 @@
 import { cache } from 'react';
 
 import prisma from '@/infrastructure/db/prisma/client';
-import { mapToProductWithFavoriteStatus } from '@/domain/products/mappers';
+import { mapToProductWithUserContext } from '@/domain/products/mappers';
 import { mapToCategoryDTO } from '@/domain/category/mappers';
-import type { ProductDTO } from '@/domain/products/types';
+import type { ProductDTO, ProductWithUserContext } from '@/domain/products/types';
 import type { CategoryDTO } from '@/domain/category/types';
-
-import type { ProductsWithFavoriteStatus } from './types';
 
 export const getProductById = cache(
   async (
@@ -25,7 +23,7 @@ export const getProductById = cache(
 
     if (!product) return null;
 
-    return mapToProductWithFavoriteStatus(product, userId) as ProductDTO & {
+    return mapToProductWithUserContext(product, userId) as ProductDTO & {
       isOwner: boolean;
       isLiked: boolean;
     };
@@ -76,7 +74,7 @@ export const findProducts = async (
   order: 'asc' | 'desc',
   userId: string | null,
   query?: string
-): Promise<{ items: ProductsWithFavoriteStatus[]; totalCount: number }> => {
+): Promise<{ items: ProductWithUserContext[]; totalCount: number }> => {
   const where = query
     ? {
         OR: [
@@ -102,7 +100,7 @@ export const findProducts = async (
     }),
   ]);
 
-  const mappedItems = items.map(item => mapToProductWithFavoriteStatus(item, userId));
+  const mappedItems = items.map(item => mapToProductWithUserContext(item, userId));
 
   return { items: mappedItems, totalCount };
 };

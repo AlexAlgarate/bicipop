@@ -1,7 +1,7 @@
-import type { ProductsWithFavoriteStatus } from '@/features/items/_shared/types';
+import type { ProductWithUserContext } from '@/domain/products/types';
 
 export interface ProductsResultDto {
-  items: ProductsWithFavoriteStatus[];
+  items: ProductWithUserContext[];
   totalCount: number;
   totalPages: number;
   currentPage: number;

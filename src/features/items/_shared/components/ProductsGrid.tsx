@@ -1,10 +1,10 @@
 import { ProductCard } from '@/features/items/_shared/components/ProductCard';
 import { Pagination } from '@/components/Pagination';
 import { EmptyState } from '@/features/items/_shared/components/EmptyState';
-import type { ProductsWithFavoriteStatus } from '@/features/items/_shared/types';
+import type { ProductWithUserContext } from '@/domain/products/types';
 
 interface ProductsGridProps {
-  products: ProductsWithFavoriteStatus[];
+  products: ProductWithUserContext[];
   currentPage: number;
   totalPages: number;
   emptyMessage?: {

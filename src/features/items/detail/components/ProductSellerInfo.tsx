@@ -1,14 +1,10 @@
 import Link from 'next/link';
 import { User } from 'lucide-react';
 
-import type { ProductDTO } from '@/domain/products/types';
 import { routes } from '@/config/routes';
+import type { ProductDetailProps } from '@/features/items/detail/types';
 
-interface SellerInfoProps {
-  product: ProductDTO;
-}
-
-export const ProductSellerInfo = ({ product }: SellerInfoProps) => {
+export const ProductSellerInfo = ({ product }: ProductDetailProps) => {
   return (
     <div className="rounded-xl border border-border bg-card p-4 shadow-sm transition-all hover:shadow-md hover:bg-card-hover">
       <Link

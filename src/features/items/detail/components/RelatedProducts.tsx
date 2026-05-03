@@ -1,8 +1,8 @@
+import type { ProductWithUserContext } from '@/domain/products/types';
 import { ProductsGrid } from '@/features/items/_shared/components/ProductsGrid';
-import type { ProductsWithFavoriteStatus } from '@/features/items/_shared/types';
 
 interface RelatedProductsProps {
-  relatedProducts: ProductsWithFavoriteStatus[];
+  relatedProducts: ProductWithUserContext[];
 }
 
 export const RelatedProducts = ({ relatedProducts }: RelatedProductsProps) => {

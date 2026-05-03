@@ -1,4 +1,4 @@
-import type { ProductsWithFavoriteStatus } from '@/features/items/_shared/types';
+import type { ProductWithUserContext } from '@/domain/products/types';
 
 export interface ProductState {
   success: boolean;
@@ -14,10 +14,10 @@ export interface ProductState {
 }
 
 export interface DashboardProductProps {
-  products: ProductsWithFavoriteStatus[];
+  products: ProductWithUserContext[];
 }
 export interface DashboardData {
-  items: ProductsWithFavoriteStatus[];
+  items: ProductWithUserContext[];
   totalCount: number;
   statusCounts: {
     active: number;
