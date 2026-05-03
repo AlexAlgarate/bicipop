@@ -1,8 +1,7 @@
 import { findProducts } from '@/features/items/_shared/api';
 import { validatePagination } from '@/features/items/_shared/utils/validate-pagination';
 import { PRODUCTS_PER_PAGE } from '@/utils/constants';
-
-import { type SearchFilters } from '../_shared/types';
+import { type SearchFilters } from '@/features/items/_shared/types';
 
 import type { SearchPageParams, SearchProductsResult } from './types';
 

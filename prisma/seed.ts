@@ -2,7 +2,6 @@ import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
 
 import { hashPassword } from '@/infrastructure/security/bcrypt-password-hasher';
-
 import { PrismaClient } from '@/generated/client/client';
 
 import { bikeImages, categories, productsData, users } from './data';

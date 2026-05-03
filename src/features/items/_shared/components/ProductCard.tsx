@@ -8,8 +8,7 @@ import { Button } from '@/components/ui/Button';
 import { routes } from '@/config/routes';
 import { ProductStatus } from '@/generated/client/enums';
 import { formatPrice } from '@/utils/format';
-
-import { useFavorite } from '../hooks/useFavorite';
+import { useFavorite } from '@/features/items/_shared/hooks/useFavorite';
 
 interface ProductCardProps {
   id: string;

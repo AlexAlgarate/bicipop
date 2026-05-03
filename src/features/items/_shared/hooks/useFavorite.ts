@@ -1,6 +1,6 @@
 import { useOptimistic, useTransition } from 'react';
 
-import { toggleFavoriteAction } from '../actions';
+import { toggleFavoriteAction } from '@/features/items/_shared/actions';
 
 interface UseFavoriteProps {
   productId: string;

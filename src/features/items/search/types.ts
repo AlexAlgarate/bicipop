@@ -1,6 +1,5 @@
 import type { ProductWithUserContext } from '@/domain/products/types';
-
-import type { SearchFilters } from '../_shared/types';
+import type { SearchFilters } from '@/features/items/_shared/types';
 
 export interface SearchPageParams extends SearchFilters {
   order?: string;

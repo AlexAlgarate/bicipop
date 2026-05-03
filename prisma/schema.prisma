@@ -9,32 +9,32 @@ datasource db {
 }
 
 model User {
-  id            String   @id @default(cuid())
-  username      String   @unique
-  email         String   @unique
-  password  String
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id            String        @id @default(cuid())
+  username      String        @unique
+  email         String        @unique
+  password      String      
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
   products      Product[]
   favorites     Favorite[]
 }
 
 model Product {
-  id            String   @id @default(cuid())
+  id            String        @id @default(cuid())
   title         String
   description   String
   price         Float
   imageUrl      String
   location      String
   status        ProductStatus @default(ACTIVE)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
 
-  userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   categoryId    String
-  category    Category @relation(fields: [categoryId], references: [id])
+  category      Category      @relation(fields: [categoryId], references: [id])
 
   favorites     Favorite[]
 
@@ -46,21 +46,21 @@ model Product {
 }
 
 model Favorite {
-  id            String @id @default(cuid())
-  user          User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id            String        @id @default(cuid())
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId        String
-  product       Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  product       Product       @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId     String
-  createdAt     DateTime @default(now())
+  createdAt     DateTime      @default(now())
 
   @@unique([userId, productId])
 }
 
 model Category {
-  id            String @id @default(cuid())
-  name          String @unique
-  slug          String @unique
-  createdAt     DateTime  @default(now())
+  id            String        @id @default(cuid())
+  name          String        @unique
+  slug          String        @unique
+  createdAt     DateTime      @default(now())
   products      Product[]
 }
 

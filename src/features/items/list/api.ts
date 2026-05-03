@@ -1,7 +1,6 @@
 import type { FilterProducts } from '@/features/items/_shared/types';
-
-import { validatePagination } from '../_shared/utils/validate-pagination';
-import { findProducts } from '../_shared/api';
+import { findProducts } from '@/features/items/_shared/api';
+import { validatePagination } from '@/features/items/_shared/utils/validate-pagination';
 
 import type { ProductsResultDto } from './types';
 

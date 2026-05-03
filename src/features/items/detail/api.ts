@@ -2,8 +2,7 @@ import { mapToProductDTO } from '@/domain/products/mappers';
 import { ProductStatus } from '@/generated/client/enums';
 import prisma from '@/infrastructure/db/prisma/client';
 import type { ProductWithUserContext } from '@/domain/products/types';
-
-import { getProductById } from '../_shared/api';
+import { getProductById } from '@/features/items/_shared/api';
 
 interface GetRelatedProductsOptions {
   categoryId: string;

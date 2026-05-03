@@ -8,8 +8,7 @@ import { ProductStatus } from '@/generated/client/enums';
 import { formatPrice } from '@/utils/format';
 import { routes } from '@/config/routes';
 import type { ProductWithUserContext } from '@/domain/products/types';
-
-import { useFavorite } from '../../_shared/hooks/useFavorite';
+import { useFavorite } from '@/features/items/_shared/hooks/useFavorite';
 
 import { ShareModal } from './ShareProduct';
 
