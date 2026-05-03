@@ -14,6 +14,16 @@ import { getProductById } from '@/features/items/_shared/api';
 import { updateProductSchema } from './validation';
 import { updateProduct } from './api';
 
+const errorState = (
+  message: string,
+  extras?: Partial<ProductFormState>
+): ProductFormState => ({
+  success: false,
+  message,
+  requestId: Date.now(),
+  ...extras,
+});
+
 export const updateProductAction = async (
   _prevState: ProductFormState | null,
   formData: FormData
@@ -36,29 +46,8 @@ export const updateProductAction = async (
   const existingProduct = await getProductById(rawValues.productId, session.userId);
 
   if (!existingProduct || !existingProduct.isOwner) {
-    return {
-      success: false,
-      message: 'You are not authorized to edit this product',
-      requestId: Date.now(),
-    };
+    return errorState('You are not authorized to edit this product');
   }
-
-  const errorState = (
-    message: string,
-    extras?: Partial<ProductFormState>
-  ): ProductFormState => ({
-    success: false,
-    message,
-    requestId: Date.now(),
-    values: {
-      title: rawValues.title,
-      description: rawValues.description,
-      price: rawValues.price,
-      location: rawValues.location,
-      category: rawValues.categoryId,
-    },
-    ...extras,
-  });
 
   const parsed = updateProductSchema.safeParse(rawValues);
 

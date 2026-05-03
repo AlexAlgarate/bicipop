@@ -30,7 +30,6 @@ const initialRegisterState: AuthFormState = {
   values: {
     email: '',
     password: '',
-    location: '',
     username: '',
   },
 };
@@ -70,7 +69,7 @@ export const AuthForm = ({
               id={field.name}
               name={field.name}
               type={field.type}
-              defaultValue={state.values?.[field.name]}
+              defaultValue={state.values?.[field.name as keyof typeof state.values]}
               placeholder={field.placeholder}
               onChange={e => {
                 if (field.name === 'password') {

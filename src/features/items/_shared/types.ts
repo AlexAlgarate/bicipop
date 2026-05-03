@@ -1,10 +1,12 @@
-export type ProductFormState = {
-  success: boolean;
-  message: string;
-  errors?: Record<string, string[] | undefined>;
-  requestId: number;
-  values?: Record<string, string | number>;
-};
+import type { FormState } from '@/utils/types/form-state';
+
+export type ProductFormState = FormState<{
+  title: string;
+  description: string;
+  price: number;
+  location: string;
+  categoryId: string;
+}>;
 
 export interface FilterProducts {
   query: string;
