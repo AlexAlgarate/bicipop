@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export const dynamic = 'force-dynamic';
 
-const PAGE_SIZE = 10;
+const DASHBOARD_PAGE_SIZE = 10;
 
 interface DashboardPageProps {
   page?: string;
@@ -27,23 +27,22 @@ const DashboardPage = async ({
 }) => {
   const user = await getCurrentUser();
   if (!user) redirect(routes.auth.login);
-  const userId = user.id as string;
 
   const { page, query } = await searchParams;
   const currentPage = page ? parseInt(page, 10) : 1;
 
-  const data = await getUserDashboardProducts(userId, {
+  const data = await getUserDashboardProducts(user.id, {
     page: currentPage,
-    pageSize: PAGE_SIZE,
+    pageSize: DASHBOARD_PAGE_SIZE,
     query,
   });
 
   return (
     <DashboardView
-      user={user}
+      username={user.username}
       data={data}
       currentPage={currentPage}
-      pageSize={PAGE_SIZE}
+      pageSize={DASHBOARD_PAGE_SIZE}
     />
   );
 };

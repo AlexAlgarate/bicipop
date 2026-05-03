@@ -1,29 +1,7 @@
-export interface UserDto {
-  id: string;
-  email: string;
-}
+import type { FormState } from '@/utils/types/form-state';
 
-export interface AuthUser {
-  id: string;
-  email: string;
-  passwordHash: string;
-}
-
-export type AuthFormState = {
-  success: boolean;
-  message: string;
-  errors: Record<string, string[]>;
-  values: Record<string, string>;
-};
-
-export const initialRegisterState: AuthFormState = {
-  success: false,
-  errors: {},
-  message: '',
-  values: {
-    email: '',
-    password: '',
-    location: '',
-    username: '',
-  },
-};
+export type AuthFormState = FormState<{
+  email?: string;
+  username?: string;
+  password?: string;
+}>;

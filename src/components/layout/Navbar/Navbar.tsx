@@ -4,7 +4,6 @@ import { Plus, User, LogOut, LayoutDashboard, Search } from 'lucide-react';
 import { SearchBar } from '@/components/layout/Navbar/SearchBar';
 import { logout } from '@/features/auth/actions';
 import { routes } from '@/config/routes';
-import type { UserDTO } from '@/domain/user/types';
 import { getCurrentUser } from '@/features/auth/api';
 
 export const Navbar = async () => {
@@ -87,7 +86,7 @@ const DashboardButton = () => (
   </Link>
 );
 
-const UserButton = ({ username }: UserDTO) => (
+const UserButton = ({ username }: { username: string }) => (
   <Link href={routes.profile.settings} className="btn btn-ghost gap-2 px-3">
     <User className="h-5 w-5" />
     <span className="hidden sm:inline">{username}</span>

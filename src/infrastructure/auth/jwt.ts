@@ -1,12 +1,11 @@
 import { SignJWT, jwtVerify } from 'jose';
 
-import type { SessionTokenPayload } from '@/infrastructure/auth/types';
 import { getJwtSecretKey, JWT_ALGORITHM } from '@/infrastructure/auth/constants';
 
 const jwtSecret = getJwtSecretKey();
 
 export const signSessionToken = async (
-  payload: SessionTokenPayload,
+  payload: { userId: string },
   expiresAt: Date
 ): Promise<string> => {
   return await new SignJWT(payload)
@@ -18,7 +17,7 @@ export const signSessionToken = async (
 
 export const verifySessionToken = async (
   token: string
-): Promise<SessionTokenPayload | null> => {
+): Promise<{ userId: string } | null> => {
   try {
     const { payload } = await jwtVerify(token, jwtSecret, {
       algorithms: [JWT_ALGORITHM],

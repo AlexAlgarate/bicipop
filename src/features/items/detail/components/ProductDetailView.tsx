@@ -1,8 +1,4 @@
-import { notFound } from 'next/navigation';
-
-import { BackToPageLink } from '@/components/BackToPageLink';
-import { getProductById } from '@/features/items/_shared/api';
-import { getRelatedProducts } from '@/features/items/detail/api';
+import { BackToPageLink } from '@/components/ui/BackToPageLink';
 import type { ProductWithUserContext } from '@/domain/products/types';
 
 import { ProductImage } from './ProductImage';
@@ -44,19 +40,4 @@ export const ProductDetailView = ({
       <RelatedProducts relatedProducts={relatedProducts} />
     </div>
   );
-};
-
-export const getProductDetailData = async (id: string, userId: string | null) => {
-  const product = await getProductById(id, userId);
-  if (!product) notFound();
-
-  const relatedProducts = await getRelatedProducts({
-    categoryId: product.categoryId,
-    excludeId: product.id,
-    excludeUserId: product.userId,
-    limit: 4,
-    currentUserId: userId,
-  });
-
-  return { product, relatedProducts };
 };

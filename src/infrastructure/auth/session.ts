@@ -8,7 +8,6 @@ import {
   SESSION_DURATION_MS,
 } from '@/infrastructure/auth/constants';
 import { signSessionToken, verifySessionToken } from '@/infrastructure/auth/jwt';
-import type { SessionTokenPayload } from '@/infrastructure/auth/types';
 
 const getSessionExpiresAt = (): Date => {
   return new Date(Date.now() + SESSION_DURATION_MS);
@@ -29,7 +28,7 @@ export const createSession = async (userId: string): Promise<void> => {
   });
 };
 
-export const getSession = cache(async (): Promise<SessionTokenPayload | null> => {
+export const getSession = cache(async (): Promise<{ userId: string } | null> => {
   const cookieStore = await cookies();
   const token = cookieStore.get(SESSION_COOKIE_NAME)?.value;
 

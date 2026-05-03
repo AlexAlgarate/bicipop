@@ -33,7 +33,7 @@ export const HeroSection = () => {
               Sell Something
             </Link>
             <Link
-              href={routes.home}
+              href={routes.search}
               className="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/30 text-white px-8 py-3.5 rounded-lg font-bold transition-all text-center"
             >
               Start Exploring

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-import { BackToPageLink } from '@/components/BackToPageLink';
+import { BackToPageLink } from '@/components/ui/BackToPageLink';
 import ProductForm from '@/features/items/_shared/components/ProductForm';
 import { getCategories } from '@/features/items/_shared/api';
 

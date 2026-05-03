@@ -20,10 +20,10 @@ export const UserSettingsPage = async () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mx-auto max-w-2xl">
-        <SettingsHeader user={user} />
+        <SettingsHeader username={user.username} />
 
         <div className="space-y-6">
-          <ProfileSection user={user} />
+          <ProfileSection username={user.username} email={user.email} />
           <PasswordSection />
           <DeleteUserButton />
         </div>

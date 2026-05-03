@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { Pencil, User } from 'lucide-react';
 
 import { FormField } from '@/components/ui/FormField';
-import type { UserDTO } from '@/domain/user/types';
 import { updateUserProfileAction } from '@/features/profile/settings/update/actions';
 import {
   getFieldError,
@@ -19,7 +18,13 @@ const initialState: ProfileFormState = {
   requestId: 0,
 };
 
-export const ProfileSection = ({ user }: { user: UserDTO }) => {
+export const ProfileSection = ({
+  email,
+  username,
+}: {
+  username: string;
+  email: string;
+}) => {
   const [isEditing, setIsEditing] = useState(false);
 
   return (
@@ -42,15 +47,19 @@ export const ProfileSection = ({ user }: { user: UserDTO }) => {
 
       <div className="px-6 py-5">
         {isEditing ? (
-          <ProfileForm user={user} onCancel={() => setIsEditing(false)} />
+          <ProfileForm
+            username={username}
+            email={email}
+            onCancel={() => setIsEditing(false)}
+          />
         ) : (
           <div className="flex items-center gap-4">
             <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary font-semibold text-lg">
-              {user.username.charAt(0).toUpperCase()}
+              {username.charAt(0).toUpperCase()}
             </div>
             <div>
-              <p className="font-medium">{user.username}</p>
-              <p className="text-sm text-muted">{user.email}</p>
+              <p className="font-medium">{username}</p>
+              <p className="text-sm text-muted">{email}</p>
             </div>
           </div>
         )}
@@ -59,7 +68,15 @@ export const ProfileSection = ({ user }: { user: UserDTO }) => {
   );
 };
 
-const ProfileForm = ({ user, onCancel }: { user: UserDTO; onCancel: () => void }) => {
+const ProfileForm = ({
+  username,
+  email,
+  onCancel,
+}: {
+  username: string;
+  email: string;
+  onCancel: () => void;
+}) => {
   const router = useRouter();
   const [state, formAction, isPending] = useActionState(
     updateUserProfileAction,
@@ -85,7 +102,7 @@ const ProfileForm = ({ user, onCancel }: { user: UserDTO; onCancel: () => void }
           name="username"
           type="text"
           className="input"
-          defaultValue={state?.values?.username ?? user.username}
+          defaultValue={state?.values?.username ?? username}
         />
       </FormField>
 
@@ -95,7 +112,7 @@ const ProfileForm = ({ user, onCancel }: { user: UserDTO; onCancel: () => void }
           name="email"
           type="email"
           className="input"
-          defaultValue={state?.values?.email ?? user.email}
+          defaultValue={state?.values?.email ?? email}
         />
       </FormField>
 

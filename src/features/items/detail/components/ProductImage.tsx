@@ -1,14 +1,14 @@
 import Image from 'next/image';
 
 import { ProductStatus } from '@/generated/client/enums';
-import type { ProductDetailProps } from '@/features/items/detail/types';
+import type { ProductWithUserContext } from '@/domain/products/types';
 
 const STATUS_CONFIG: Partial<Record<ProductStatus, { label: string; color: string }>> = {
   [ProductStatus.RESERVED]: { label: 'Reserved', color: 'text-yellow-500' },
   [ProductStatus.SOLD]: { label: 'Sold', color: 'text-red-500' },
 };
 
-export const ProductImage = ({ product }: ProductDetailProps) => {
+export const ProductImage = ({ product }: { product: ProductWithUserContext }) => {
   const productStatus = STATUS_CONFIG[product.status];
 
   return (

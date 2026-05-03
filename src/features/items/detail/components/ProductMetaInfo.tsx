@@ -1,9 +1,9 @@
 import { Clock, MapPin, Tag } from 'lucide-react';
 
 import { formatDate } from '@/utils/format';
-import type { ProductDetailProps } from '@/features/items/detail/types';
+import type { ProductWithUserContext } from '@/domain/products/types';
 
-export const ProductMetaInfo = ({ product }: ProductDetailProps) => {
+export const ProductMetaInfo = ({ product }: { product: ProductWithUserContext }) => {
   return (
     <div className="flex flex-wrap gap-4 text-sm text-muted">
       <span className="flex items-center gap-1">

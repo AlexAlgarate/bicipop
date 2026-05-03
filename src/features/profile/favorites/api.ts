@@ -1,6 +1,6 @@
 import prisma from '@/infrastructure/db/prisma/client';
 import { mapToProductWithUserContext } from '@/domain/products/mappers';
-import { getPagination } from '@/features/items/_shared/utils/get-pagination';
+import { validatePagination } from '@/features/items/_shared/utils/validate-pagination';
 import type { PaginationParams } from '@/features/profile/_shared/types';
 
 interface FavoritesData {
@@ -12,7 +12,7 @@ export const getUserFavorites = async (
   userId: string,
   filters: PaginationParams
 ): Promise<FavoritesData> => {
-  const { page, pageSize } = getPagination(filters.page, filters.pageSize);
+  const { page, pageSize } = validatePagination(filters.page, filters.pageSize);
 
   const [totalCount, products] = await Promise.all([
     prisma.favorite.count({

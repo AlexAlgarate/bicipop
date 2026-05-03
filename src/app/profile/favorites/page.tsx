@@ -6,6 +6,7 @@ import { getUserFavorites } from '@/features/profile/favorites/api';
 import { ProductsGrid } from '@/features/items/_shared/components/ProductsGrid';
 import { getCurrentUser } from '@/features/auth/api';
 import { FavoritesHeader } from '@/features/profile/favorites/components/FavoritesHeader';
+import { PRODUCTS_PER_PAGE } from '@/utils/constants';
 
 export const metadata: Metadata = {
   title: 'Favorites',
@@ -13,8 +14,6 @@ export const metadata: Metadata = {
 };
 
 export const dynamic = 'force-dynamic';
-
-const PAGE_SIZE = 12;
 
 interface FavoritesPageProps {
   page?: string;
@@ -35,15 +34,15 @@ const FavoritesPage = async ({
 
   const data = await getUserFavorites(userId, {
     page: currentPage,
-    pageSize: PAGE_SIZE,
+    pageSize: PRODUCTS_PER_PAGE,
     query,
   });
 
-  const totalPages = Math.ceil(data.totalCount / PAGE_SIZE);
+  const totalPages = Math.ceil(data.totalCount / PRODUCTS_PER_PAGE);
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <FavoritesHeader user={user} />
+      <FavoritesHeader username={user.username} />
       <ProductsGrid
         products={data.items}
         currentPage={currentPage}

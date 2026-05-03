@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { Star } from 'lucide-react';
+import { Star, User } from 'lucide-react';
 
 import { Button } from '@/components/ui/Button';
 import { routes } from '@/config/routes';
@@ -20,6 +20,8 @@ interface ProductCardProps {
   isOwner?: boolean;
   status: ProductStatus;
   categoryName: string;
+  location?: string;
+  username: string;
 }
 
 interface FavoriteButtonProps {
@@ -50,38 +52,48 @@ const FavoriteButton = ({
 );
 
 interface ProductInfoProps {
-  product: ProductCardProps;
+  isOwner: boolean;
+  price: number;
+  title: string;
+  username: string;
   isFavorite: boolean;
   isPending: boolean;
   onFavoriteClick: (e: React.MouseEvent) => void;
 }
 
 const ProductInfo = ({
-  product,
+  isOwner,
+  price,
+  title,
   isFavorite,
+  username,
   isPending,
   onFavoriteClick,
 }: ProductInfoProps) => {
-  const isDisabled = product.isOwner || isPending;
+  const isDisabled = isOwner || isPending;
 
   return (
-    <div className="flex flex-col flex-1 p-4 gap-2">
-      <div className="flex justify-between items-center gap-3 mb-2">
+    <div className="flex flex-col flex-1 p-4 gap-2 h-full">
+      <div className="flex justify-between items-center gap-3">
         <p className="text-primary font-bold text-xl tracking-tight">
-          {formatPrice(product.price)}
+          {formatPrice(price)}
         </p>
-        {!product.isOwner && (
+        {!isOwner && (
           <FavoriteButton
             onClick={onFavoriteClick}
             isDisabled={isDisabled}
             isFavorite={isFavorite}
-            isOwner={product.isOwner ?? false}
+            isOwner={isOwner ?? false}
           />
         )}
       </div>
       <h3 className="font-medium line-clamp-2 text-lg leading-tight group-hover:text-primary">
-        {product.title}
+        {title}
       </h3>
+      <div className="mt-auto flex gap-2 items-center text-xs pt-2">
+        <User className="w-4 h-4" /> Sold by{' '}
+        <span className="font-medium text-sm">{username}</span>
+      </div>
     </div>
   );
 };
@@ -113,13 +125,21 @@ const StatusBadge = ({ status }: { status: ProductStatus }) => {
     </span>
   );
 };
-const ProductImage = ({ product }: { product: ProductCardProps }) => {
+const ProductImage = ({
+  imageUrl,
+  status,
+  title,
+}: {
+  imageUrl: string;
+  status: ProductStatus;
+  title: string;
+}) => {
   return (
     <div className="relative aspect-square overflow-hidden rounded-lg">
-      <StatusBadge status={product.status} />
+      <StatusBadge status={status} />
       <Image
-        src={product.imageUrl}
-        alt={product.title}
+        src={imageUrl}
+        alt={title}
         fill
         loading="eager"
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -141,9 +161,16 @@ export const ProductCard = ({ product }: { product: ProductCardProps }) => {
       href={routes.items.detail(product.id)}
       className="group flex flex-col h-full bg-card rounded-xl shadow-sm hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300 ease-out overflow-hidden p-3"
     >
-      <ProductImage product={product} />
+      <ProductImage
+        imageUrl={product.imageUrl}
+        status={product.status}
+        title={product.title}
+      />
       <ProductInfo
-        product={product}
+        isOwner={product.isOwner ?? false}
+        price={product.price}
+        title={product.title}
+        username={product.username}
         isFavorite={isFavorite}
         isPending={isPending}
         onFavoriteClick={handleToogle}

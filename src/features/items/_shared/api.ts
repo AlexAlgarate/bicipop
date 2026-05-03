@@ -3,14 +3,17 @@ import { cache } from 'react';
 import prisma from '@/infrastructure/db/prisma/client';
 import { mapToProductWithUserContext } from '@/domain/products/mappers';
 import { mapToCategoryDTO } from '@/domain/category/mappers';
-import type { ProductDTO, ProductWithUserContext } from '@/domain/products/types';
+import type { ProductWithUserContext } from '@/domain/products/types';
 import type { CategoryDTO } from '@/domain/category/types';
+import type { Prisma } from '@/generated/client/client';
+
+import type { SearchFilters } from './types';
 
 export const getProductById = cache(
   async (
     id: string,
     userId: string | null = null
-  ): Promise<(ProductDTO & { isOwner: boolean; isLiked: boolean }) | null> => {
+  ): Promise<ProductWithUserContext | null> => {
     const product = await prisma.product.findUnique({
       where: { id },
       include: {
@@ -23,10 +26,7 @@ export const getProductById = cache(
 
     if (!product) return null;
 
-    return mapToProductWithUserContext(product, userId) as ProductDTO & {
-      isOwner: boolean;
-      isLiked: boolean;
-    };
+    return mapToProductWithUserContext(product, userId);
   }
 );
 
@@ -68,21 +68,35 @@ export const toggleFavorite = async (
   });
 };
 
+const buildWhereClause = (filters?: SearchFilters): Prisma.ProductWhereInput => ({
+  ...(filters?.query && {
+    OR: [
+      { title: { contains: filters.query, mode: 'insensitive' } },
+      { description: { contains: filters.query, mode: 'insensitive' } },
+    ],
+  }),
+  ...(filters?.category && {
+    category: { slug: filters.category },
+  }),
+  ...(filters?.location && {
+    location: { contains: filters.location, mode: 'insensitive' },
+  }),
+  ...((filters?.minPrice !== undefined || filters?.maxPrice !== undefined) && {
+    price: {
+      ...(filters.minPrice !== undefined && { gte: filters.minPrice }),
+      ...(filters.maxPrice !== undefined && { lte: filters.maxPrice }),
+    },
+  }),
+});
+
 export const findProducts = async (
   page: number,
   pageSize: number,
   order: 'asc' | 'desc',
   userId: string | null,
-  query?: string
+  filters?: SearchFilters
 ): Promise<{ items: ProductWithUserContext[]; totalCount: number }> => {
-  const where = query
-    ? {
-        OR: [
-          { title: { contains: query, mode: 'insensitive' as const } },
-          { description: { contains: query, mode: 'insensitive' as const } },
-        ],
-      }
-    : {};
+  const where = buildWhereClause(filters);
 
   const [totalCount, items] = await Promise.all([
     prisma.product.count({ where }),

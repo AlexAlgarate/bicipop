@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { ProductStatus } from '@/generated/client/enums';
 import { formatPrice } from '@/utils/format';
 import { routes } from '@/config/routes';
-import type { ProductDetailProps } from '@/features/items/detail/types';
+import type { ProductWithUserContext } from '@/domain/products/types';
 
 import { useFavorite } from '../../_shared/hooks/useFavorite';
 
@@ -24,7 +24,7 @@ const STATUS_CONFIG: Partial<Record<ProductStatus, { label: string; color: strin
   },
 };
 
-export const ProductHeader = ({ product }: ProductDetailProps) => {
+export const ProductHeader = ({ product }: { product: ProductWithUserContext }) => {
   const [shareOpen, setShareOpen] = useState(false);
   const productStatus = STATUS_CONFIG[product.status];
 
@@ -42,7 +42,7 @@ export const ProductHeader = ({ product }: ProductDetailProps) => {
         <div className="flex flex-wrap items-center gap-2">
           <Link
             href={routes.category(product.categorySlug)}
-            className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary sm:text-sm"
+            className="rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary sm:text-sm"
           >
             {product.categoryName}
           </Link>

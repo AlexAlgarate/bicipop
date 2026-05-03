@@ -2,7 +2,7 @@ import { notFound, redirect } from 'next/navigation';
 
 import { getCategories, getProductById } from '@/features/items/_shared/api';
 import ProductForm from '@/features/items/_shared/components/ProductForm';
-import { BackToPageLink } from '@/components/BackToPageLink';
+import { BackToPageLink } from '@/components/ui/BackToPageLink';
 import { routes } from '@/config/routes';
 import { getSession } from '@/infrastructure/auth/session';
 
@@ -27,7 +27,6 @@ const EditProductPage = async ({ params }: EditProductPageProps) => {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mx-auto max-w-2xl">
-        {/* Back link */}
         <BackToPageLink />
 
         <div className="mb-8">

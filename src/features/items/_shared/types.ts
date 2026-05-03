@@ -1,17 +1,23 @@
-export type ProductFormState = {
-  success: boolean;
-  message: string;
-  errors?: Record<string, string[] | undefined>;
-  requestId: number;
-  values?: Record<string, string | number>;
-};
+import type { FormState } from '@/utils/types/form-state';
 
-export interface FilterProducts {
-  query: string;
+export type ProductFormState = FormState<{
+  title: string;
+  description: string;
+  price: number;
+  location: string;
+  categoryId: string;
+}>;
+
+export interface SearchFilters {
+  query?: string;
+  category?: string;
+  location?: string;
+  minPrice?: number;
+  maxPrice?: number;
+}
+
+export interface FilterProducts extends SearchFilters {
   order: 'asc' | 'desc';
   page: number;
   pageSize: number;
-  category?: string;
-  minPrice?: number;
-  maxPrice?: number;
 }
