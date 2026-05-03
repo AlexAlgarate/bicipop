@@ -1,6 +1,6 @@
 import type { UserDTO } from '@/domain/user/types';
-import { Pagination } from '@/components/Pagination';
-import { BackToPageLink } from '@/components/BackToPageLink';
+import { Pagination } from '@/components/ui/Pagination';
+import { BackToPageLink } from '@/components/ui/BackToPageLink';
 import type { DashboardData } from '@/features/profile/dashboard/types';
 
 import { DashboardStats } from './DashboardStats';

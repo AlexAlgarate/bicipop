@@ -2,7 +2,7 @@ import { notFound, redirect } from 'next/navigation';
 
 import { getCategories, getProductById } from '@/features/items/_shared/api';
 import ProductForm from '@/features/items/_shared/components/ProductForm';
-import { BackToPageLink } from '@/components/BackToPageLink';
+import { BackToPageLink } from '@/components/ui/BackToPageLink';
 import { routes } from '@/config/routes';
 import { getSession } from '@/infrastructure/auth/session';
 

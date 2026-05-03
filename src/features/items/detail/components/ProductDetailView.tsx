@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 
-import { BackToPageLink } from '@/components/BackToPageLink';
+import { BackToPageLink } from '@/components/ui/BackToPageLink';
 import { getProductById } from '@/features/items/_shared/api';
 import { getRelatedProducts } from '@/features/items/detail/api';
 import type { ProductWithUserContext } from '@/domain/products/types';
