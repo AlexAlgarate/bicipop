@@ -12,11 +12,14 @@ interface EmptyStateProps {
 
 export const EmptyState = ({ query, title, description, showLink }: EmptyStateProps) => {
   const isSearchEmpty = Boolean(query?.trim());
-  
-  const displayTitle = title ?? (isSearchEmpty ? `No results for "${query}"` : 'No products available');
-  const displayDescription = description ?? (isSearchEmpty 
-    ? 'Check the search field and try again.' 
-    : "It looks like no one has posted anything yet. Be the first to sell your bike!");
+
+  const displayTitle =
+    title ?? (isSearchEmpty ? `No results for "${query}"` : 'No products available');
+  const displayDescription =
+    description ??
+    (isSearchEmpty
+      ? 'Check the search field and try again.'
+      : 'It looks like no one has posted anything yet. Be the first to sell your bike!');
   const shouldShowLink = showLink ?? !isSearchEmpty;
 
   return (
@@ -28,7 +31,7 @@ export const EmptyState = ({ query, title, description, showLink }: EmptyStatePr
       <>
         <h3 className="text-xl font-semibold mb-2">{displayTitle}</h3>
         <p className="text-muted-foreground mb-6 max-w-md">{displayDescription}</p>
-        
+
         {shouldShowLink && (
           <Link
             href={routes.items.upload}

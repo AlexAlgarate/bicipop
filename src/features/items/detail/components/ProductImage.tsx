@@ -1,18 +1,14 @@
 import Image from 'next/image';
 
-import type { ProductDTO } from '@/domain/products/types';
 import { ProductStatus } from '@/generated/client/enums';
-
-interface ProductImageProps {
-  product: ProductDTO;
-}
+import type { ProductDetailProps } from '@/features/items/detail/types';
 
 const STATUS_CONFIG: Partial<Record<ProductStatus, { label: string; color: string }>> = {
   [ProductStatus.RESERVED]: { label: 'Reserved', color: 'text-yellow-500' },
   [ProductStatus.SOLD]: { label: 'Sold', color: 'text-red-500' },
 };
 
-export const ProductImage = ({ product }: ProductImageProps) => {
+export const ProductImage = ({ product }: ProductDetailProps) => {
   const productStatus = STATUS_CONFIG[product.status];
 
   return (

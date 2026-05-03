@@ -1,10 +1,10 @@
 import prisma from '@/infrastructure/db/prisma/client';
-import { mapToProductWithFavoriteStatus } from '@/domain/products/mappers';
+import { mapToProductWithUserContext } from '@/domain/products/mappers';
 import { getPagination } from '@/features/items/_shared/utils/get-pagination';
 import type { PaginationParams } from '@/features/profile/_shared/types';
 
 interface FavoritesData {
-  items: Awaited<ReturnType<typeof mapToProductWithFavoriteStatus>>[];
+  items: Awaited<ReturnType<typeof mapToProductWithUserContext>>[];
   totalCount: number;
 }
 
@@ -38,7 +38,7 @@ export const getUserFavorites = async (
 
   const items = products
     .filter(fav => fav.product.userId !== userId)
-    .map(fav => mapToProductWithFavoriteStatus(fav.product, userId));
+    .map(fav => mapToProductWithUserContext(fav.product, userId));
 
   return { items, totalCount };
 };

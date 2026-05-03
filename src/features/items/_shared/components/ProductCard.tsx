@@ -2,14 +2,14 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useOptimistic, useTransition } from 'react';
 import { Star } from 'lucide-react';
 
 import { Button } from '@/components/ui/Button';
-import { toggleFavoriteAction } from '@/features/items/_shared/actions';
 import { routes } from '@/config/routes';
 import { ProductStatus } from '@/generated/client/enums';
 import { formatPrice } from '@/utils/format';
+
+import { useFavorite } from '../hooks/useFavorite';
 
 interface ProductCardProps {
   id: string;
@@ -130,28 +130,11 @@ const ProductImage = ({ product }: { product: ProductCardProps }) => {
 };
 
 export const ProductCard = ({ product }: { product: ProductCardProps }) => {
-  const [isFavorite, setIsFavorite] = useOptimistic(
-    product.isLiked ?? false,
-    (_state, action: boolean) => action
-  );
-
-  const [isPending, startTransition] = useTransition();
-
-  const handleFavoriteClick = (event: React.MouseEvent) => {
-    event.preventDefault();
-    event.stopPropagation();
-
-    if (product.isOwner || isPending) return;
-
-    startTransition(async () => {
-      try {
-        const result = await toggleFavoriteAction(product.id);
-        setIsFavorite(result.liked);
-      } catch (error) {
-        console.error('[Error toggling favorite]', error);
-      }
-    });
-  };
+  const { handleToogle, isFavorite, isPending } = useFavorite({
+    productId: product.id,
+    isLiked: product.isLiked ?? false,
+    isOwner: product.isOwner ?? false,
+  });
 
   return (
     <Link
@@ -163,7 +146,7 @@ export const ProductCard = ({ product }: { product: ProductCardProps }) => {
         product={product}
         isFavorite={isFavorite}
         isPending={isPending}
-        onFavoriteClick={handleFavoriteClick}
+        onFavoriteClick={handleToogle}
       />
     </Link>
   );

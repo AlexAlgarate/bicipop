@@ -1,10 +1,10 @@
 import { cache } from 'react';
 
 import prisma from '@/infrastructure/db/prisma/client';
-import { mapToProductWithFavoriteStatus } from '@/domain/products/mappers';
+import { mapToProductWithUserContext } from '@/domain/products/mappers';
 import { ProductStatus } from '@/generated/client/enums';
 import { getPagination } from '@/features/items/_shared/utils/get-pagination';
-import type { ProductsWithFavoriteStatus } from '@/features/items/_shared/types';
+import type { ProductWithUserContext } from '@/domain/products/types';
 
 import type { UserProfile } from './types';
 
@@ -42,7 +42,7 @@ export const getUserProducts = cache(
     username: string,
     userId: string | null = null,
     filters: PaginationParams
-  ): Promise<{ items: ProductsWithFavoriteStatus[]; totalCount: number }> => {
+  ): Promise<{ items: ProductWithUserContext[]; totalCount: number }> => {
     const { page, pageSize } = getPagination(filters.page, filters.pageSize);
 
     const where = filters.query
@@ -75,9 +75,7 @@ export const getUserProducts = cache(
       }),
     ]);
 
-    const items = products.map(product =>
-      mapToProductWithFavoriteStatus(product, userId)
-    );
+    const items = products.map(product => mapToProductWithUserContext(product, userId));
 
     return { items, totalCount };
   }

@@ -2,7 +2,7 @@ import { notFound, redirect } from 'next/navigation';
 
 import { getCategories, getProductById } from '@/features/items/_shared/api';
 import ProductForm from '@/features/items/_shared/components/ProductForm';
-import { BackToHomeLink } from '@/components/BackToHomeLink';
+import { BackToPageLink } from '@/components/BackToPageLink';
 import { routes } from '@/config/routes';
 import { getSession } from '@/infrastructure/auth/session';
 
@@ -28,7 +28,7 @@ const EditProductPage = async ({ params }: EditProductPageProps) => {
     <div className="container mx-auto px-4 py-8">
       <div className="mx-auto max-w-2xl">
         {/* Back link */}
-        <BackToHomeLink title="dashboard" url={routes.profile.dashboard} />
+        <BackToPageLink />
 
         <div className="mb-8">
           <h1 className="text-3xl font-bold">Edit Product</h1>

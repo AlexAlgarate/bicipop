@@ -1,5 +1,6 @@
 import type { UserDTO } from '@/domain/user/types';
 import { Pagination } from '@/components/Pagination';
+import { BackToPageLink } from '@/components/BackToPageLink';
 import type { DashboardData } from '@/features/profile/dashboard/types';
 
 import { DashboardStats } from './DashboardStats';
@@ -23,6 +24,8 @@ export const DashboardView = ({
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <BackToPageLink forceHome />
+
       <DashboardHeader user={user} />
 
       <DashboardStats statusCounts={data.statusCounts} totalCount={data.totalCount} />
