@@ -3,14 +3,14 @@ import { cache } from 'react';
 import prisma from '@/infrastructure/db/prisma/client';
 import { mapToProductWithUserContext } from '@/domain/products/mappers';
 import { mapToCategoryDTO } from '@/domain/category/mappers';
-import type { ProductDTO, ProductWithUserContext } from '@/domain/products/types';
+import type { ProductWithUserContext } from '@/domain/products/types';
 import type { CategoryDTO } from '@/domain/category/types';
 
 export const getProductById = cache(
   async (
     id: string,
     userId: string | null = null
-  ): Promise<(ProductDTO & { isOwner: boolean; isLiked: boolean }) | null> => {
+  ): Promise<ProductWithUserContext | null> => {
     const product = await prisma.product.findUnique({
       where: { id },
       include: {
@@ -23,10 +23,7 @@ export const getProductById = cache(
 
     if (!product) return null;
 
-    return mapToProductWithUserContext(product, userId) as ProductDTO & {
-      isOwner: boolean;
-      isLiked: boolean;
-    };
+    return mapToProductWithUserContext(product, userId);
   }
 );
 

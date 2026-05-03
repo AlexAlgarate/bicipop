@@ -3,6 +3,8 @@ import { ProductStatus } from '@/generated/client/enums';
 import prisma from '@/infrastructure/db/prisma/client';
 import type { ProductWithUserContext } from '@/domain/products/types';
 
+import { getProductById } from '../_shared/api';
+
 interface GetRelatedProductsOptions {
   categoryId: string;
   excludeId: string;
@@ -41,4 +43,19 @@ export const getRelatedProducts = async ({
     isLiked: (favorites?.length ?? 0) > 0,
     isOwner: item.userId === currentUserId,
   }));
+};
+
+export const getProductDetailData = async (id: string, userId: string | null) => {
+  const product = await getProductById(id, userId);
+  if (!product) return null;
+
+  const relatedProducts = await getRelatedProducts({
+    categoryId: product.categoryId,
+    excludeId: product.id,
+    excludeUserId: product.userId,
+    limit: 4,
+    currentUserId: userId,
+  });
+
+  return { product, relatedProducts };
 };
