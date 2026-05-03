@@ -42,7 +42,7 @@ const FavoritesPage = async ({
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <FavoritesHeader user={user} />
+      <FavoritesHeader username={user.username} />
       <ProductsGrid
         products={data.items}
         currentPage={currentPage}

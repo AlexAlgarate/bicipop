@@ -1,4 +1,3 @@
-import type { UserDTO } from '@/domain/user/types';
 import { Pagination } from '@/components/ui/Pagination';
 import { BackToPageLink } from '@/components/ui/BackToPageLink';
 import type { DashboardData } from '@/features/profile/dashboard/types';
@@ -8,14 +7,14 @@ import { DashboardProductPanel } from './DashboardProductPanel';
 import { DashboardHeader } from './DashboardHeader';
 
 interface DashboardViewProps {
-  user: UserDTO;
+  username: string;
   data: DashboardData;
   currentPage: number;
   pageSize: number;
 }
 
 export const DashboardView = ({
-  user,
+  username,
   data,
   currentPage,
   pageSize,
@@ -26,7 +25,7 @@ export const DashboardView = ({
     <div className="container mx-auto px-4 py-8">
       <BackToPageLink forceHome />
 
-      <DashboardHeader user={user} />
+      <DashboardHeader username={username} />
 
       <DashboardStats statusCounts={data.statusCounts} totalCount={data.totalCount} />
       <DashboardProductPanel products={data.items} />

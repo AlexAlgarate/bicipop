@@ -27,12 +27,11 @@ const DashboardPage = async ({
 }) => {
   const user = await getCurrentUser();
   if (!user) redirect(routes.auth.login);
-  const userId = user.id as string;
 
   const { page, query } = await searchParams;
   const currentPage = page ? parseInt(page, 10) : 1;
 
-  const data = await getUserDashboardProducts(userId, {
+  const data = await getUserDashboardProducts(user.id, {
     page: currentPage,
     pageSize: DASHBOARD_PAGE_SIZE,
     query,
@@ -40,7 +39,7 @@ const DashboardPage = async ({
 
   return (
     <DashboardView
-      user={user}
+      username={user.username}
       data={data}
       currentPage={currentPage}
       pageSize={DASHBOARD_PAGE_SIZE}
