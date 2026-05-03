@@ -1,7 +1,6 @@
 import { notFound } from 'next/navigation';
 
-import { BackToHomeLink } from '@/components/BackToHomeLink';
-import { routes } from '@/config/routes';
+import { BackToPageLink } from '@/components/BackToPageLink';
 import { getProductById } from '@/features/items/_shared/api';
 import { getRelatedProducts } from '@/features/items/detail/api';
 import type { ProductWithUserContext } from '@/domain/products/types';
@@ -23,7 +22,7 @@ export const ProductDetailView = ({
 }: ProductDetailViewProps) => {
   return (
     <div className="container mx-auto px-4 py-8">
-      <BackToHomeLink title="dashboard" url={routes.profile.dashboard} />
+      <BackToPageLink />
 
       <div className="grid gap-8 lg:grid-cols-2">
         <ProductImage product={product} />
