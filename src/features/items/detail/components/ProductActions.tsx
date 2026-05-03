@@ -3,9 +3,9 @@ import Link from 'next/link';
 
 import { ProductStatus } from '@/generated/client/enums';
 import { routes } from '@/config/routes';
-import type { ProductDetailProps } from '@/features/items/detail/types';
+import type { ProductWithUserContext } from '@/domain/products/types';
 
-export const ProductActions = ({ product }: ProductDetailProps) => {
+export const ProductActions = ({ product }: { product: ProductWithUserContext }) => {
   const isSold = product.status === ProductStatus.SOLD;
   return (
     <div className="flex gap-3">

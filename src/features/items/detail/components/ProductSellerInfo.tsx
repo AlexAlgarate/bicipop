@@ -2,9 +2,9 @@ import Link from 'next/link';
 import { User } from 'lucide-react';
 
 import { routes } from '@/config/routes';
-import type { ProductDetailProps } from '@/features/items/detail/types';
+import type { ProductWithUserContext } from '@/domain/products/types';
 
-export const ProductSellerInfo = ({ product }: ProductDetailProps) => {
+export const ProductSellerInfo = ({ product }: { product: ProductWithUserContext }) => {
   return (
     <div className="rounded-xl border border-border bg-card p-4 shadow-sm transition-all hover:shadow-md hover:bg-card-hover">
       <Link
