@@ -10,7 +10,9 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: process.env.NEXT_PUBLIC_SUPABASE_URL?.replace('https://', '') ?? 'szclxuchqtsjavxvrxba.supabase.co',
+        hostname:
+          process.env.NEXT_PUBLIC_SUPABASE_URL?.replace('https://', '') ??
+          'gqwarqgiibymlrxlklsh.supabase.co',
       },
     ],
   },
