@@ -1,4 +1,13 @@
-import type { ProductDTO, ProductWithRelations, ProductWithUserContext } from './types';
+import type { Prisma } from '@/generated/client/client';
+
+import type { ProductDTO, ProductWithUserContext } from './types';
+
+type ProductWithRelations = Prisma.ProductGetPayload<{
+  include: {
+    category: { select: { name: true; slug: true } };
+    user: { select: { username: true } };
+  };
+}>;
 
 export const mapToProductDTO = (product: ProductWithRelations): ProductDTO => {
   return {
