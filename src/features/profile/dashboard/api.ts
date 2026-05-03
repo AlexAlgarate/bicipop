@@ -1,7 +1,7 @@
 import { mapToProductWithUserContext } from '@/domain/products/mappers';
 import { ProductStatus } from '@/generated/client/enums';
 import prisma from '@/infrastructure/db/prisma/client';
-import { getPagination } from '@/features/items/_shared/utils/get-pagination';
+import { validatePagination } from '@/features/items/_shared/utils/validate-pagination';
 import type { PaginationParams } from '@/features/profile/_shared/types';
 
 import type { DashboardData } from './types';
@@ -10,7 +10,7 @@ export const getUserDashboardProducts = async (
   userId: string,
   filters: PaginationParams
 ): Promise<DashboardData> => {
-  const { page, pageSize } = getPagination(filters.page, filters.pageSize);
+  const { page, pageSize } = validatePagination(filters.page, filters.pageSize);
   const where = {
     userId,
     ...(filters.query && {

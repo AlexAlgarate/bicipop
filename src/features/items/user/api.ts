@@ -3,7 +3,7 @@ import { cache } from 'react';
 import prisma from '@/infrastructure/db/prisma/client';
 import { mapToProductWithUserContext } from '@/domain/products/mappers';
 import { ProductStatus } from '@/generated/client/enums';
-import { getPagination } from '@/features/items/_shared/utils/get-pagination';
+import { validatePagination } from '@/features/items/_shared/utils/validate-pagination';
 import type { ProductWithUserContext } from '@/domain/products/types';
 
 import type { UserProfile } from './types';
@@ -43,7 +43,7 @@ export const getUserProducts = cache(
     userId: string | null = null,
     filters: PaginationParams
   ): Promise<{ items: ProductWithUserContext[]; totalCount: number }> => {
-    const { page, pageSize } = getPagination(filters.page, filters.pageSize);
+    const { page, pageSize } = validatePagination(filters.page, filters.pageSize);
 
     const where = filters.query
       ? {
