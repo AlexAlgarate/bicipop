@@ -2,6 +2,11 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   output: 'standalone',
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '10mb',
+    },
+  },
   images: {
     remotePatterns: [
       {
@@ -10,9 +15,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname:
-          process.env.NEXT_PUBLIC_SUPABASE_URL?.replace('https://', '') ??
-          'gqwarqgiibymlrxlklsh.supabase.co',
+        hostname: 'gqwarqgiibymlrxlklsh.supabase.co',
       },
     ],
   },

@@ -28,7 +28,8 @@ const errorState = (
 });
 
 const resolveImageUrl = async (
-  formData: FormData
+  formData: FormData,
+  extras?: Partial<ProductFormState>
 ): Promise<string | ProductFormState> => {
   const imageMode = formData.get('imageMode');
 
@@ -46,7 +47,7 @@ const resolveImageUrl = async (
     return await uploadImgInSupabaseBucket(file);
   }
 
-  return errorState('Invalid image mode');
+  return errorState('Invalid image mode', { ...extras });
 };
 
 export const uploadProductAction = async (
@@ -72,7 +73,15 @@ export const uploadProductAction = async (
     });
   }
 
-  const imageResult = await resolveImageUrl(formData);
+  const imageResult = await resolveImageUrl(formData, {
+    values: {
+      title: parsed.data.title,
+      description: parsed.data.description,
+      price: parsed.data.price,
+      categoryId: parsed.data.categoryId,
+      location: parsed.data.location,
+    },
+  });
   if (typeof imageResult !== 'string') return imageResult;
 
   try {

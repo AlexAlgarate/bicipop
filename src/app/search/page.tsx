@@ -47,7 +47,9 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
           <BackToPageLink forceHome />
           <div className="mb-6">
             <h1 className="text-2xl font-bold text-foreground">
-              {params.query ? `Results for "${params.query}"` : 'Search Results'}
+              {params.query || params.category
+                ? `Results for "${params.query || params.category}"`
+                : 'Search Results'}
             </h1>
             {result.totalCount > 0 && (
               <p className="text-sm text-muted mt-1">
