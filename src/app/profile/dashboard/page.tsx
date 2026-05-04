@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 
@@ -10,8 +12,6 @@ export const metadata: Metadata = {
   title: 'Dashboard',
   description: 'Manage your products on Bicipop',
 };
-
-export const dynamic = 'force-dynamic';
 
 const DASHBOARD_PAGE_SIZE = 10;
 
