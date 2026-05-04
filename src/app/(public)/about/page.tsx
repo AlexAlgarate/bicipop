@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'About Us - BiciPop',
-  description: 'Learn more about BiciPop, the best place to buy and sell second-hand bicycles.',
+  description:
+    'Learn more about BiciPop, the best place to buy and sell second-hand bicycles.',
 };
 
 export default function AboutPage() {
@@ -21,13 +22,15 @@ export default function AboutPage() {
           <h2 className="text-2xl font-semibold text-foreground mb-4">Our Mission</h2>
           <p>
             Our mission is to promote sustainable mobility by making quality bicycles
-            accessible to everyone. We believe that cycling is not just a sport or
-            hobby, but a way of life that benefits both individuals and the environment.
+            accessible to everyone. We believe that cycling is not just a sport or hobby,
+            but a way of life that benefits both individuals and the environment.
           </p>
         </section>
 
         <section className="pt-4">
-          <h2 className="text-2xl font-semibold text-foreground mb-4">Why Choose BiciPop?</h2>
+          <h2 className="text-2xl font-semibold text-foreground mb-4">
+            Why Choose BiciPop?
+          </h2>
           <ul className="list-disc list-inside space-y-2">
             <li>Verified sellers with transparent ratings</li>
             <li>Secure payment and transaction system</li>
@@ -38,11 +41,13 @@ export default function AboutPage() {
         </section>
 
         <section className="pt-4">
-          <h2 className="text-2xl font-semibold text-foreground mb-4">Join Our Community</h2>
+          <h2 className="text-2xl font-semibold text-foreground mb-4">
+            Join Our Community
+          </h2>
           <p>
             Whether you&apos;re looking to sell your current bike or find your perfect
-            ride, BiciPop is the place for you. Join thousands of cyclists who have already
-            discovered the joy of buying and selling on our platform.
+            ride, BiciPop is the place for you. Join thousands of cyclists who have
+            already discovered the joy of buying and selling on our platform.
           </p>
         </section>
 

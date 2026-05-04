@@ -1,5 +1,7 @@
 import Link from 'next/link';
 
+import { routes, footerCategories } from '@/config/routes';
+
 const LINKEDIN_URL = 'https://www.linkedin.com/in/alex-algarate/';
 const GITHUB_URL = 'https://github.com/AlexAlgarate/';
 
@@ -11,36 +13,128 @@ const GITHUB_SVG_PATH =
 
 export const Footer = ({ className }: { className?: string }) => {
   return (
-    <footer
-      className={`mt-auto py-6 border-t border-border bg-background ${className ?? ''}`}
-    >
-      <div className="container mx-auto px-4 flex flex-col md:flex-row itmes-center justify-between gap-4">
-        <span className="text-muted-foreground text-center md:text-center">
-          © {new Date().getFullYear()} — Developed by{' '}
-          <Link
-            href={LINKEDIN_URL}
-            className="font-medium text-foreground hover:text-blue-600 transition-colors"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Álex Algarate
-          </Link>
-        </span>
-        <div className="flex items-center justify-center gap-4">
-          <MediaLink
-            url={GITHUB_URL}
-            ariaLabel="Github repository"
-            hoverClassname="text-foreground"
-          >
-            <MediaIcon iconTitle="Github" path={GITHUB_SVG_PATH} />
-          </MediaLink>
-          <MediaLink
-            url={LINKEDIN_URL}
-            ariaLabel="Linkedin profile"
-            hoverClassname="text-[#0077b5]"
-          >
-            <MediaIcon iconTitle="Linkedin" path={LINKEDIN_SVG_PATH} />
-          </MediaLink>
+    <footer className={`relative mt-auto bg-background ${className ?? ''}`}>
+      <div className="absolute top-0 w-full h-px bg-linear-to-r from-transparent via-border to-transparent opacity-60" />
+
+      <div className="container mx-auto px-4 pt-16 pb-8">
+        <div className="grid gap-10 sm:grid-cols-2 md:grid-cols-4 lg:gap-16">
+          {/* Brand Info */}
+          <div className="md:col-span-1">
+            <div className="flex items-center gap-2">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary shadow-sm">
+                <span className="text-lg font-bold text-white">B</span>
+              </div>
+              <span className="text-xl font-bold tracking-tight text-foreground">
+                BiciPop
+              </span>
+            </div>
+            <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+              Buy and sell second-hand bikes. The easiest way to give a new lease of life
+              to bikes you no longer use.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-foreground">
+              Quick Links
+            </h3>
+            <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
+              <li>
+                <Link href={routes.home} className="transition-colors hover:text-primary">
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href={routes.search}
+                  className="transition-colors hover:text-primary"
+                >
+                  Search
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href={routes.items.upload}
+                  className="transition-colors hover:text-primary"
+                >
+                  Sell
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-foreground">
+              Categories
+            </h3>
+            <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
+              {footerCategories.map(cat => (
+                <li key={cat.slug}>
+                  <Link
+                    href={`${routes.search}?category=${cat.slug}`}
+                    className="transition-colors hover:text-primary"
+                  >
+                    {cat.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-foreground">
+              Legal
+            </h3>
+            <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
+              <li>
+                <Link
+                  href={routes.aboutUs}
+                  className="transition-colors hover:text-primary"
+                >
+                  About Us
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href={routes.termsOfService}
+                  className="transition-colors hover:text-primary"
+                >
+                  Terms of Service
+                </Link>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="mt-16 flex flex-col items-center justify-between gap-6 border-t border-border/40 pt-8 sm:flex-row">
+          <p className="text-sm text-muted-foreground">
+            © {new Date().getFullYear()} BiciPop. Developed by{' '}
+            <Link
+              href={LINKEDIN_URL}
+              className="font-medium text-foreground transition-colors hover:text-primary"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Álex Algarate
+            </Link>
+          </p>
+
+          <div className="flex items-center gap-5">
+            <MediaLink
+              url={GITHUB_URL}
+              ariaLabel="Github repository"
+              hoverClassname="text-foreground"
+            >
+              <MediaIcon iconTitle="Github" path={GITHUB_SVG_PATH} />
+            </MediaLink>
+            <MediaLink
+              url={LINKEDIN_URL}
+              ariaLabel="Linkedin profile"
+              hoverClassname="text-[#0077b5]"
+            >
+              <MediaIcon iconTitle="Linkedin" path={LINKEDIN_SVG_PATH} />
+            </MediaLink>
+          </div>
         </div>
       </div>
     </footer>
@@ -64,7 +158,7 @@ const MediaLink = ({
       target="_blank"
       rel="noopener noreferrer"
       aria-label={ariaLabel}
-      className={`text-muted-foreground hover:${hoverClassname} hover:-translate-y-0.5 transition-all duration-200`}
+      className={`text-muted-foreground hover:${hoverClassname} transition-all duration-200 hover:scale-110`}
     >
       {children}
     </Link>
@@ -77,7 +171,7 @@ const MediaIcon = ({ iconTitle, path }: { iconTitle: string; path: string }) => 
       role="img"
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
-      className="w-7 h-7"
+      className="w-5 h-5 sm:w-6 sm:h-6"
       fill="currentColor"
     >
       <title>{iconTitle}</title>

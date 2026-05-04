@@ -21,3 +21,10 @@ export const routes = {
   termsOfService: '/terms',
   search: '/search',
 } as const;
+
+export const footerCategories = [
+  { name: 'Carretera', slug: 'carretera' },
+  { name: 'Montaña (MTB)', slug: 'montana-mtb' },
+  { name: 'Aero', slug: 'aero' },
+  { name: 'Eléctrica', slug: 'electrica' },
+] as const;
