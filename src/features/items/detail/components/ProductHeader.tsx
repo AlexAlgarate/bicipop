@@ -40,7 +40,7 @@ export const ProductHeader = ({ product }: { product: ProductWithUserContext }) 
       <div className="mb-3 flex items-center justify-between gap-4">
         <div className="flex flex-wrap items-center gap-2">
           <Link
-            href={routes.category(product.categorySlug)}
+            href={`${routes.search}?category=${product.categorySlug}`}
             className="rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary sm:text-sm"
           >
             {product.categoryName}
