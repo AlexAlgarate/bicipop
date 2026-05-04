@@ -2,12 +2,11 @@ import { SignJWT, jwtVerify } from 'jose';
 
 import { getJwtSecretKey, JWT_ALGORITHM } from '@/infrastructure/auth/constants';
 
-const jwtSecret = getJwtSecretKey();
-
 export const signSessionToken = async (
   payload: { userId: string },
   expiresAt: Date
 ): Promise<string> => {
+  const jwtSecret = getJwtSecretKey();
   return await new SignJWT(payload)
     .setProtectedHeader({ alg: JWT_ALGORITHM })
     .setIssuedAt()
@@ -18,6 +17,7 @@ export const signSessionToken = async (
 export const verifySessionToken = async (
   token: string
 ): Promise<{ userId: string } | null> => {
+  const jwtSecret = getJwtSecretKey();
   try {
     const { payload } = await jwtVerify(token, jwtSecret, {
       algorithms: [JWT_ALGORITHM],
