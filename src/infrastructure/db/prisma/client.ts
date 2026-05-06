@@ -3,9 +3,7 @@ import { PrismaPg } from '@prisma/adapter-pg';
 
 import { PrismaClient } from '@/generated/client/client';
 
-const globalForPrisma = globalThis as unknown as { prisma: PrismaClient | undefined };
-
-const createPrismaClient = () => {
+const createPrismaClient = (): PrismaClient => {
   const connectionString = process.env.DATABASE_URL;
 
   if (!connectionString) {
@@ -16,10 +14,18 @@ const createPrismaClient = () => {
   return new PrismaClient({ adapter });
 };
 
-const prisma = globalForPrisma.prisma ?? createPrismaClient();
+const getPrismaClient = (): PrismaClient => {
+  if (!global.prismaClient) {
+    global.prismaClient = createPrismaClient();
+  }
+  return global.prismaClient;
+};
 
-if (process.env.NODE_ENV !== 'production') {
-  globalForPrisma.prisma = prisma;
-}
+const global = globalThis as unknown as {
+  prismaClient?: PrismaClient;
+  [key: string]: unknown;
+};
+
+export const prisma = getPrismaClient();
 
 export default prisma;

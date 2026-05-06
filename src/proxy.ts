@@ -3,9 +3,17 @@ import { type NextRequest, NextResponse } from 'next/server';
 import { SESSION_COOKIE_NAME } from '@/infrastructure/auth/constants';
 import { verifyToken } from '@/infrastructure/auth/jwt';
 
+import { routes } from './config/routes';
+
 const routeMatchers = {
-  protected: ['/dashboard', '/items/upload', '/items/edit'],
-  auth: ['/login', '/register'],
+  protected: [
+    routes.profile.dashboard,
+    routes.profile.messages,
+    routes.items.upload,
+    '/items/edit',
+    '/messages',
+  ],
+  auth: [routes.auth.login, routes.auth.register],
 };
 
 export async function proxy(request: NextRequest) {
@@ -19,13 +27,13 @@ export async function proxy(request: NextRequest) {
   const isValidSession = sessionCookie ? await verifyToken(sessionCookie) : false;
 
   if (isProtectedRoute && !isValidSession) {
-    const loginUrl = new URL('/login', request.url);
+    const loginUrl = new URL(routes.auth.login, request.url);
     loginUrl.searchParams.set('callbackUrl', pathname);
     return NextResponse.redirect(loginUrl);
   }
 
   if (isAuthRoute && isValidSession) {
-    return NextResponse.redirect(new URL('/dashboard', request.url));
+    return NextResponse.redirect(new URL('/', request.url));
   }
 
   return NextResponse.next();

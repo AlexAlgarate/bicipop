@@ -13,8 +13,13 @@ export const routes = {
   category: (categorySlug: string) => `/category/${categorySlug}`,
   profile: {
     dashboard: '/profile/dashboard',
+    messages: '/profile/messages',
     settings: '/profile/settings',
     favorites: '/profile/favorites',
+  },
+  messages: {
+    list: '/profile/messages',
+    chat: (id: string) => `/messages/${id}`,
   },
 
   aboutUs: '/about',

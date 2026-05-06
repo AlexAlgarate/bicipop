@@ -16,27 +16,28 @@ model User {
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
   products      Product[]
-  favorites     Favorite[]
+  favorites    Favorite[]
+  buyerConversations    Conversation[]  @relation("BuyerConversations")
+  sellerConversations   Conversation[]  @relation("SellerConversations")
+  messages          Message[]       @relation("MessageSender")
 }
 
 model Product {
   id            String        @id @default(cuid())
   title         String
-  description   String
-  price         Float
-  imageUrl      String
-  location      String
-  status        ProductStatus @default(ACTIVE)
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-
-  userId        String
-  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  categoryId    String
-  category      Category      @relation(fields: [categoryId], references: [id])
-
-  favorites     Favorite[]
+  description  String
+  price        Float
+  imageUrl     String
+  location     String
+  status       ProductStatus @default(ACTIVE)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  userId       String
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  categoryId  String
+  category    Category      @relation(fields: [categoryId], references: [id])
+  favorites   Favorite[]
+  conversations Conversation[]
 
   @@index([userId])
   @@index([categoryId])
@@ -68,4 +69,38 @@ enum ProductStatus {
   ACTIVE
   SOLD
   RESERVED
+}
+
+model Conversation {
+  id            String       @id @default(cuid())
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  productId     String
+  product       Product      @relation(fields: [productId], references: [id], onDelete: Cascade)
+  buyerId       String
+  buyer         User         @relation("BuyerConversations", fields: [buyerId], references: [id], onDelete: Cascade)
+  sellerId      String
+  seller        User         @relation("SellerConversations", fields: [sellerId], references: [id], onDelete: Cascade)
+  messages     Message[]
+
+  @@unique([productId, buyerId])
+  @@index([buyerId])
+  @@index([sellerId])
+  @@index([productId])
+  @@index([updatedAt])
+}
+
+model Message {
+  id              String       @id @default(cuid())
+  content         String
+  readAt         DateTime?
+  createdAt       DateTime     @default(now())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  senderId        String
+  sender          User        @relation("MessageSender", fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@index([conversationId])
+  @@index([createdAt])
+  @@index([senderId])
 }
