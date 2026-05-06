@@ -78,9 +78,9 @@ model Conversation {
   productId     String
   product       Product      @relation(fields: [productId], references: [id], onDelete: Cascade)
   buyerId       String
-  buyer         User         @relation("BuyerConversations", fields: [buyerId], references: [id])
+  buyer         User         @relation("BuyerConversations", fields: [buyerId], references: [id], onDelete: Cascade)
   sellerId      String
-  seller        User         @relation("SellerConversations", fields: [sellerId], references: [id])
+  seller        User         @relation("SellerConversations", fields: [sellerId], references: [id], onDelete: Cascade)
   messages     Message[]
 
   @@unique([productId, buyerId])
