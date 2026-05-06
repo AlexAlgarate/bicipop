@@ -16,7 +16,6 @@
     "prisma:studio": "prisma studio",
     "prisma:seed": "tsx --env-file=.env ./prisma/seed.ts",
     "prisma:reset": "prisma migrate reset",
-    "prisma": "pnpm prisma:generate && pnpm prisma:push && pnpm prisma:seed",
     "postinstall": "prisma generate"
   },
   "dependencies": {
