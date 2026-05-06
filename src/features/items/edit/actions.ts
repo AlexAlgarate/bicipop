@@ -29,7 +29,6 @@ export const updateProductAction = async (
   formData: FormData
 ): Promise<ProductFormState | null> => {
   const session = await getSession();
-
   if (!session?.userId) redirect(routes.auth.login);
 
   const rawValues = {

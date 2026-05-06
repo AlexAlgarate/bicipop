@@ -56,7 +56,7 @@ export const Sidebar = ({ user }: SidebarProps) => {
                 ${
                   isActive
                     ? 'bg-primary text-primary-foreground'
-                    : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
+                    : 'text-muted-foreground hover:bg-background/20 hover:text-foreground'
                 }
               `}
             >

@@ -5,7 +5,6 @@ import { redirect } from 'next/navigation';
 
 import type { ProductStatus } from '@/generated/client/enums';
 import { getProductById } from '@/features/items/_shared/api';
-import { getCurrentUser } from '@/features/auth/api';
 import { routes } from '@/config/routes';
 import { getSession } from '@/infrastructure/auth/session';
 
@@ -14,11 +13,9 @@ import type { ProductState } from './types';
 
 export async function deleteProductAction(productId: string): Promise<void> {
   const session = await getSession();
-
   if (!session?.userId) redirect(routes.auth.login);
 
   const existingProduct = await getProductById(productId, session.userId);
-
   if (!existingProduct) redirect(routes.home);
 
   await deleteProduct(productId);
@@ -31,18 +28,11 @@ export async function updateProductStatusAction(
   productId: string,
   status: ProductStatus
 ): Promise<ProductState> {
-  const currentUser = await getCurrentUser();
-
-  if (!currentUser) {
-    return {
-      success: false,
-      message: 'You must be logged in to update product status',
-    };
-  }
+  const session = await getSession();
+  if (!session?.userId) redirect(routes.auth.login);
 
   const existingProduct = await getProductById(productId);
-
-  if (!existingProduct || !existingProduct.isOwner) {
+  if (!existingProduct || existingProduct.userId !== session.userId) {
     return {
       success: false,
       message: 'You are not authorized to update this product',

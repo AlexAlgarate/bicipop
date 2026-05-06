@@ -116,7 +116,7 @@ const ProductActions = ({ product }: { product: ProductWithUserContext }) => {
         <Button
           onClick={() => setShowModal(true)}
           disabled={isPending}
-          className="p-1.5 rounded-md text-muted hover:text-red-400 hover:bg-red-500/10 transition-colors disabled:opacity-50"
+          className="p-1.5 rounded-md text-muted hover:text-destructive hover:bg-red-500/10 transition-colors disabled:opacity-50"
           title="Delete"
         >
           {isPending ? (
@@ -198,7 +198,7 @@ const StatusMenu = ({
   <div className="relative">
     <button
       onClick={onToggle}
-      className="p-1.5 rounded-md text-muted hover:text-foreground hover:bg-secondary transition-colors"
+      className="p-1.5 rounded-md text-muted cursor-pointer hover:text-foreground hover:bg-secondary transition-colors"
       title="Change status"
     >
       <MoreVertical className="h-4 w-4" />
@@ -208,7 +208,7 @@ const StatusMenu = ({
       <>
         <div className="fixed inset-0 z-10" onClick={onClose} />
         <div className="absolute right-0 top-full z-20 mt-1 w-40 rounded-lg border border-border bg-card py-1 shadow-xl">
-          <p className="px-3 py-1.5 text-xs font-medium text-muted uppercase tracking-wide">
+          <p className="px-3 py-1.5 text-xs font-medium text-muted uppercase tracking-wide border-b border-border">
             Change Status
           </p>
           {ALL_STATUSES.map(status => {
@@ -219,7 +219,7 @@ const StatusMenu = ({
                 onClick={() => onStatusChange(status)}
                 disabled={isActive || isPending}
                 className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm
-                  hover:bg-secondary disabled:opacity-40 disabled:cursor-default transition-colors"
+                  hover:bg-background/20 cursor-pointer disabled:opacity-40 disabled:cursor-default transition-colors"
               >
                 <span
                   className={`h-2 w-2 rounded-full shrink-0 ${STATUS_CONFIG[status].dot}`}
