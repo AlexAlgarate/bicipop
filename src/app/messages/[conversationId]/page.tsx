@@ -66,7 +66,6 @@ export default async function ChatPage({ params }: ChatPageProps) {
         </div>
       </div>
 
-      {/* Vista del chat — Client Component con Supabase Realtime */}
       <ChatView conversation={conversation} currentUserId={session.userId} />
     </div>
   );
