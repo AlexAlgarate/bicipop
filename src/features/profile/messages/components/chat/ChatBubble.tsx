@@ -23,7 +23,7 @@ export const MessageBubble = ({ message, isOwn }: MessageBubbleProps) => {
         <p className="whitespace-pre-wrap wrap-break-word">{message.content}</p>
       </div>
       <span className="text-[10px] text-muted px-1">
-        {isOptimistic ? 'Enviando...' : formatDate(message.createdAt)}
+        {isOptimistic ? 'Sending...' : formatDate(message.createdAt)}
       </span>
     </div>
   );

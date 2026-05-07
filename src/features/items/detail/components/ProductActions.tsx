@@ -6,7 +6,7 @@ import { useTransition } from 'react';
 
 import { ProductStatus } from '@/generated/client/enums';
 import { routes } from '@/config/routes';
-import { startConversationAction } from '@/features/messages/actions';
+import { startConversationAction } from '@/features/profile/messages/actions';
 import type { ProductWithUserContext } from '@/domain/products/types';
 
 interface ProductActionsProps {

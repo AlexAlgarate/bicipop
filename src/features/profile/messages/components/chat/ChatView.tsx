@@ -3,11 +3,10 @@
 import { useEffect, useRef } from 'react';
 
 import type { ConversationWithMessages } from '@/domain/message/types';
+import { useChat } from '@/features/profile/messages/hooks/useChat';
 
-import { useChat } from '../hooks/useChat';
-
-import { MessageBubble } from './MessageBubble';
-import { MessageInput } from './MessageInput';
+import { MessageBubble } from './ChatBubble';
+import { MessageInput } from './ChatInput';
 
 interface ChatViewProps {
   conversation: ConversationWithMessages;

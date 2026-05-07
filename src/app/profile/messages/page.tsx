@@ -3,8 +3,8 @@ import { redirect } from 'next/navigation';
 
 import { getSession } from '@/infrastructure/auth/session';
 import { routes } from '@/config/routes';
-import { getUserConversations } from '@/features/messages/api';
-import { MessagesView } from '@/features/messages/components/MessagesView';
+import { getUserConversations } from '@/features/profile/messages/api';
+import { MessagesView } from '@/features/profile/messages/components/MessagesView';
 
 export const metadata: Metadata = {
   title: 'Messages — BiciPop',

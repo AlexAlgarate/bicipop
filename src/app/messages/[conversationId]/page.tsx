@@ -7,8 +7,8 @@ import { ArrowLeft } from 'lucide-react';
 
 import { getSession } from '@/infrastructure/auth/session';
 import { routes } from '@/config/routes';
-import { getConversationWithMessages } from '@/features/messages/api';
-import { ChatView } from '@/features/messages/components/ChatView';
+import { getConversationWithMessages } from '@/features/profile/messages/api';
+import { ChatView } from '@/features/profile/messages/components/chat/ChatView';
 
 interface ChatPageProps {
   params: Promise<{ conversationId: string }>;
