@@ -2,20 +2,14 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import {
-  type LucideIcon,
-  Heart,
-  LayoutDashboard,
-  MailOpen,
-  Settings,
-} from 'lucide-react';
+import { type LucideIcon, Heart, LayoutDashboard, Mail, Settings } from 'lucide-react';
 
 import { routes } from '@/config/routes';
 import type { UserDTO } from '@/domain/user/types';
 
 const NAV_ITEMS: { href: string; label: string; icon: LucideIcon }[] = [
-  { href: routes.profile.dashboard, label: 'Dashboard', icon: LayoutDashboard },
-  { href: routes.profile.messages, label: 'Messages', icon: MailOpen },
+  { href: routes.profile.dashboard, label: 'My products', icon: LayoutDashboard },
+  { href: routes.profile.messages, label: 'Messages', icon: Mail },
   { href: routes.profile.favorites, label: 'Favorites', icon: Heart },
   { href: routes.profile.settings, label: 'Settings', icon: Settings },
 ];
