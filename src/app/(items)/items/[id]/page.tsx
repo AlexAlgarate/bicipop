@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { Suspense } from 'react';
 
 import { ProductDetailView } from '@/features/items/detail/components/ProductDetailView';
+import { ProductDetailSkeleton } from '@/features/items/detail/components/ProductDetailSkeleton';
 import { getSession } from '@/infrastructure/auth/session';
 import { getProductDetailData } from '@/features/items/detail/api';
 
@@ -13,7 +15,9 @@ export const dynamic = 'force-dynamic';
 
 export const generateMetadata = async ({
   params,
-}: ProductDetailProps): Promise<Metadata | null> => {
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata | null> => {
   const { id } = await params;
   const data = await getProductDetailData(id, null);
   if (!data) return null;
@@ -29,7 +33,7 @@ export const generateMetadata = async ({
   };
 };
 
-export const ProductDetailPage = async ({ params }: ProductDetailProps) => {
+const ProductDetailWrapper = async ({ params }: ProductDetailProps) => {
   const { id } = await params;
 
   const session = await getSession();
@@ -40,6 +44,14 @@ export const ProductDetailPage = async ({ params }: ProductDetailProps) => {
 
   return (
     <ProductDetailView product={data.product} relatedProducts={data.relatedProducts} />
+  );
+};
+
+export const ProductDetailPage = async ({ params }: ProductDetailProps) => {
+  return (
+    <Suspense fallback={<ProductDetailSkeleton />}>
+      <ProductDetailWrapper params={params} />
+    </Suspense>
   );
 };
 
