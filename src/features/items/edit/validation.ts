@@ -1,5 +1,7 @@
 import z from 'zod';
 
+import { ProductStatus } from '@/generated/client/enums';
+
 export const updateProductSchema = z.object({
   productId: z.string().min(1, 'Product ID is required'),
   title: z
@@ -17,5 +19,5 @@ export const updateProductSchema = z.object({
     .min(3, 'Location is too short, try again')
     .max(30, 'Location is too long, max 30 characters'),
   imageUrl: z.string().optional(),
-  status: z.string().optional(),
+  status: z.enum([ProductStatus.ACTIVE, ProductStatus.RESERVED, ProductStatus.SOLD]),
 });
