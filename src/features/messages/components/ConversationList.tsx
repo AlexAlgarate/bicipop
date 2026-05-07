@@ -40,13 +40,11 @@ export const ConversationList = ({
   );
 };
 
-const ConversationRow = ({
-  conversation,
-  currentUserId,
-}: {
+interface ConversationRowProps {
   conversation: ConversationDTO;
   currentUserId: string;
-}) => {
+}
+const ConversationRow = ({ conversation, currentUserId }: ConversationRowProps) => {
   const isBuyer = conversation.buyerId === currentUserId;
   const otherUsername = isBuyer
     ? conversation.sellerUsername
@@ -57,7 +55,7 @@ const ConversationRow = ({
   return (
     <Link
       href={routes.messages.chat(conversation.id)}
-      className="flex items-center gap-4 px-4 py-4 hover:bg-secondary transition-colors"
+      className="flex items-stretch gap-3 px-2 py-3 rounded-lg hover:bg-background/20 transition-colors group"
     >
       <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg">
         <Image
@@ -68,40 +66,46 @@ const ConversationRow = ({
           sizes="56px"
         />
       </div>
-      <div className="min-w-0 flex-1">
-        <div className="flex items-start justify-between gap-2">
-          <p className="truncate font-medium text-sm sm:text-base">
+
+      <div className="flex flex-1 min-w-0 justify-between gap-2">
+        <div className="flex flex-col justify-between min-w-0">
+          <p className="truncate font-medium text-sm sm:text-base leading-snug group-hover:text-primary transition-colors">
             {conversation.productTitle}
           </p>
+
+          <p className="text-sm text-muted">
+            {isBuyer ? 'Seller' : 'Buyer'}:{' '}
+            <span className="font-medium text-foreground">{otherUsername}</span>
+          </p>
+
           {conversation.lastMessage && (
-            <span className="shrink-0 text-sm text-muted">
-              {formatDate(conversation.lastMessage.createdAt)}
-            </span>
+            <p
+              className={`truncate text-sm ${
+                hasUnread ? 'font-semibold text-foreground' : 'text-muted'
+              }`}
+            >
+              {conversation.lastMessage.senderId === currentUserId ? 'You: ' : ''}
+              {conversation.lastMessage.content}
+            </p>
           )}
         </div>
 
-        <p className="text-sm sm:text-base text-muted mt-0.5">
-          {isBuyer ? 'Seller' : 'Buyer'}:{' '}
-          <span className="font-medium text-foreground">{otherUsername}</span>
-        </p>
+        <div className="flex flex-col items-end justify-between shrink-0">
+          {conversation.lastMessage && (
+            <span className="text-xs text-muted">
+              {formatDate(conversation.lastMessage.createdAt)}
+            </span>
+          )}
 
-        {conversation.lastMessage && (
-          <p
-            className={`mt-1 truncate text-sm sm:text-base ${
-              hasUnread ? 'font-semibold text-foreground' : 'text-muted'
-            }`}
-          >
-            {conversation.lastMessage.senderId === currentUserId ? 'You: ' : ''}
-            {conversation.lastMessage.content}
-          </p>
-        )}
-      </div>
-
-      {hasUnread && (
-        <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
-          {conversation.unreadCount > 9 ? '9+' : conversation.unreadCount}
+          {hasUnread ? (
+            <div className="flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
+              {conversation.unreadCount > 9 ? '9+' : conversation.unreadCount}
+            </div>
+          ) : (
+            <div className="h-5 w-5" /> // placeholder para mantener el layout
+          )}
         </div>
-      )}
+      </div>
     </Link>
   );
 };
