@@ -8,7 +8,7 @@ const ChatLayout = async ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div className="flex flex-col h-screen">
-      <Navbar unreadMessagesCount={unreadCount} />
+      <Navbar unreadMessagesCount={unreadCount} showSearchBar={false} />
       <div className="flex-1 overflow-hidden">{children}</div>
     </div>
   );

@@ -9,9 +9,13 @@ import { UserDropdown } from './MenuDropdown';
 
 interface NavbarProps {
   unreadMessagesCount?: number;
+  showSearchBar?: boolean;
 }
 
-export const Navbar = async ({ unreadMessagesCount = 0 }: NavbarProps) => {
+export const Navbar = async ({
+  unreadMessagesCount = 0,
+  showSearchBar = true,
+}: NavbarProps) => {
   const user = await getCurrentUser();
 
   return (
@@ -19,18 +23,22 @@ export const Navbar = async ({ unreadMessagesCount = 0 }: NavbarProps) => {
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <LogoSection />
 
-        <div className="mx-4 hidden flex-1 max-w-xl md:block">
-          <SearchBar />
-        </div>
+        {showSearchBar && (
+          <div className="mx-4 hidden flex-1 max-w-xl md:block">
+            <SearchBar />
+          </div>
+        )}
 
         <nav className="flex items-center gap-2">
-          <Link
-            href={routes.search}
-            className="btn btn-ghost p-2 md:hidden"
-            aria-label="Search"
-          >
-            <Search className="h-5 w-5" />
-          </Link>
+          {showSearchBar && (
+            <Link
+              href={routes.search}
+              className="btn btn-ghost p-2 md:hidden"
+              aria-label="Search"
+            >
+              <Search className="h-5 w-5" />
+            </Link>
+          )}
 
           {user ? (
             <>
@@ -54,9 +62,11 @@ export const Navbar = async ({ unreadMessagesCount = 0 }: NavbarProps) => {
         </nav>
       </div>
 
-      <div className="border-t border-border px-4 py-2 md:hidden">
-        <SearchBar />
-      </div>
+      {showSearchBar && (
+        <div className="border-t border-border px-4 py-2 md:hidden">
+          <SearchBar />
+        </div>
+      )}
     </header>
   );
 };
