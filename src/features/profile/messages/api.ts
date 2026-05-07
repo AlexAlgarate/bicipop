@@ -7,6 +7,13 @@ import {
   mapToConversationWithMessages,
 } from '@/domain/message/mapper';
 
+const isUserParticipant = (
+  conversation: { buyerId: string; sellerId: string },
+  userId: string
+): boolean => {
+  return conversation.buyerId === userId || conversation.sellerId === userId;
+};
+
 export const getUserConversations = cache(
   async (userId: string): Promise<ConversationDTO[]> => {
     const conversations = await prisma.conversation.findMany({
@@ -48,10 +55,7 @@ export const getConversationWithMessages = cache(
 
     if (!conversation) return null;
 
-    const isParticipant =
-      conversation.buyerId === userId || conversation.sellerId === userId;
-
-    if (!isParticipant) return null;
+    if (!isUserParticipant(conversation, userId)) return null;
 
     return mapToConversationWithMessages(conversation, userId);
   }
@@ -135,4 +139,21 @@ export const createMessage = async (
       senderId: userId,
     },
   });
+};
+
+export const deleteConversation = async (
+  conversationid: string,
+  userId: string
+): Promise<void> => {
+  const conversation = await prisma.conversation.findUnique({
+    where: { id: conversationid },
+    select: { buyerId: true, sellerId: true },
+  });
+  if (!conversation) throw new Error('Conversation not found');
+
+  if (!isUserParticipant(conversation, userId)) {
+    throw new Error('Not authorized to delete this conversation');
+  }
+
+  await prisma.conversation.delete({ where: { id: conversationid } });
 };

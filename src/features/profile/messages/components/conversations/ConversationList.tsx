@@ -1,10 +1,15 @@
-import { MessageCircle } from 'lucide-react';
+'use client';
+
+import { Loader2, MessageCircle, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useTransition } from 'react';
 
 import type { ConversationDTO } from '@/domain/message/types';
 import { routes } from '@/config/routes';
 import { formatDate } from '@/utils/format';
+
+import { deleteConversationAction } from '../../actions';
 
 interface ConversationListProps {
   conversations: ConversationDTO[];
@@ -45,6 +50,7 @@ interface ConversationRowProps {
   currentUserId: string;
 }
 const ConversationRow = ({ conversation, currentUserId }: ConversationRowProps) => {
+  const [isPending, startTransition] = useTransition();
   const isBuyer = conversation.buyerId === currentUserId;
   const otherUsername = isBuyer
     ? conversation.sellerUsername
@@ -52,6 +58,16 @@ const ConversationRow = ({ conversation, currentUserId }: ConversationRowProps) 
 
   const hasUnread = conversation.unreadCount > 0;
 
+  const handleDelete = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!confirm('Delete this conversation? This cannot be undone')) return;
+
+    startTransition(async () => {
+      await deleteConversationAction(conversation.id);
+    });
+  };
   return (
     <Link
       href={routes.messages.chat(conversation.id)}
@@ -91,12 +107,26 @@ const ConversationRow = ({ conversation, currentUserId }: ConversationRowProps) 
         </div>
 
         <div className="flex flex-col items-end justify-between shrink-0">
-          {conversation.lastMessage && (
-            <span className="text-xs text-muted">
-              {formatDate(conversation.lastMessage.createdAt)}
-            </span>
-          )}
-
+          <div className="flex items-center gap-2">
+            {conversation.lastMessage && (
+              <span className="text-xs text-muted">
+                {formatDate(conversation.lastMessage.createdAt)}
+              </span>
+            )}
+            <button
+              onClick={handleDelete}
+              disabled={isPending}
+              title="Delete conversation"
+              className="opacity-0 group-hover:opacity-100 p-1 rounded-md text-muted
+                hover:text-red-400 hover:bg-red-500/10 transition-all disabled:opacity-50 cursor-pointer"
+            >
+              {isPending ? (
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+              ) : (
+                <Trash2 className="h-3.5 w-3.5" />
+              )}
+            </button>
+          </div>
           {hasUnread ? (
             <div className="flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
               {conversation.unreadCount > 9 ? '9+' : conversation.unreadCount}

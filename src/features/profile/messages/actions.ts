@@ -10,6 +10,7 @@ import prisma from '@/infrastructure/db/prisma/client';
 
 import {
   createMessage,
+  deleteConversation,
   findConversation,
   findOrCreateConversation,
   markMessagesAsRead,
@@ -71,5 +72,14 @@ export const markAsReadAction = async (conversationId: string): Promise<void> =>
   if (!session?.userId) return;
 
   await markMessagesAsRead(conversationId, session.userId);
+  revalidatePath(routes.messages.list);
+};
+
+export const deleteConversationAction = async (conversationId: string): Promise<void> => {
+  const session = await getSession();
+  if (!session?.userId) redirect(routes.auth.login);
+
+  await deleteConversation(conversationId, session.userId);
+
   revalidatePath(routes.messages.list);
 };
