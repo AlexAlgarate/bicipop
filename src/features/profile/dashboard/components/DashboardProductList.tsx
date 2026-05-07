@@ -13,6 +13,7 @@ import {
   updateProductStatusAction,
 } from '@/features/profile/dashboard/actions';
 import { Button } from '@/components/ui/Button';
+import { DeleteConfirmModal } from '@/components/ui/DeleteConfirmModal';
 import type { DashboardProductProps } from '@/features/profile/dashboard/types';
 import type { ProductWithUserContext } from '@/domain/products/types';
 
@@ -126,46 +127,16 @@ const ProductActions = ({ product }: { product: ProductWithUserContext }) => {
           )}
         </Button>
         {showModal && (
-          <div className=" fixed inset-0 z-50 flex items-center justify-center">
-            <div
-              className="absolute inset-0 bg-black/50 shadow-lg"
-              onClick={() => setShowModal(false)}
-            ></div>
-
-            <div className="relative z-10 bg-card border border-border rounded-xl p-6 max-w-sm w-full mx-4 shadow-xl">
-              <h2 className="text-lg font-semibold mb-2">Eliminar anuncio</h2>
-              <p className=" text-sm text-muted-foreground mb-6">
-                ¿Estás seguro de que quieres eliminar el anuncio? Esta acción no se puede
-                deshacer.
-              </p>
-              <div className="flex gap-3">
-                <Button
-                  onClick={() => setShowModal(false)}
-                  className="
-                flex-1 flex items-center justify-center gap-2
-                border border-gary-200 hover:bg-gray-200 hover:border-gray-400
-                text-gay-700 font-medium py-2.5 rounded-lg
-              dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800
-                "
-                >
-                  Cancelar
-                </Button>
-                <form
-                  action={async (_formData: FormData) => {
-                    await deleteProductAction(product.id);
-                  }}
-                  className="flex-1"
-                >
-                  <Button
-                    type="submit"
-                    className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2.5 rounded-lg"
-                  >
-                    Sí, eliminar
-                  </Button>
-                </form>
-              </div>
-            </div>
-          </div>
+          <DeleteConfirmModal
+            isOpen={showModal}
+            onClose={() => setShowModal(false)}
+            onConfirm={async () => {
+              await deleteProductAction(product.id);
+            }}
+            isPending={isPending}
+            title="Delete listing"
+            description="Are you sure you want to delete this listing? This action cannot be undone."
+          />
         )}
       </>
       <StatusMenu

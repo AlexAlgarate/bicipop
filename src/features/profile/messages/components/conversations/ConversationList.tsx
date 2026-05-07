@@ -3,11 +3,12 @@
 import { Loader2, MessageCircle, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useTransition } from 'react';
+import { useTransition, useState } from 'react';
 
 import type { ConversationDTO } from '@/domain/message/types';
 import { routes } from '@/config/routes';
 import { formatDate } from '@/utils/format';
+import { DeleteConfirmModal } from '@/components/ui/DeleteConfirmModal';
 
 import { deleteConversationAction } from '../../actions';
 
@@ -51,6 +52,7 @@ interface ConversationRowProps {
 }
 const ConversationRow = ({ conversation, currentUserId }: ConversationRowProps) => {
   const [isPending, startTransition] = useTransition();
+  const [showModal, setShowModal] = useState(false);
   const isBuyer = conversation.buyerId === currentUserId;
   const otherUsername = isBuyer
     ? conversation.sellerUsername
@@ -61,16 +63,20 @@ const ConversationRow = ({ conversation, currentUserId }: ConversationRowProps) 
   const handleDelete = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    setShowModal(true);
+  };
 
-    if (!confirm('Delete this conversation? This cannot be undone')) return;
-
+  const confirmDelete = () => {
     startTransition(async () => {
       await deleteConversationAction(conversation.id);
     });
+    setShowModal(false);
   };
+
   return (
-    <Link
-      href={routes.messages.chat(conversation.id)}
+    <>
+      <Link
+        href={routes.messages.chat(conversation.id)}
       className="flex items-stretch gap-3 px-2 py-3 rounded-lg hover:bg-background/20 transition-colors group"
     >
       <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg">
@@ -137,5 +143,15 @@ const ConversationRow = ({ conversation, currentUserId }: ConversationRowProps) 
         </div>
       </div>
     </Link>
+
+    <DeleteConfirmModal
+      isOpen={showModal}
+      onClose={() => setShowModal(false)}
+      onConfirm={confirmDelete}
+      isPending={isPending}
+      title="Delete conversation"
+      description="Are you sure you want to delete this conversation? This action cannot be undone."
+    />
+    </>
   );
 };
