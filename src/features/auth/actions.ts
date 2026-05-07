@@ -101,7 +101,7 @@ export const registerAction = async (
   if (confirmPasswordInput !== password) {
     return {
       success: false,
-      message: 'Las contraseñas no coinciden',
+      message: 'Passwords do not match',
       errors: {},
       values: {
         email: emailInput,

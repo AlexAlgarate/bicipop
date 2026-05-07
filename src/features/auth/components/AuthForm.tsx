@@ -1,6 +1,6 @@
 'use client';
 
-import { type ReactNode, useActionState, useEffect, useState } from 'react';
+import { useActionState, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { FormField } from '@/components/ui/FormField';
@@ -20,7 +20,7 @@ interface Props {
   action: (_prevState: AuthFormState, formData: FormData) => Promise<AuthFormState>;
   fields: FieldConfig[];
   submitText: string;
-  footer?: ReactNode;
+  footer?: React.ReactNode;
   redirectTo?: string;
 }
 const initialRegisterState: AuthFormState = {
@@ -41,7 +41,7 @@ export const AuthForm = ({
   redirectTo = '/',
 }: Props) => {
   const router = useRouter();
-  const [state, formAction] = useActionState(action, initialRegisterState);
+  const [state, formAction, isPending] = useActionState(action, initialRegisterState);
   const [passwordValue, setPasswordValue] = useState('');
 
   useEffect(() => {
@@ -71,6 +71,7 @@ export const AuthForm = ({
               type={field.type}
               defaultValue={state.values?.[field.name as keyof typeof state.values]}
               placeholder={field.placeholder}
+              disabled={isPending}
               onChange={e => {
                 if (field.name === 'password') {
                   setPasswordValue(e.target.value);
@@ -87,22 +88,22 @@ export const AuthForm = ({
         </div>
       ))}
 
-      <button type="submit" className="btn btn-primary w-full text font-semibold mt-2">
-        {submitText}
+      <button type="submit" disabled={isPending} className="btn btn-primary w-full text font-semibold mt-2 disabled:opacity-50">
+        {isPending ? 'Processing...' : submitText}
       </button>
 
       {footer && <div>{footer}</div>}
 
-      {state.message && (
-        <p
-          className={`text-sm text-center ${
-            state.success
-              ? 'text-green-600 dark:text-green-400'
-              : 'text-red-600 dark:text-red-400'
-          }`}
-        >
+      {state?.message && !state.success && (
+        <div className="rounded-lg bg-red-50 p-3 text-sm text-red-600 dark:bg-red-900/20 dark:text-red-400">
           {state.message}
-        </p>
+        </div>
+      )}
+
+      {state?.message && state.success && (
+        <div className="rounded-lg bg-green-50 p-3 text-sm text-green-600 dark:bg-green-900/20 dark:text-green-400">
+          {state.message}
+        </div>
       )}
     </form>
   );

@@ -19,7 +19,7 @@ const LoginPage = () => {
         </div>
         <AuthForm
           action={loginAction}
-          submitText="Iniciar sesión"
+          submitText="Log in"
           redirectTo="/"
           fields={[
             {

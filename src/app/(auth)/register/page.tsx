@@ -22,7 +22,7 @@ const RegisterPage = () => {
         </div>
         <AuthForm
           action={registerAction}
-          submitText="Registrarse"
+          submitText="Sign up"
           fields={[
             {
               name: 'username',
