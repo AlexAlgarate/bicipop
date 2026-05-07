@@ -88,7 +88,11 @@ export const AuthForm = ({
         </div>
       ))}
 
-      <button type="submit" disabled={isPending} className="btn btn-primary w-full text font-semibold mt-2 disabled:opacity-50">
+      <button
+        type="submit"
+        disabled={isPending}
+        className="btn btn-primary w-full text font-semibold mt-2 disabled:opacity-50"
+      >
         {isPending ? 'Processing...' : submitText}
       </button>
 

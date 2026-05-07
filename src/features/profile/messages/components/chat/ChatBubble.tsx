@@ -6,7 +6,7 @@ interface MessageBubbleProps {
   isOwn: boolean;
 }
 
-export const MessageBubble = ({ message, isOwn }: MessageBubbleProps) => {
+export const ChatBubble = ({ message, isOwn }: MessageBubbleProps) => {
   const isOptimistic = message.id.startsWith('optimistic-');
 
   return (

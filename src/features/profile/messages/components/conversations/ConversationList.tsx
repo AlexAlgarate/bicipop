@@ -77,81 +77,81 @@ const ConversationRow = ({ conversation, currentUserId }: ConversationRowProps) 
     <>
       <Link
         href={routes.messages.chat(conversation.id)}
-      className="flex items-stretch gap-3 px-2 py-3 rounded-lg hover:bg-background/20 transition-colors group"
-    >
-      <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg">
-        <Image
-          src={conversation.productImageUrl}
-          alt={conversation.productTitle}
-          fill
-          className="object-cover"
-          sizes="56px"
-        />
-      </div>
+        className="flex items-stretch gap-3 px-2 py-3 rounded-lg hover:bg-background/20 transition-colors group"
+      >
+        <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg">
+          <Image
+            src={conversation.productImageUrl}
+            alt={conversation.productTitle}
+            fill
+            className="object-cover"
+            sizes="56px"
+          />
+        </div>
 
-      <div className="flex flex-1 min-w-0 justify-between gap-2">
-        <div className="flex flex-col justify-between min-w-0">
-          <p className="truncate font-medium text-sm sm:text-base leading-snug group-hover:text-primary transition-colors">
-            {conversation.productTitle}
-          </p>
-
-          <p className="text-sm text-muted">
-            {isBuyer ? 'Seller' : 'Buyer'}:{' '}
-            <span className="font-medium text-foreground">{otherUsername}</span>
-          </p>
-
-          {conversation.lastMessage && (
-            <p
-              className={`truncate text-sm ${
-                hasUnread ? 'font-semibold text-foreground' : 'text-muted'
-              }`}
-            >
-              {conversation.lastMessage.senderId === currentUserId ? 'You: ' : ''}
-              {conversation.lastMessage.content}
+        <div className="flex flex-1 min-w-0 justify-between gap-2">
+          <div className="flex flex-col justify-between min-w-0">
+            <p className="truncate font-medium text-sm sm:text-base leading-snug group-hover:text-primary transition-colors">
+              {conversation.productTitle}
             </p>
-          )}
-        </div>
 
-        <div className="flex flex-col items-end justify-between shrink-0">
-          <div className="flex items-center gap-2">
+            <p className="text-sm text-muted">
+              {isBuyer ? 'Seller' : 'Buyer'}:{' '}
+              <span className="font-medium text-foreground">{otherUsername}</span>
+            </p>
+
             {conversation.lastMessage && (
-              <span className="text-xs text-muted">
-                {formatDate(conversation.lastMessage.createdAt)}
-              </span>
+              <p
+                className={`truncate text-sm ${
+                  hasUnread ? 'font-semibold text-foreground' : 'text-muted'
+                }`}
+              >
+                {conversation.lastMessage.senderId === currentUserId ? 'You: ' : ''}
+                {conversation.lastMessage.content}
+              </p>
             )}
-            <button
-              onClick={handleDelete}
-              disabled={isPending}
-              title="Delete conversation"
-              className="opacity-0 group-hover:opacity-100 p-1 rounded-md text-muted
-                hover:text-red-400 hover:bg-red-500/10 transition-all disabled:opacity-50 cursor-pointer"
-            >
-              {isPending ? (
-                <Loader2 className="h-3.5 w-3.5 animate-spin" />
-              ) : (
-                <Trash2 className="h-3.5 w-3.5" />
-              )}
-            </button>
           </div>
-          {hasUnread ? (
-            <div className="flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
-              {conversation.unreadCount > 9 ? '9+' : conversation.unreadCount}
-            </div>
-          ) : (
-            <div className="h-5 w-5" /> // placeholder para mantener el layout
-          )}
-        </div>
-      </div>
-    </Link>
 
-    <DeleteConfirmModal
-      isOpen={showModal}
-      onClose={() => setShowModal(false)}
-      onConfirm={confirmDelete}
-      isPending={isPending}
-      title="Delete conversation"
-      description="Are you sure you want to delete this conversation? This action cannot be undone."
-    />
+          <div className="flex flex-col items-end justify-between shrink-0">
+            <div className="flex items-center gap-2">
+              {conversation.lastMessage && (
+                <span className="text-xs text-muted">
+                  {formatDate(conversation.lastMessage.createdAt)}
+                </span>
+              )}
+              <button
+                onClick={handleDelete}
+                disabled={isPending}
+                title="Delete conversation"
+                className="opacity-0 group-hover:opacity-100 p-1 rounded-md text-muted
+                hover:text-red-400 hover:bg-red-500/10 transition-all disabled:opacity-50 cursor-pointer"
+              >
+                {isPending ? (
+                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                ) : (
+                  <Trash2 className="h-3.5 w-3.5" />
+                )}
+              </button>
+            </div>
+            {hasUnread ? (
+              <div className="flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
+                {conversation.unreadCount > 9 ? '9+' : conversation.unreadCount}
+              </div>
+            ) : (
+              <div className="h-5 w-5" />
+            )}
+          </div>
+        </div>
+      </Link>
+
+      <DeleteConfirmModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        onConfirm={confirmDelete}
+        isPending={isPending}
+        title="Delete conversation"
+        description="Are you sure you want to delete this conversation? This action cannot be undone."
+      />
     </>
   );
 };

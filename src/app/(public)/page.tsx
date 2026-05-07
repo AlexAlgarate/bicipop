@@ -42,11 +42,7 @@ const ProductsGridWrapper = async ({
   );
 
   return (
-    <ProductsGrid
-      products={products}
-      currentPage={currentPage}
-      totalPages={totalPages}
-    />
+    <ProductsGrid products={products} currentPage={currentPage} totalPages={totalPages} />
   );
 };
 

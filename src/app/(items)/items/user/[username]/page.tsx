@@ -70,10 +70,7 @@ const ProductsGridWrapper = async ({
   );
 };
 
-const UserProfilePage = async ({
-  params,
-  searchParams,
-}: UserProfilePageProps) => {
+const UserProfilePage = async ({ params, searchParams }: UserProfilePageProps) => {
   const { username } = await params;
 
   const profile = await getUserProfileByUsername(username);

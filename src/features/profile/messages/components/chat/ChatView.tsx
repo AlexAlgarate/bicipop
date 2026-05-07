@@ -5,7 +5,7 @@ import { useEffect, useRef } from 'react';
 import type { ConversationWithMessages } from '@/domain/message/types';
 import { useChat } from '@/features/profile/messages/hooks/useChat';
 
-import { MessageBubble } from './ChatBubble';
+import { ChatBubble } from './ChatBubble';
 import { MessageInput } from './ChatInput';
 
 interface ChatViewProps {
@@ -22,6 +22,9 @@ export const ChatView = ({ conversation, currentUserId }: ChatViewProps) => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  console.log(
+    `[ChatView] [CreatedAt] ${messages.forEach(msg => console.log(msg.createdAt))}`
+  );
   return (
     <div className="flex flex-col h-full">
       <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3">
@@ -32,7 +35,7 @@ export const ChatView = ({ conversation, currentUserId }: ChatViewProps) => {
         )}
 
         {messages.map(message => (
-          <MessageBubble
+          <ChatBubble
             key={message.id}
             message={message}
             isOwn={message.senderId === currentUserId}
