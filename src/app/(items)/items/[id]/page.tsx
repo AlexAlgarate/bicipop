@@ -19,10 +19,10 @@ export const generateMetadata = async ({
   if (!data) return null;
 
   return {
-    title: data.product.title,
+    title: `${data.product.title} — BiciPop`,
     description: data.product.description.slice(0, 160),
     openGraph: {
-      title: data.product.title,
+      title: `${data.product.title} — BiciPop`,
       description: data.product.description.slice(0, 160),
       images: [data.product.imageUrl],
     },

@@ -9,8 +9,8 @@ import { DashboardView } from '@/features/profile/dashboard/components/Dashboard
 import { getCurrentUser } from '@/features/auth/api';
 
 export const metadata: Metadata = {
-  title: 'Dashboard',
-  description: 'Manage your products on Bicipop',
+  title: 'Dashboard — BiciPop',
+  description: 'Manage your products on BiciPop',
 };
 
 const DASHBOARD_PAGE_SIZE = 10;

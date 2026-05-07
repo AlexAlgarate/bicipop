@@ -9,8 +9,8 @@ import { ProfileSection } from '@/features/profile/settings/update/components/Pr
 import { PasswordSection } from '@/features/profile/settings/change-password/components/PasswordSection';
 
 export const metadata: Metadata = {
-  title: 'Settings',
-  description: 'User settings |  Bicipop',
+  title: 'Settings — BiciPop',
+  description: 'User settings on BiciPop',
 };
 
 export const UserSettingsPage = async () => {

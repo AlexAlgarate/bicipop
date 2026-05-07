@@ -12,19 +12,19 @@ interface UserProfilePageProps {
   searchParams: Promise<{ page?: string; query?: string }>;
 }
 
-export const generateMetada = async ({
+export const generateMetadata = async ({
   params,
 }: UserProfilePageProps): Promise<Metadata> => {
   const { username } = await params;
   const user = await getUserProfileByUsername(username);
   if (!user) {
     return {
-      title: 'User Not Found',
+      title: 'User Not Found — BiciPop',
     };
   }
 
   return {
-    title: `${user.username}'s Profile`,
+    title: `${user.username}'s Profile — BiciPop`,
     description: `View ${user.username}'s profile and products on BiciPop`,
   };
 };

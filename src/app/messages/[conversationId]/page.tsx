@@ -1,5 +1,6 @@
 export const dynamic = 'force-dynamic';
 
+import type { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -9,6 +10,11 @@ import { getSession } from '@/infrastructure/auth/session';
 import { routes } from '@/config/routes';
 import { getConversationWithMessages } from '@/features/profile/messages/api';
 import { ChatView } from '@/features/profile/messages/components/chat/ChatView';
+
+export const metadata: Metadata = {
+  title: 'Chat — BiciPop',
+  description: 'Chat with buyers and sellers on BiciPop',
+};
 
 interface ChatPageProps {
   params: Promise<{ conversationId: string }>;
