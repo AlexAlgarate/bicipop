@@ -6,7 +6,7 @@ import { revalidatePath } from 'next/cache';
 import type { AuthFormState } from '@/features/auth/types';
 import { loginSchema, registerSchema } from '@/features/auth/validation';
 import { getFieldErrorsFromTree } from '@/utils/validation-errors';
-import { createSession, deleteSession, getSession } from '@/infrastructure/auth/session';
+import { createSession, deleteSession } from '@/infrastructure/auth/session';
 import {
   comparePassword,
   hashPassword,
@@ -19,9 +19,6 @@ export async function loginAction(
   _prevState: AuthFormState,
   formData: FormData
 ): Promise<AuthFormState> {
-  const session = await getSession();
-  if (!session?.userId) redirect(routes.auth.login);
-
   const emailInput = String(formData.get('email'));
   const passwordInput = String(formData.get('password'));
 
@@ -76,9 +73,6 @@ export async function registerAction(
   _prevState: AuthFormState,
   formData: FormData
 ): Promise<AuthFormState> {
-  const session = await getSession();
-  if (!session?.userId) redirect(routes.auth.login);
-
   const emailInput = String(formData.get('email'));
   const passwordInput = String(formData.get('password'));
   const confirmPasswordInput = String(formData.get('confirmPassword'));
