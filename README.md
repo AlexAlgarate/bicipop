@@ -2,6 +2,12 @@
 
 Plataforma de compra y venta de bicicletas construida con Next.js
 
+## Despliegue
+
+La aplicación está desplegada en un servidor EC2 de AWS y puede visitarse en:
+
+🔗 **https://bicipop.duckdns.org**
+
 ## Tech Stack
 
 - **Frontend:** Next.js, React, Tailwind CSS 4
