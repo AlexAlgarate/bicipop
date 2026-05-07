@@ -8,6 +8,7 @@ import { SESSION_COOKIE_NAME } from '@/infrastructure/auth/constants';
 import { routes } from '@/config/routes';
 import { getFieldErrorsFromTree } from '@/utils/validation-errors';
 import type { ProfileFormState } from '@/features/profile/settings/_shared/types';
+import { getSession } from '@/infrastructure/auth/session';
 
 import { deleteUserSchema } from './validation';
 import { deleteUserAccount } from './api';
@@ -16,6 +17,9 @@ export const deleteUserAction = async (
   _prevState: ProfileFormState | null,
   formData: FormData
 ): Promise<ProfileFormState | null> => {
+  const session = await getSession();
+  if (!session?.userId) redirect(routes.auth.login);
+
   const password = String(formData.get('password'));
   const parsed = deleteUserSchema.safeParse({ password });
 

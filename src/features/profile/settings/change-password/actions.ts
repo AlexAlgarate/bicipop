@@ -16,7 +16,6 @@ export const changePasswordAction = async (
   formData: FormData
 ): Promise<ProfileFormState | null> => {
   const session = await getSession();
-
   if (!session?.userId) redirect(routes.auth.login);
 
   const rawValues = {
