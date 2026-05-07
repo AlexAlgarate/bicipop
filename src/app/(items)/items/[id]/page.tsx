@@ -11,9 +11,9 @@ interface ProductDetailProps {
 
 export const dynamic = 'force-dynamic';
 
-export async function generateMetadata({
+export const generateMetadata = async ({
   params,
-}: ProductDetailProps): Promise<Metadata | null> {
+}: ProductDetailProps): Promise<Metadata | null> => {
   const { id } = await params;
   const data = await getProductDetailData(id, null);
   if (!data) return null;
@@ -27,7 +27,7 @@ export async function generateMetadata({
       images: [data.product.imageUrl],
     },
   };
-}
+};
 
 export const ProductDetailPage = async ({ params }: ProductDetailProps) => {
   const { id } = await params;

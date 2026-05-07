@@ -18,6 +18,7 @@ import { logout } from '@/features/auth/actions';
 interface UserDropdownProps {
   username: string;
   email: string;
+  unreadMessagesCount?: number;
 }
 
 interface DropdownItemProps {
@@ -26,6 +27,7 @@ interface DropdownItemProps {
   label: string;
   danger?: boolean;
   onClick?: () => void;
+  showBadge?: boolean;
 }
 
 const DropdownItem = ({
@@ -34,6 +36,7 @@ const DropdownItem = ({
   label,
   danger = false,
   onClick,
+  showBadge = false,
 }: DropdownItemProps) => {
   const baseClasses = `
     flex items-center gap-3 rounded-lg px-3 py-2 text-sm
@@ -47,7 +50,14 @@ const DropdownItem = ({
   if (href) {
     return (
       <Link href={href} className={`${baseClasses} ${styles}`}>
-        <Icon className="h-4 w-4 shrink-0" />
+        <div className="relative">
+          <Icon className="h-4 w-4 shrink-0" />
+          {showBadge && (
+            <span className="absolute -top-1 -right-1 flex h-2 w-2">
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500" />
+            </span>
+          )}
+        </div>
         <span>{label}</span>
       </Link>
     );
@@ -72,7 +82,11 @@ const DROPDOWN_NAV_OPTIONS: { href: string; icon: LucideIcon; label: string }[] 
   { href: routes.profile.settings, icon: Settings, label: 'Settings' },
 ];
 
-export const UserDropdown = ({ username, email }: UserDropdownProps) => {
+export const UserDropdown = ({
+  username,
+  email,
+  unreadMessagesCount = 0,
+}: UserDropdownProps) => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -153,7 +167,17 @@ export const UserDropdown = ({ username, email }: UserDropdownProps) => {
 
           <div className="flex flex-col gap-1 p-2">
             {DROPDOWN_NAV_OPTIONS.map(({ href, icon: Icon, label }) => {
-              return <DropdownItem key={href} href={href} icon={Icon} label={label} />;
+              const showBadge =
+                href === routes.profile.messages && unreadMessagesCount > 0;
+              return (
+                <DropdownItem
+                  key={href}
+                  href={href}
+                  icon={Icon}
+                  label={label}
+                  showBadge={showBadge}
+                />
+              );
             })}
           </div>
 

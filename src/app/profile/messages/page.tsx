@@ -13,11 +13,13 @@ export const metadata: Metadata = {
 
 export const dynamic = 'force-dynamic';
 
-export default async function MessagesPage() {
+const MessagesPage = async () => {
   const session = await getSession();
   if (!session?.userId) redirect(routes.auth.login);
 
   const conversations = await getUserConversations(session.userId);
 
   return <MessagesView conversations={conversations} currentUserId={session.userId} />;
-}
+};
+
+export default MessagesPage;

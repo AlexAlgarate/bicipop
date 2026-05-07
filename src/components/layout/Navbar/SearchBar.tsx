@@ -15,7 +15,7 @@ export const SearchBar = () => {
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  function applySearch(query: string) {
+  const applySearch = (query: string) => {
     const params = new URLSearchParams(searchParams.toString());
 
     if (query.trim()) {
@@ -27,28 +27,28 @@ export const SearchBar = () => {
     params.set('page', '1');
     router.replace(`${pathname}?${params.toString()}`);
     requestAnimationFrame(() => inputRef.current?.focus());
-  }
+  };
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const next = e.target.value;
     setValue(next);
 
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => applySearch(next), DEBOUNCE_MS);
-  }
+  };
 
-  function handleClear() {
+  const handleClear = () => {
     setValue('');
     if (debounceRef.current) clearTimeout(debounceRef.current);
     applySearch('');
-  }
+  };
 
-  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       if (debounceRef.current) clearTimeout(debounceRef.current);
       applySearch(value);
     }
-  }
+  };
 
   return (
     <form className="relative w-full">

@@ -7,7 +7,11 @@ import { getCurrentUser } from '@/features/auth/api';
 
 import { UserDropdown } from './MenuDropdown';
 
-export const Navbar = async () => {
+interface NavbarProps {
+  unreadMessagesCount?: number;
+}
+
+export const Navbar = async ({ unreadMessagesCount = 0 }: NavbarProps) => {
   const user = await getCurrentUser();
 
   return (
@@ -31,7 +35,11 @@ export const Navbar = async () => {
           {user ? (
             <>
               <UploadButton />
-              <UserDropdown username={user.username} email={user.email} />{' '}
+              <UserDropdown
+                username={user.username}
+                email={user.email}
+                unreadMessagesCount={unreadMessagesCount}
+              />{' '}
             </>
           ) : (
             <>

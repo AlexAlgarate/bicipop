@@ -14,7 +14,7 @@ interface ChatPageProps {
   params: Promise<{ conversationId: string }>;
 }
 
-export default async function ChatPage({ params }: ChatPageProps) {
+const ChatPage = async ({ params }: ChatPageProps) => {
   const { conversationId } = await params;
   const session = await getSession();
 
@@ -69,4 +69,6 @@ export default async function ChatPage({ params }: ChatPageProps) {
       <ChatView conversation={conversation} currentUserId={session.userId} />
     </div>
   );
-}
+};
+
+export default ChatPage;

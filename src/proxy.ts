@@ -16,7 +16,7 @@ const routeMatchers = {
   auth: [routes.auth.login, routes.auth.register],
 };
 
-export async function proxy(request: NextRequest) {
+const proxy = async (request: NextRequest) => {
   const { pathname } = request.nextUrl;
   const sessionCookie = request.cookies.get(SESSION_COOKIE_NAME)?.value;
 
@@ -37,8 +37,10 @@ export async function proxy(request: NextRequest) {
   }
 
   return NextResponse.next();
-}
+};
 
 export const config = {
   matcher: ['/((?!api|_next/static|_next/image|favicon.ico|.*\\..*|_next).*)'],
 };
+
+export default proxy;

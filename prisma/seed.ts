@@ -12,7 +12,7 @@ const pool = new Pool({
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
-async function main(): Promise<void> {
+const main = async (): Promise<void> => {
   console.log('🌱 Seeding...');
 
   await prisma.product.deleteMany();
@@ -82,7 +82,7 @@ async function main(): Promise<void> {
 
   console.log(`-- Created [ ${productsData.length} ] sample products --`);
   console.log('✅ Seed completado');
-}
+};
 
 main()
   .catch(e => {

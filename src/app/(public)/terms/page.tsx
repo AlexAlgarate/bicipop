@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   description: 'Read the terms and conditions of using BiciPop marketplace.',
 };
 
-export default function TermsPage() {
+const TermsPage = () => {
   return (
     <div className="container mx-auto px-4 py-12 max-w-3xl">
       <h1 className="text-4xl font-bold text-foreground mb-8">Terms of Service</h1>
@@ -148,4 +148,6 @@ export default function TermsPage() {
       </div>
     </div>
   );
-}
+};
+
+export default TermsPage;

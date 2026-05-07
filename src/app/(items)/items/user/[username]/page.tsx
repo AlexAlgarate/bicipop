@@ -31,10 +31,7 @@ export const generateMetada = async ({
 
 export const dynamic = 'force-dynamic';
 
-export default async function UserProfilePage({
-  params,
-  searchParams,
-}: UserProfilePageProps) {
+const UserProfilePage = async ({ params, searchParams }: UserProfilePageProps) => {
   const { username } = await params;
   const { page: pageParam, query } = await searchParams;
   const page = pageParam ? parseInt(pageParam, 10) : 1;
@@ -75,4 +72,6 @@ export default async function UserProfilePage({
       </div>
     </div>
   );
-}
+};
+
+export default UserProfilePage;
