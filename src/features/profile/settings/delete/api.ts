@@ -4,21 +4,20 @@ import { comparePassword } from '@/infrastructure/security/bcrypt-password-hashe
 
 export const deleteUserAccount = async (password: string): Promise<void> => {
   const session = await getSession();
-
   if (!session?.userId) throw new Error('User not found');
+  await prisma.$transaction(async tx => {
+    const user = await tx.user.findUnique({
+      where: { id: session.userId },
+      select: { password: true },
+    });
 
-  const user = await prisma.user.findUnique({
-    where: { id: session.userId },
-    select: { password: true },
-  });
+    if (!user) throw new Error('User not found');
 
-  if (!user) throw new Error('User not found');
+    const isValid = await comparePassword(password, user.password);
+    if (!isValid) throw new Error('Incorrect password');
 
-  const isValid = await comparePassword(password, user.password);
-
-  if (!isValid) throw new Error('Incorrect password');
-
-  await prisma.user.delete({
-    where: { id: session.userId },
+    return await tx.user.delete({
+      where: { id: session.userId },
+    });
   });
 };
