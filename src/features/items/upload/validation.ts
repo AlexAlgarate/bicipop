@@ -16,8 +16,30 @@ export const createProductSchema = z.object({
     .min(3, 'Location is too short, try again')
     .max(30, 'Location is too long, max 20 characters'),
 });
+const VALID_IMAGE_TYPES = new Set([
+  'image/jpeg',
+  'image/jpg',
+  'image/png',
+  'image/webp',
+  'image/heic',
+  'image/heif',
+  'image/gif',
+]);
 
-const VALID_IMAGE_TYPES = new Set(['image/jpeg', 'image/png', 'image/jpg']);
+export const isValidImage = (image: File): image is File => {
+  if (!image.type) {
+    const ext = image.name.split('.').pop()?.toLowerCase();
+    const validExtensions = new Set([
+      'jpg',
+      'jpeg',
+      'png',
+      'webp',
+      'heic',
+      'heif',
+      'gif',
+    ]);
+    return !!ext && validExtensions.has(ext);
+  }
 
-export const isValidImage = (image: File | null): image is File =>
-  !!image && VALID_IMAGE_TYPES.has(image.type);
+  return VALID_IMAGE_TYPES.has(image.type);
+};
