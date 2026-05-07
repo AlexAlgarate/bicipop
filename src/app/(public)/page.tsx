@@ -1,10 +1,12 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
+import { Suspense } from 'react';
 
 import { HeroSection } from '@/features/items/list/components/HeroSection';
 import { routes } from '@/config/routes';
 import { ProductsGrid } from '@/features/items/_shared/components/ProductsGrid';
+import { ProductsGridSkeleton } from '@/features/items/_shared/components/ProductsGridSkeleton';
 import { getProducts } from '@/features/items/list/api';
 import { getSession } from '@/infrastructure/auth/session';
 import { PRODUCTS_PER_PAGE } from '@/utils/constants';
@@ -14,7 +16,7 @@ export const metadata: Metadata = {
   description: 'Página de compraventa de bicicletas de segunda mano.',
 };
 
-const HomePage = async ({
+const ProductsGridWrapper = async ({
   searchParams,
 }: {
   searchParams: Promise<{ page?: string; query: string }>;
@@ -40,6 +42,20 @@ const HomePage = async ({
   );
 
   return (
+    <ProductsGrid
+      products={products}
+      currentPage={currentPage}
+      totalPages={totalPages}
+    />
+  );
+};
+
+const HomePage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string; query: string }>;
+}) => {
+  return (
     <div className="pb-20 space-y-12">
       <HeroSection />
 
@@ -56,11 +72,9 @@ const HomePage = async ({
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
-        <ProductsGrid
-          products={products}
-          currentPage={currentPage}
-          totalPages={totalPages}
-        />
+        <Suspense fallback={<ProductsGridSkeleton />}>
+          <ProductsGridWrapper searchParams={searchParams} />
+        </Suspense>
       </section>
     </div>
   );

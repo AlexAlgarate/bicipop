@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 
 import { getSearchProducts } from '@/features/items/search/api';
 import { ProductsGrid } from '@/features/items/_shared/components/ProductsGrid';
+import { ProductsGridSkeleton } from '@/features/items/_shared/components/ProductsGridSkeleton';
 import { SearchFilters } from '@/features/items/search/components/SearchFilters';
 import { getSession } from '@/infrastructure/auth/session';
 import { getCategories } from '@/features/items/_shared/api';
@@ -16,25 +18,39 @@ interface SearchPageProps {
   searchParams: Promise<Record<string, string | undefined>>;
 }
 
-const SearchPage = async ({ searchParams }: SearchPageProps) => {
+const ProductsGridWrapper = async ({ searchParams }: SearchPageProps) => {
   const params = await searchParams;
   const session = await getSession();
 
-  const [categories, result] = await Promise.all([
-    getCategories(),
-    getSearchProducts(
-      {
-        query: params.query,
-        category: params.category,
-        location: params.location,
-        minPrice: params.minPrice ? Number(params.minPrice) : undefined,
-        maxPrice: params.maxPrice ? Number(params.maxPrice) : undefined,
-        page: params.page,
-        order: params.order,
-      },
-      session?.userId ?? null
-    ),
-  ]);
+  const result = await getSearchProducts(
+    {
+      query: params.query,
+      category: params.category,
+      location: params.location,
+      minPrice: params.minPrice ? Number(params.minPrice) : undefined,
+      maxPrice: params.maxPrice ? Number(params.maxPrice) : undefined,
+      page: params.page,
+      order: params.order,
+    },
+    session?.userId ?? null
+  );
+
+  return (
+    <ProductsGrid
+      products={result.items}
+      currentPage={result.currentPage}
+      totalPages={result.totalPages}
+      emptyMessage={{
+        title: 'No products found',
+        description: 'Try adjusting your filters or search terms',
+      }}
+    />
+  );
+};
+
+const SearchPage = async ({ searchParams }: SearchPageProps) => {
+  const params = await searchParams;
+  const categories = await getCategories();
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -51,22 +67,11 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
                 ? `Results for "${params.query || params.category}"`
                 : 'Search Results'}
             </h1>
-            {result.totalCount > 0 && (
-              <p className="text-sm text-muted mt-1">
-                {result.totalCount} product{result.totalCount !== 1 ? 's' : ''} found
-              </p>
-            )}
           </div>
 
-          <ProductsGrid
-            products={result.items}
-            currentPage={result.currentPage}
-            totalPages={result.totalPages}
-            emptyMessage={{
-              title: 'No products found',
-              description: 'Try adjusting your filters or search terms',
-            }}
-          />
+          <Suspense fallback={<ProductsGridSkeleton />}>
+            <ProductsGridWrapper searchParams={searchParams} />
+          </Suspense>
         </main>
       </div>
     </div>
