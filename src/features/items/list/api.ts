@@ -4,10 +4,10 @@ import { validatePagination } from '@/features/items/_shared/utils/validate-pagi
 
 import type { ProductsResultDto } from './types';
 
-export async function getProducts(
+export const getProducts = async (
   filters: FilterProducts,
   userId: string | null = null
-): Promise<ProductsResultDto> {
+): Promise<ProductsResultDto> => {
   const {
     page: requestedPage,
     pageSize: requestedPageSize,
@@ -32,4 +32,4 @@ export async function getProducts(
     totalPages,
     currentPage: Math.min(page, totalPages),
   };
-}
+};

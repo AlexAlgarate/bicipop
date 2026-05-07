@@ -4,7 +4,7 @@ import { useEffect, useState, useTransition } from 'react';
 
 import { supabase } from '@/infrastructure/db/supabase/supabase';
 import type { ConversationWithMessages, MessageDTO } from '@/domain/message/types';
-import { markAsReadAction, sendMessageAction } from '@/features/messages/actions';
+import { markAsReadAction, sendMessageAction } from '@/features/profile/messages/actions';
 
 export const useChat = (
   conversation: ConversationWithMessages,

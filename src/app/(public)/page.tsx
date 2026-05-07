@@ -14,11 +14,11 @@ export const metadata: Metadata = {
   description: 'Página de compraventa de bicicletas de segunda mano.',
 };
 
-export default async function Home({
+const HomePage = async ({
   searchParams,
 }: {
   searchParams: Promise<{ page?: string; query: string }>;
-}) {
+}) => {
   const { page: pageParam, query } = await searchParams;
   const page = pageParam ? parseInt(pageParam, 10) : 1;
 
@@ -64,4 +64,6 @@ export default async function Home({
       </section>
     </div>
   );
-}
+};
+
+export default HomePage;

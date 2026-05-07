@@ -11,23 +11,23 @@ interface ProductDetailProps {
 
 export const dynamic = 'force-dynamic';
 
-export async function generateMetadata({
+export const generateMetadata = async ({
   params,
-}: ProductDetailProps): Promise<Metadata | null> {
+}: ProductDetailProps): Promise<Metadata | null> => {
   const { id } = await params;
   const data = await getProductDetailData(id, null);
   if (!data) return null;
 
   return {
-    title: data.product.title,
+    title: `${data.product.title} — BiciPop`,
     description: data.product.description.slice(0, 160),
     openGraph: {
-      title: data.product.title,
+      title: `${data.product.title} — BiciPop`,
       description: data.product.description.slice(0, 160),
       images: [data.product.imageUrl],
     },
   };
-}
+};
 
 export const ProductDetailPage = async ({ params }: ProductDetailProps) => {
   const { id } = await params;

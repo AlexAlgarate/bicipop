@@ -1,8 +1,8 @@
 import type { ConversationDTO } from '@/domain/message/types';
 import { BackToPageLink } from '@/components/ui/BackToPageLink';
 
-import { ConversationList } from './ConversationList';
-import { ConversationStats } from './ConversationStats';
+import { ConversationList } from './conversations/ConversationList';
+import { ConversationStats } from './conversations/ConversationStats';
 
 interface MessagesViewProps {
   conversations: ConversationDTO[];

@@ -7,7 +7,7 @@ import ProductForm from '@/features/items/_shared/components/ProductForm';
 import { getCategories } from '@/features/items/_shared/api';
 
 export const metadata: Metadata = {
-  title: 'Upload Product',
+  title: 'Upload Product — BiciPop',
   description: 'List a new product for sale on BiciPop',
 };
 

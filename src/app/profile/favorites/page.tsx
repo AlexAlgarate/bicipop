@@ -9,8 +9,8 @@ import { FavoritesHeader } from '@/features/profile/favorites/components/Favorit
 import { PRODUCTS_PER_PAGE } from '@/utils/constants';
 
 export const metadata: Metadata = {
-  title: 'Favorites',
-  description: 'Your favorite products on Bicipop',
+  title: 'Favorites — BiciPop',
+  description: 'Your favorite products on BiciPop',
 };
 
 export const dynamic = 'force-dynamic';

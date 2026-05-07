@@ -3,6 +3,8 @@ import { Pagination } from '@/components/ui/Pagination';
 import { EmptyState } from '@/features/items/_shared/components/EmptyState';
 import type { ProductWithUserContext } from '@/domain/products/types';
 
+import { ProductsGridSkeleton } from './ProductsGridSkeleton';
+
 interface ProductsGridProps {
   products: ProductWithUserContext[];
   currentPage: number;
@@ -12,6 +14,7 @@ interface ProductsGridProps {
     description: string;
     showLink?: boolean;
   };
+  isLoading?: boolean;
 }
 
 export const ProductsGrid = ({
@@ -19,7 +22,10 @@ export const ProductsGrid = ({
   currentPage,
   totalPages,
   emptyMessage,
+  isLoading = false,
 }: ProductsGridProps) => {
+  if (isLoading) return <ProductsGridSkeleton />;
+
   if (products.length === 0) return <EmptyState {...emptyMessage} />;
 
   return (

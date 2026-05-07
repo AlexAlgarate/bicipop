@@ -11,7 +11,7 @@ import { getSession } from '@/infrastructure/auth/session';
 import { deleteProduct, updateProductStatus } from './api';
 import type { ProductState } from './types';
 
-export async function deleteProductAction(productId: string): Promise<void> {
+export const deleteProductAction = async (productId: string): Promise<void> => {
   const session = await getSession();
   if (!session?.userId) redirect(routes.auth.login);
 
@@ -22,17 +22,17 @@ export async function deleteProductAction(productId: string): Promise<void> {
 
   revalidatePath(routes.home, 'layout');
   revalidatePath(routes.profile.dashboard, 'page');
-}
+};
 
-export async function updateProductStatusAction(
+export const updateProductStatusAction = async (
   productId: string,
   status: ProductStatus
-): Promise<ProductState> {
+): Promise<ProductState> => {
   const session = await getSession();
   if (!session?.userId) redirect(routes.auth.login);
 
-  const existingProduct = await getProductById(productId);
-  if (!existingProduct || existingProduct.userId !== session.userId) {
+  const existingProduct = await getProductById(productId, session.userId);
+  if (!existingProduct) {
     return {
       success: false,
       message: 'You are not authorized to update this product',
@@ -56,4 +56,4 @@ export async function updateProductStatusAction(
       message: 'Failed to update product status. Please try again.',
     };
   }
-}
+};

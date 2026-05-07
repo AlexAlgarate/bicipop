@@ -15,10 +15,10 @@ import { routes } from '@/config/routes';
 
 import { getUserForAuth, getUserByEmail, getUserByUsername, registerUser } from './api';
 
-export async function loginAction(
+export const loginAction = async (
   _prevState: AuthFormState,
   formData: FormData
-): Promise<AuthFormState> {
+): Promise<AuthFormState> => {
   const emailInput = String(formData.get('email'));
   const passwordInput = String(formData.get('password'));
 
@@ -60,7 +60,7 @@ export async function loginAction(
       values: { email: emailInput },
     };
   }
-}
+};
 
 const invalidCredentials = (email: string): AuthFormState => ({
   success: false,
@@ -69,10 +69,10 @@ const invalidCredentials = (email: string): AuthFormState => ({
   values: { email },
 });
 
-export async function registerAction(
+export const registerAction = async (
   _prevState: AuthFormState,
   formData: FormData
-): Promise<AuthFormState> {
+): Promise<AuthFormState> => {
   const emailInput = String(formData.get('email'));
   const passwordInput = String(formData.get('password'));
   const confirmPasswordInput = String(formData.get('confirmPassword'));
@@ -150,7 +150,7 @@ export async function registerAction(
       values: { email: emailInput, username: usernameInput },
     };
   }
-}
+};
 
 export const logout = async (): Promise<void> => {
   await deleteSession();

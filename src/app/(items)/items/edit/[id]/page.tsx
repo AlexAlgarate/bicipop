@@ -1,5 +1,6 @@
 export const dynamic = 'force-dynamic';
 
+import type { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
 
 import { getCategories, getProductById } from '@/features/items/_shared/api';
@@ -7,6 +8,11 @@ import ProductForm from '@/features/items/_shared/components/ProductForm';
 import { BackToPageLink } from '@/components/ui/BackToPageLink';
 import { routes } from '@/config/routes';
 import { getSession } from '@/infrastructure/auth/session';
+
+export const metadata: Metadata = {
+  title: 'Edit Product — BiciPop',
+  description: 'Edit your product listing on BiciPop',
+};
 
 interface EditProductPageProps {
   params: Promise<{ id: string }>;

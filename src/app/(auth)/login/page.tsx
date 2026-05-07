@@ -1,7 +1,14 @@
+import type { Metadata } from 'next';
+
 import { loginAction } from '@/features/auth/actions';
 import { AuthFooter } from '@/features/auth/components/AuthFooter';
 import { AuthForm } from '@/features/auth/components/AuthForm';
 import { routes } from '@/config/routes';
+
+export const metadata: Metadata = {
+  title: 'Login — BiciPop',
+  description: 'Log in to your BiciPop account',
+};
 
 const LoginPage = () => {
   return (

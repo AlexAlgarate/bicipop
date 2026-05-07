@@ -1,7 +1,14 @@
+import type { Metadata } from 'next';
+
 import { registerAction } from '@/features/auth/actions';
 import { AuthFooter } from '@/features/auth/components/AuthFooter';
 import { AuthForm } from '@/features/auth/components/AuthForm';
 import { routes } from '@/config/routes';
+
+export const metadata: Metadata = {
+  title: 'Register — BiciPop',
+  description: 'Create your BiciPop account',
+};
 
 const RegisterPage = () => {
   return (

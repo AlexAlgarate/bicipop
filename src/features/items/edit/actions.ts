@@ -6,7 +6,7 @@ import { revalidatePath } from 'next/cache';
 import { type ProductFormState } from '@/features/items/_shared/types';
 import { getSession } from '@/infrastructure/auth/session';
 import { routes } from '@/config/routes';
-import type { ProductStatus } from '@/generated/client/enums';
+import { ProductStatus } from '@/generated/client/enums';
 import { getFieldErrorsFromTree } from '@/utils/validation-errors';
 import { isNextControlFlowError } from '@/utils/error-handler';
 import { getProductById } from '@/features/items/_shared/api';
@@ -39,7 +39,7 @@ export const updateProductAction = async (
     imageUrl: String(formData.get('imageUrl') || ''),
     location: String(formData.get('location')),
     categoryId: String(formData.get('categoryId')),
-    status: (formData.get('status') as ProductStatus) || 'ACTIVE',
+    status: (formData.get('status') as ProductStatus) || ProductStatus.ACTIVE,
   };
 
   const existingProduct = await getProductById(rawValues.productId, session.userId);

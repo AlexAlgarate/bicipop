@@ -3,8 +3,8 @@ import { redirect } from 'next/navigation';
 
 import { getSession } from '@/infrastructure/auth/session';
 import { routes } from '@/config/routes';
-import { getUserConversations } from '@/features/messages/api';
-import { MessagesView } from '@/features/messages/components/MessagesView';
+import { getUserConversations } from '@/features/profile/messages/api';
+import { MessagesView } from '@/features/profile/messages/components/MessagesView';
 
 export const metadata: Metadata = {
   title: 'Messages — BiciPop',
@@ -13,11 +13,13 @@ export const metadata: Metadata = {
 
 export const dynamic = 'force-dynamic';
 
-export default async function MessagesPage() {
+const MessagesPage = async () => {
   const session = await getSession();
   if (!session?.userId) redirect(routes.auth.login);
 
   const conversations = await getUserConversations(session.userId);
 
   return <MessagesView conversations={conversations} currentUserId={session.userId} />;
-}
+};
+
+export default MessagesPage;

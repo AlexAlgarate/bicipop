@@ -1,12 +1,17 @@
 import Link from 'next/link';
-import { Plus, User, LogOut, LayoutDashboard, Search } from 'lucide-react';
+import { Plus, Search } from 'lucide-react';
 
 import { SearchBar } from '@/components/layout/Navbar/SearchBar';
-import { logout } from '@/features/auth/actions';
 import { routes } from '@/config/routes';
 import { getCurrentUser } from '@/features/auth/api';
 
-export const Navbar = async () => {
+import { UserDropdown } from './MenuDropdown';
+
+interface NavbarProps {
+  unreadMessagesCount?: number;
+}
+
+export const Navbar = async ({ unreadMessagesCount = 0 }: NavbarProps) => {
   const user = await getCurrentUser();
 
   return (
@@ -30,11 +35,11 @@ export const Navbar = async () => {
           {user ? (
             <>
               <UploadButton />
-              <DashboardButton />
-              <div className="flex items-center gap-2 border-l border-border pl-2">
-                <UserButton username={user.username} />
-                <LogoutButton />
-              </div>
+              <UserDropdown
+                username={user.username}
+                email={user.email}
+                unreadMessagesCount={unreadMessagesCount}
+              />{' '}
             </>
           ) : (
             <>
@@ -73,35 +78,8 @@ const LogoSection = () => (
 );
 
 const UploadButton = () => (
-  <Link href={routes.items.upload} className="btn btn-primary gap-2">
-    <Plus className="h-4 w-4" />
+  <Link href={routes.items.upload} className="btn btn-primary gap-2 px-3">
+    <Plus className="h-5 w-5" />
     <span className="hidden sm:inline">Upload</span>
   </Link>
-);
-
-const DashboardButton = () => (
-  <Link href={routes.profile.dashboard} className="btn btn-ghost gap-2 px-3">
-    <LayoutDashboard className="h-5 w-5" />
-    <span className="hidden sm:inline">Dashboard</span>
-  </Link>
-);
-
-const UserButton = ({ username }: { username: string }) => (
-  <Link href={routes.profile.settings} className="btn btn-ghost gap-2 px-3">
-    <User className="h-5 w-5" />
-    <span className="hidden sm:inline">{username}</span>
-  </Link>
-);
-
-const LogoutButton = () => (
-  <form action={logout}>
-    <button
-      type="submit"
-      className="btn btn-ghost p-2 text-muted hover:text-accent"
-      aria-label="Logout"
-    >
-      <LogOut className="h-5 w-5" />
-      <span className="hidden sm:inline">Cerrar sesión</span>
-    </button>
-  </form>
 );

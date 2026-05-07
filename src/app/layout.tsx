@@ -18,11 +18,11 @@ export const metadata: Metadata = {
   description: 'Marketplace website for a Next project Web KeepCoding XIX Bootcamp',
 };
 
-export default async function RootLayout({
+const RootLayout = async ({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>) => {
   return (
     <html lang="en">
       <body
@@ -32,4 +32,6 @@ export default async function RootLayout({
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;
