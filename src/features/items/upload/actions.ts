@@ -70,16 +70,23 @@ export const uploadProductAction = async (
   if (!parsed.success) {
     return errorState('There are errors in the form. Please correct them and try again', {
       errors: getFieldErrorsFromTree(parsed.error),
+      values: {
+        title: rawValues.title,
+        description: rawValues.description,
+        price: rawValues.price,
+        location: rawValues.location,
+        categoryId: rawValues.categoryId,
+      },
     });
   }
 
   const imageResult = await resolveImageUrl(formData, {
     values: {
-      title: parsed.data.title,
-      description: parsed.data.description,
-      price: parsed.data.price,
-      categoryId: parsed.data.categoryId,
-      location: parsed.data.location,
+      title: rawValues.title,
+      description: rawValues.description,
+      price: rawValues.price,
+      location: rawValues.location,
+      categoryId: rawValues.categoryId,
     },
   });
   if (typeof imageResult !== 'string') return imageResult;

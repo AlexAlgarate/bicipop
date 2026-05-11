@@ -9,7 +9,10 @@ export const createProductSchema = z.object({
     .string()
     .min(10, 'Description must be at least 10 characters')
     .max(200, 'Description is too long, max 200 characters'),
-  price: z.number().min(1, 'Price must be positive'),
+  price: z
+    .number()
+    .min(1, 'Price must be positive')
+    .max(100000, 'Price cannot be greather than 100.000 €'),
   categoryId: z.string(),
   location: z
     .string()

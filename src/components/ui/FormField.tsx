@@ -4,9 +4,9 @@ import { Eye, EyeOff } from 'lucide-react';
 import { FieldError } from '@/components/ui/FieldError';
 
 export const FIELD_STYLE = {
-  base: 'w-full bg-background rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2',
-  error: 'border-red-500 focus:ring-red-500',
-  normal: 'border-border focus:ring-primary',
+  base: 'w-full bg-background rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 transition-colors',
+  normal: 'border-border focus:ring-primary focus:border-primary',
+  error: 'border-red-500 focus:ring-red-500 focus:border-red-500',
 };
 
 interface FormFieldProps {
@@ -31,10 +31,10 @@ export const FormField = ({ label, htmlFor, error, children }: FormFieldProps) =
     ? cloneElement(children, {
         type: inputType,
         className: [
+          children.props.className ?? '',
           FIELD_STYLE.base,
           error ? FIELD_STYLE.error : FIELD_STYLE.normal,
           isPassword ? 'pr-10' : '',
-          children.props.className ?? '',
         ]
           .join(' ')
           .trim(),
