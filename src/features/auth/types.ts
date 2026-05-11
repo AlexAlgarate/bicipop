@@ -5,3 +5,14 @@ export type AuthFormState = FormState<{
   username?: string;
   password?: string;
 }>;
+
+export const initialRegisterState: AuthFormState = {
+  success: false,
+  errors: {},
+  message: '',
+  values: {
+    email: '',
+    password: '',
+    username: '',
+  },
+};

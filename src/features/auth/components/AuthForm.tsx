@@ -4,7 +4,7 @@ import { useActionState, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { FormField } from '@/components/ui/FormField';
-import { type AuthFormState } from '@/features/auth/types';
+import { initialRegisterState, type AuthFormState } from '@/features/auth/types';
 import { isPasswordValid } from '@/features/auth/validation';
 import { PasswordRules } from '@/features/auth/components/PasswordRules';
 
@@ -23,16 +23,7 @@ interface Props {
   footer?: React.ReactNode;
   redirectTo?: string;
 }
-const initialRegisterState: AuthFormState = {
-  success: false,
-  errors: {},
-  message: '',
-  values: {
-    email: '',
-    password: '',
-    username: '',
-  },
-};
+
 export const AuthForm = ({
   action,
   fields,
