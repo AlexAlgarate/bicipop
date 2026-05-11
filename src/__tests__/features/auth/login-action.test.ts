@@ -28,9 +28,6 @@ vi.mock('next/cache', () => ({
 
 vi.mock('@/features/auth/api', () => ({
   getUserForAuth: vi.fn(),
-  getUserByEmail: vi.fn(),
-  getUserByUsername: vi.fn(),
-  registerUser: vi.fn(),
 }));
 
 const setupCredentials = (password: boolean = true) => {
