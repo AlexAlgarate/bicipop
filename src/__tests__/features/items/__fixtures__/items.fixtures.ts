@@ -1,6 +1,10 @@
-import type { ProductDTO } from '@/domain/products/types';
+import type { ProductDTO, ProductWithUserContext } from '@/domain/products/types';
+import type { ProductStatus } from '@/generated/client/enums';
 
 export const VALID_USER_ID = 'user-123';
+export const OTHER_USER_ID = 'user-123';
+export const VALID_PRODUCT_ID = 'product-123';
+
 export const VALID_IMAGE_URL = 'https://example.com/image.jpg';
 export const SUPABASE_PUBLIC_URL =
   'https://supabase.example.com/storage/products/bike.jpg';
@@ -92,8 +96,42 @@ export const makeProductDTO = (overrides?: Partial<ProductDTO>): ProductDTO => (
   createdAt: new Date('2024-01-01'),
   updatedAt: new Date('2024-01-01'),
   username: 'testuser',
-  status: 'ACTIVE' as import('@/generated/client/enums').ProductStatus,
+  status: 'ACTIVE' as ProductStatus,
   categorySlug: 'bicycles',
   categoryName: 'Bicycles',
   ...overrides,
 });
+
+export const makeProductWithUserContext = (
+  overrides?: Partial<ProductWithUserContext>
+): ProductWithUserContext => ({
+  ...makeProductDTO(),
+  isOwner: true,
+  isLiked: false,
+  ...overrides,
+});
+
+type UpdateFormOverrides = Partial<{
+  productId: string;
+  title: string;
+  description: string;
+  location: string;
+  price: string;
+  categoryId: string;
+  imageUrl: string;
+  status: string;
+}>;
+
+export const buildUpdateFormData = (overrides: UpdateFormOverrides = {}): FormData => {
+  const formData = new FormData();
+  formData.set('productId', overrides.productId ?? VALID_PRODUCT_ID);
+  formData.set('title', overrides.title ?? VALID_PRODUCT_VALUES.title);
+  formData.set('description', overrides.description ?? VALID_PRODUCT_VALUES.description);
+  formData.set('location', overrides.location ?? VALID_PRODUCT_VALUES.location);
+  formData.set('price', overrides.price ?? VALID_PRODUCT_VALUES.price);
+  formData.set('categoryId', overrides.categoryId ?? VALID_PRODUCT_VALUES.categoryId);
+  formData.set('imageUrl', overrides.imageUrl ?? VALID_IMAGE_URL);
+  if (overrides.status) formData.set('status', overrides.status);
+
+  return formData;
+};
