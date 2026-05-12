@@ -42,7 +42,7 @@ export const updateProductAction = async (
     status: (formData.get('status') as ProductStatus) || ProductStatus.ACTIVE,
   };
 
-  const existingProduct = await getProductById(rawValues.productId, session.userId);
+  const existingProduct = await getProductById(rawValues.productId, session?.userId);
 
   if (!existingProduct || !existingProduct.isOwner) {
     return errorState('You are not authorized to edit this product');

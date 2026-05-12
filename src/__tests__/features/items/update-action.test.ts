@@ -6,6 +6,7 @@ import { getSession } from '@/infrastructure/auth/session';
 import { getProductById } from '@/features/items/_shared/api';
 import { updateProduct } from '@/features/items/edit/api';
 import { updateProductAction } from '@/features/items/edit/actions';
+import { routes } from '@/config/routes';
 
 import {
   VALID_USER_ID,
@@ -29,7 +30,9 @@ vi.mock('@/features/items/edit/api', () => ({
 }));
 
 vi.mock('next/navigation', () => ({
-  redirect: vi.fn(),
+  redirect: vi.fn(() => {
+    throw new Error('NEXT_REDIRECT');
+  }),
 }));
 
 vi.mock('next/cache', () => ({
@@ -45,8 +48,6 @@ const setupAuthorizedEdit = () => {
   vi.mocked(updateProduct).mockResolvedValue(makeProductDTO());
 };
 
-// Tests
-
 describe('updateProductAction', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -56,7 +57,9 @@ describe('updateProductAction', () => {
     test('Should redirect to login when there is no active session', async () => {
       vi.mocked(getSession).mockResolvedValue(null);
 
-      await updateProductAction(null, buildUpdateFormData());
+      await expect(updateProductAction(null, buildUpdateFormData())).rejects.toThrow(
+        'NEXT_REDIRECT'
+      );
 
       expect(redirect).toHaveBeenCalledWith(expect.stringContaining('login'));
     });
@@ -64,7 +67,9 @@ describe('updateProductAction', () => {
     test('Should redirect to login when session has no userId', async () => {
       vi.mocked(getSession).mockResolvedValue({} as { userId: string });
 
-      await updateProductAction(null, buildUpdateFormData());
+      await expect(updateProductAction(null, buildUpdateFormData())).rejects.toThrow(
+        'NEXT_REDIRECT'
+      );
 
       expect(redirect).toHaveBeenCalledWith(expect.stringContaining('login'));
     });
@@ -72,15 +77,15 @@ describe('updateProductAction', () => {
     test('Should not call getProductById when session is missing', async () => {
       vi.mocked(getSession).mockResolvedValue(null);
 
-      await updateProductAction(null, buildUpdateFormData());
+      await expect(updateProductAction(null, buildUpdateFormData())).rejects.toThrow(
+        'NEXT_REDIRECT'
+      );
 
       expect(getProductById).not.toHaveBeenCalled();
     });
   });
 
-  // Ownership
-
-  describe.skip('Ownership', () => {
+  describe('Ownership', () => {
     test('Should return unauthorized error when product does not exist', async () => {
       vi.mocked(getSession).mockResolvedValue(makeSession());
       vi.mocked(getProductById).mockResolvedValue(null);
@@ -124,9 +129,7 @@ describe('updateProductAction', () => {
     });
   });
 
-  // Schema validation (Zod)
-
-  describe.skip('Schema validation', () => {
+  describe('Schema validation', () => {
     test('Should fail when title is missing', async () => {
       vi.mocked(getSession).mockResolvedValue(makeSession());
       vi.mocked(getProductById).mockResolvedValue(
@@ -182,9 +185,7 @@ describe('updateProductAction', () => {
     });
   });
 
-  // Success
-
-  describe.skip('Success', () => {
+  describe('Success', () => {
     test('Should call updateProduct with all form values', async () => {
       setupAuthorizedEdit();
 
@@ -209,7 +210,7 @@ describe('updateProductAction', () => {
 
       await updateProductAction(null, buildUpdateFormData());
 
-      expect(revalidatePath).toHaveBeenCalledWith('/', 'layout');
+      expect(revalidatePath).toHaveBeenCalledWith(routes.home, 'layout');
     });
 
     test('Should revalidate profile dashboard page after a successful update', async () => {
@@ -243,9 +244,7 @@ describe('updateProductAction', () => {
     });
   });
 
-  // updateProduct errors
-
-  describe.skip('updateProduct errors', () => {
+  describe('updateProduct errors', () => {
     test('Should return failure when updateProduct throws a known error', async () => {
       vi.mocked(getSession).mockResolvedValue(makeSession());
       vi.mocked(getProductById).mockResolvedValue(
