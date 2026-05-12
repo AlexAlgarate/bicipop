@@ -20,6 +20,7 @@ export const ProductImage = ({ product }: { product: ProductWithUserContext }) =
         className="object-cover"
         priority
         sizes="(max-width: 1024px) 100vw, 50vw"
+        unoptimized
       />
       {productStatus && (
         <div className={`absolute inset-0 flex items-center justify-center bg-black/50 `}>

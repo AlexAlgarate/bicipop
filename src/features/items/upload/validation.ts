@@ -13,7 +13,7 @@ export const createProductSchema = z.object({
     .number()
     .min(1, 'Price must be positive')
     .max(100000, 'Price cannot be greather than 100.000 €'),
-  categoryId: z.string(),
+  categoryId: z.string().min(1, 'Category is required'),
   location: z
     .string()
     .min(3, 'Location is too short, try again')

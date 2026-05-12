@@ -80,18 +80,18 @@ export const uploadProductAction = async (
     });
   }
 
-  const imageResult = await resolveImageUrl(formData, {
-    values: {
-      title: rawValues.title,
-      description: rawValues.description,
-      price: rawValues.price,
-      location: rawValues.location,
-      categoryId: rawValues.categoryId,
-    },
-  });
-  if (typeof imageResult !== 'string') return imageResult;
-
   try {
+    const imageResult = await resolveImageUrl(formData, {
+      values: {
+        title: rawValues.title,
+        description: rawValues.description,
+        price: rawValues.price,
+        location: rawValues.location,
+        categoryId: rawValues.categoryId,
+      },
+    });
+    if (typeof imageResult !== 'string') return imageResult;
+
     await createProduct({
       ...parsed.data,
       imageUrl: imageResult,

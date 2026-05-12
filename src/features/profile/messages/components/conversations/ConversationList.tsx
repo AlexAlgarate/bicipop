@@ -86,6 +86,7 @@ const ConversationRow = ({ conversation, currentUserId }: ConversationRowProps) 
             fill
             className="object-cover"
             sizes="56px"
+            unoptimized
           />
         </div>
 

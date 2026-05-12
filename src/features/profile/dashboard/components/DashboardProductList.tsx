@@ -60,6 +60,7 @@ const ProductRow = ({ product }: { product: ProductWithUserContext }) => (
         fill
         className="object-cover"
         sizes="80px"
+        unoptimized
       />
     </Link>
     <div className="flex flex-1 min-w-0 justify-between gap-2">
