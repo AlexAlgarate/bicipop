@@ -31,11 +31,11 @@ export const updateProductStatusAction = async (
   const session = await getSession();
   if (!session?.userId) redirect(routes.auth.login);
 
-  const existingProduct = await getProductById(productId, session.userId);
+  const existingProduct = await getProductById(productId, session?.userId);
   if (!existingProduct) {
     return {
       success: false,
-      message: 'You are not authorized to update this product',
+      message: 'Product does not exist',
     };
   }
 

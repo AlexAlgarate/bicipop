@@ -29,7 +29,7 @@ export const changePasswordAction = async (
   if (!parsed.success) {
     return {
       success: false,
-      message: '',
+      message: 'Something was wrong. Check fields',
       requestId: Date.now(),
       errors: getFieldErrorsFromTree(parsed.error),
       values: rawValues,
