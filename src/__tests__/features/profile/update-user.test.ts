@@ -14,8 +14,6 @@ import {
   buildUpdateProfileFormData,
 } from './__fixtures__/profile.fixtures';
 
-// Mocks
-
 vi.mock('@/infrastructure/auth/session', () => ({
   getSession: vi.fn(),
 }));
@@ -35,20 +33,14 @@ vi.mock('next/cache', () => ({
   revalidatePath: vi.fn(),
 }));
 
-// Helpers
-
 const setupAuthenticatedSession = () => {
   vi.mocked(getSession).mockResolvedValue(makeSession());
 };
-
-// Tests
 
 describe('updateUserProfileAction', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
-
-  // Authentication
 
   describe('Authentication', () => {
     test('Should redirect to login when there is no active session', async () => {
@@ -81,8 +73,6 @@ describe('updateUserProfileAction', () => {
       expect(updateUserProfile).not.toHaveBeenCalled();
     });
   });
-
-  // Schema validation (Zod)
 
   describe('Schema validation', () => {
     test('Should fail when email is missing', async () => {
@@ -165,12 +155,9 @@ describe('updateUserProfileAction', () => {
     });
   });
 
-  // Success
-
   describe('Success', () => {
     test('Should call updateUserProfile with email, username and password', async () => {
       setupAuthenticatedSession();
-      vi.mocked(updateUserProfile).mockResolvedValue(undefined);
 
       await expect(
         updateUserProfileAction(null, buildUpdateProfileFormData())
@@ -185,7 +172,6 @@ describe('updateUserProfileAction', () => {
 
     test('Should normalize the email to lowercase before calling updateUserProfile', async () => {
       setupAuthenticatedSession();
-      vi.mocked(updateUserProfile).mockResolvedValue(undefined);
 
       await expect(
         updateUserProfileAction(
@@ -201,7 +187,6 @@ describe('updateUserProfileAction', () => {
 
     test('Should revalidate the settings page after a successful update', async () => {
       setupAuthenticatedSession();
-      vi.mocked(updateUserProfile).mockResolvedValue(undefined);
 
       await expect(
         updateUserProfileAction(null, buildUpdateProfileFormData())
@@ -212,7 +197,6 @@ describe('updateUserProfileAction', () => {
 
     test('Should redirect to settings after a successful update', async () => {
       setupAuthenticatedSession();
-      vi.mocked(updateUserProfile).mockResolvedValue(undefined);
 
       await expect(
         updateUserProfileAction(null, buildUpdateProfileFormData())
@@ -221,8 +205,6 @@ describe('updateUserProfileAction', () => {
       expect(redirect).toHaveBeenCalledWith(expect.stringContaining('settings'));
     });
   });
-
-  // updateUserProfile errors
 
   describe('updateUserProfile errors', () => {
     test('Should return the error message when password is incorrect', async () => {
