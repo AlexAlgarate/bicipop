@@ -50,3 +50,11 @@ apps/**/coverage
 **/dist
 **/build
 architecture.md
+
+# Playwright
+node_modules/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
