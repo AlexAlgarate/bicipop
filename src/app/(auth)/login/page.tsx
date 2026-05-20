@@ -20,7 +20,6 @@ const LoginPage = () => {
         <AuthForm
           action={loginAction}
           submitText="Log in"
-          redirectTo="/"
           fields={[
             {
               name: 'email',
