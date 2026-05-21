@@ -16,7 +16,7 @@ export const deleteProductAction = async (productId: string): Promise<void> => {
   if (!session?.userId) redirect(routes.auth.login);
 
   const existingProduct = await getProductById(productId, session.userId);
-  if (!existingProduct) redirect(routes.home);
+  if (!existingProduct || !existingProduct.isOwner) redirect(routes.profile.dashboard);
 
   await deleteProduct(productId);
 
@@ -32,10 +32,10 @@ export const updateProductStatusAction = async (
   if (!session?.userId) redirect(routes.auth.login);
 
   const existingProduct = await getProductById(productId, session?.userId);
-  if (!existingProduct) {
+  if (!existingProduct || !existingProduct.isOwner) {
     return {
       success: false,
-      message: 'Product does not exist',
+      message: 'Product does not exist or you are not authorized to update this product',
     };
   }
 

@@ -96,7 +96,7 @@ describe('deleteProductAction', () => {
         'NEXT_REDIRECT'
       );
 
-      expect(redirect).toHaveBeenCalledWith(routes.home);
+      expect(redirect).toHaveBeenCalledWith(routes.profile.dashboard);
     });
 
     test('Should not call deleteProduct when product does not exist', async () => {
@@ -116,6 +116,22 @@ describe('deleteProductAction', () => {
       await deleteProductAction(VALID_PRODUCT_ID);
 
       expect(getProductById).toHaveBeenCalledWith(VALID_PRODUCT_ID, VALID_USER_ID);
+    });
+  });
+
+  describe('Authorization', () => {
+    test('Should redirect to dashboard and not call deleteProduct when product exists but user is not the owner', async () => {
+      vi.mocked(getSession).mockResolvedValue(makeSession());
+      vi.mocked(getProductById).mockResolvedValue(
+        makeProductWithUserContext({ isOwner: false })
+      );
+
+      await expect(deleteProductAction(VALID_PRODUCT_ID)).rejects.toThrow(
+        'NEXT_REDIRECT'
+      );
+
+      expect(redirect).toHaveBeenCalledWith(routes.profile.dashboard);
+      expect(deleteProduct).not.toHaveBeenCalled();
     });
   });
 
@@ -174,7 +190,24 @@ describe('updateProductStatusAction', () => {
       const result = await updateProductStatusAction(VALID_PRODUCT_ID, ACTIVE_STATUS);
 
       expect(result.success).toBe(false);
-      expect(result.message).toBe('Product does not exist');
+      expect(result.message).toBe(
+        'Product does not exist or you are not authorized to update this product'
+      );
+      expect(updateProductStatus).not.toHaveBeenCalled();
+    });
+
+    test('Should return unauthorized error and not call updateProductStatus when product exists but user is not the owner', async () => {
+      vi.mocked(getSession).mockResolvedValue(makeSession());
+      vi.mocked(getProductById).mockResolvedValue(
+        makeProductWithUserContext({ isOwner: false })
+      );
+
+      const result = await updateProductStatusAction(VALID_PRODUCT_ID, ACTIVE_STATUS);
+
+      expect(result.success).toBe(false);
+      expect(result.message).toBe(
+        'Product does not exist or you are not authorized to update this product'
+      );
       expect(updateProductStatus).not.toHaveBeenCalled();
     });
   });
