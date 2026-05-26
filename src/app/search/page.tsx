@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
 
-import { getSearchProducts } from '@/features/items/search/api';
-import { ProductsGrid } from '@/features/items/_shared/components/ProductsGrid';
-import { ProductsGridSkeleton } from '@/features/items/_shared/components/ProductsGridSkeleton';
-import { SearchFilters } from '@/features/items/search/components/SearchFilters';
+import { getSearchProducts } from '@/features/products/search/api';
+import { ProductsGrid } from '@/features/products/_shared/components/ProductsGrid';
+import { ProductsGridSkeleton } from '@/features/products/_shared/components/ProductsGridSkeleton';
+import { SearchFilters } from '@/features/products/search/components/SearchFilters';
 import { getSession } from '@/infrastructure/auth/session';
-import { getCategories } from '@/features/items/_shared/api';
+import { getCategories } from '@/features/products/_shared/api';
 import { BackToPageLink } from '@/components/ui/BackToPageLink';
 
 export const metadata: Metadata = {
@@ -37,7 +37,7 @@ const ProductsGridWrapper = async ({ searchParams }: SearchPageProps) => {
 
   return (
     <ProductsGrid
-      products={result.items}
+      products={result.products}
       currentPage={result.currentPage}
       totalPages={result.totalPages}
       emptyMessage={{

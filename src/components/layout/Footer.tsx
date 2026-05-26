@@ -54,7 +54,7 @@ export const Footer = ({ className }: { className?: string }) => {
               </li>
               <li>
                 <Link
-                  href={routes.items.upload}
+                  href={routes.products.upload}
                   className="transition-colors hover:text-primary"
                 >
                   Sell

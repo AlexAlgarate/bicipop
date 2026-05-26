@@ -3,18 +3,22 @@
   "version": "1.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "dotenv -e .env.local next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint src --fix --ext .ts,.tsx",
     "format": "prettier --write \"src/**/*.{ts,tsx}\"",
+    "postinstall": "prisma generate",
     "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev",
-    "prisma:push": "prisma db push --force-reset",
-    "prisma:studio": "prisma studio",
-    "prisma:seed": "tsx --env-file=.env ./prisma/seed.ts",
-    "prisma:reset": "prisma migrate reset",
-    "postinstall": "prisma generate"
+    "prisma:push:local": "dotenv -e .env.local prisma db push --force-reset",
+    "prisma:push:test": "dotenv -e .env.test -- prisma db push --force-reset",
+    "prisma:studio:local": "dotenv -e .env.local prisma studio",
+    "prisma:studio:test": "dotenv -e .env.test prisma studio",
+    "prisma:seed:local": "dotenv -e .env.local -- tsx ./prisma/seed.ts",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest",
+    "test:e2e": "pnpm prisma:push:test && playwright test",
+    "test:e2e:headed": "pnpm prisma:push:test && playwright test --headed"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.7.0",
@@ -32,20 +36,29 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@playwright/test": "^1.60.0",
     "@tailwindcss/postcss": "^4",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
     "@types/node": "^20",
     "@types/pg": "^8.20.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vitejs/plugin-react": "^6.0.1",
+    "dotenv-cli": "^11.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.2.3",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.32.0",
+    "jsdom": "^29.1.1",
     "prettier": "^3.8.3",
     "tailwind-merge": "^3.5.0",
     "tailwindcss": "^4",
     "tsx": "^4.21.0",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vite-tsconfig-paths": "^6.1.1",
+    "vitest": "^4.1.5"
   }
 }

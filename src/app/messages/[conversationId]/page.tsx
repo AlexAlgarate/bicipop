@@ -55,12 +55,13 @@ const ChatPage = async ({ params }: ChatPageProps) => {
             fill
             className="object-cover"
             sizes="80px"
+            unoptimized
           />
         </div>
 
         <div className="min-w-0 flex flex-col justify-between">
           <Link
-            href={routes.items.detail(conversation.productId)}
+            href={routes.products.detail(conversation.productId)}
             className="truncate font-medium text-sm sm:text-base hover:text-primary transition-colors block"
           >
             {conversation.productTitle}

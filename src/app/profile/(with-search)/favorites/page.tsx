@@ -4,8 +4,8 @@ import { Suspense } from 'react';
 
 import { routes } from '@/config/routes';
 import { getUserFavorites } from '@/features/profile/favorites/api';
-import { ProductsGrid } from '@/features/items/_shared/components/ProductsGrid';
-import { ProductsGridSkeleton } from '@/features/items/_shared/components/ProductsGridSkeleton';
+import { ProductsGrid } from '@/features/products/_shared/components/ProductsGrid';
+import { ProductsGridSkeleton } from '@/features/products/_shared/components/ProductsGridSkeleton';
 import { getCurrentUser } from '@/features/auth/api';
 import { FavoritesHeader } from '@/features/profile/favorites/components/FavoritesHeader';
 import { PRODUCTS_PER_PAGE } from '@/utils/constants';
@@ -44,7 +44,7 @@ const ProductsGridWrapper = async ({
 
   return (
     <ProductsGrid
-      products={data.items}
+      products={data.products}
       currentPage={currentPage}
       totalPages={totalPages}
       emptyMessage={{

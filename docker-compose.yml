@@ -12,5 +12,16 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  postgres-test:
+    image: postgres:16-alpine
+    container_name: bicipop-db-test
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: bicipop
+      POSTGRES_PASSWORD: bicipop_secret
+      POSTGRES_DB: bicipop_test_db
+    ports:
+      - '5433:5432'
+
 volumes:
   postgres_data:

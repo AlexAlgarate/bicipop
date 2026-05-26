@@ -142,11 +142,11 @@ export const createMessage = async (
 };
 
 export const deleteConversation = async (
-  conversationid: string,
+  conversationId: string,
   userId: string
 ): Promise<void> => {
   const conversation = await prisma.conversation.findUnique({
-    where: { id: conversationid },
+    where: { id: conversationId },
     select: { buyerId: true, sellerId: true },
   });
   if (!conversation) throw new Error('Conversation not found');
@@ -155,5 +155,5 @@ export const deleteConversation = async (
     throw new Error('Not authorized to delete this conversation');
   }
 
-  await prisma.conversation.delete({ where: { id: conversationid } });
+  await prisma.conversation.delete({ where: { id: conversationId } });
 };

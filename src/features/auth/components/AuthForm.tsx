@@ -1,12 +1,13 @@
 'use client';
 
-import { useActionState, useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useActionState, useState } from 'react';
 
 import { FormField } from '@/components/ui/FormField';
-import { type AuthFormState } from '@/features/auth/types';
+import { initialRegisterState, type AuthFormState } from '@/features/auth/types';
 import { isPasswordValid } from '@/features/auth/validation';
 import { PasswordRules } from '@/features/auth/components/PasswordRules';
+
+import { useRedirect } from '../hooks/useRedirect';
 
 type FieldConfig = {
   name: string;
@@ -21,38 +22,16 @@ interface Props {
   fields: FieldConfig[];
   submitText: string;
   footer?: React.ReactNode;
-  redirectTo?: string;
 }
-const initialRegisterState: AuthFormState = {
-  success: false,
-  errors: {},
-  message: '',
-  values: {
-    email: '',
-    password: '',
-    username: '',
-  },
-};
-export const AuthForm = ({
-  action,
-  fields,
-  submitText,
-  footer,
-  redirectTo = '/',
-}: Props) => {
-  const router = useRouter();
+
+export const AuthForm = ({ action, fields, submitText, footer }: Props) => {
   const [state, formAction, isPending] = useActionState(action, initialRegisterState);
   const [passwordValue, setPasswordValue] = useState('');
-
-  useEffect(() => {
-    if (state.success) {
-      router.push(redirectTo);
-    }
-  }, [router, state.success, redirectTo]);
 
   const passwordInvalidRules =
     passwordValue.length > 0 && !isPasswordValid(passwordValue);
 
+  useRedirect(state);
   return (
     <form
       action={formAction}

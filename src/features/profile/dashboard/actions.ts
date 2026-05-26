@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 import type { ProductStatus } from '@/generated/client/enums';
-import { getProductById } from '@/features/items/_shared/api';
+import { getProductById } from '@/features/products/_shared/api';
 import { routes } from '@/config/routes';
 import { getSession } from '@/infrastructure/auth/session';
 
@@ -16,7 +16,7 @@ export const deleteProductAction = async (productId: string): Promise<void> => {
   if (!session?.userId) redirect(routes.auth.login);
 
   const existingProduct = await getProductById(productId, session.userId);
-  if (!existingProduct) redirect(routes.home);
+  if (!existingProduct || !existingProduct.isOwner) redirect(routes.profile.dashboard);
 
   await deleteProduct(productId);
 
@@ -31,11 +31,11 @@ export const updateProductStatusAction = async (
   const session = await getSession();
   if (!session?.userId) redirect(routes.auth.login);
 
-  const existingProduct = await getProductById(productId, session.userId);
-  if (!existingProduct) {
+  const existingProduct = await getProductById(productId, session?.userId);
+  if (!existingProduct || !existingProduct.isOwner) {
     return {
       success: false,
-      message: 'You are not authorized to update this product',
+      message: 'Product does not exist or you are not authorized to update this product',
     };
   }
 

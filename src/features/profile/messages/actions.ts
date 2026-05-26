@@ -19,7 +19,7 @@ import {
 export const startConversationAction = async (productId: string): Promise<void> => {
   const session = await getSession();
   if (!session?.userId)
-    redirect(`${routes.auth.login}?callbackUrl=${routes.items.detail(productId)}`);
+    redirect(`${routes.auth.login}?callbackUrl=${routes.products.detail(productId)}`);
 
   try {
     const conversationId = await findOrCreateConversation(productId, session.userId);

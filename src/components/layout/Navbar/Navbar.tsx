@@ -88,7 +88,7 @@ const LogoSection = () => (
 );
 
 const UploadButton = () => (
-  <Link href={routes.items.upload} className="btn btn-primary gap-2 px-3">
+  <Link href={routes.products.upload} className="btn btn-primary gap-2 px-3">
     <Plus className="h-5 w-5" />
     <span className="hidden sm:inline">Upload</span>
   </Link>

@@ -13,7 +13,7 @@ import {
 } from '@/infrastructure/security/bcrypt-password-hasher';
 import { routes } from '@/config/routes';
 
-import { getUserForAuth, getUserByEmail, getUserByUsername, registerUser } from './api';
+import { getUserForAuth, registerUser, checkIfUserExists } from './api';
 
 export const loginAction = async (
   _prevState: AuthFormState,
@@ -110,25 +110,14 @@ export const registerAction = async (
     };
   }
 
-  const existingUser = await getUserByEmail(email);
+  const { existingEmail, existingUsername } = await checkIfUserExists(email, username);
 
-  if (existingUser) {
+  if (existingEmail || existingUsername) {
     return {
       success: false,
-      message: 'User already exists',
+      message: 'Credentials invalid',
       errors: {},
-      values: { username: usernameInput },
-    };
-  }
-
-  const existingUsername = await getUserByUsername(username);
-
-  if (existingUsername) {
-    return {
-      success: false,
-      message: 'Username already taken',
-      errors: {},
-      values: { email: emailInput, username: usernameInput },
+      values: {},
     };
   }
 

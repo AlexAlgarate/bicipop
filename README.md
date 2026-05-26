@@ -67,7 +67,7 @@ El proyecto estará disponible en `http://localhost:3000`.
 src/
 ├── app/                    # Next.js App Router
 │   ├── (auth)/          # Rutas de autenticación
-│   ├── (items)/        # Rutas de productos
+│   ├── (products)/        # Rutas de productos
 │   ├── (public)/      # Páginas públicas
 │   ├── profile/       # Panel de usuario
 │   ├── messages/      # Sistema de mensajes
@@ -82,7 +82,7 @@ src/
 │   └── message/
 ├── features/          # Funcionalidades
 │   ├── auth/
-│   ├── items/
+│   ├── products/
 │   ├── messages/
 │   └── profile/
 ├── generated/          # Código generado (Prisma)
@@ -98,7 +98,7 @@ src/
 - [x] Gestión de productos (CRUD)
 - [x] Categorías de productos
 - [x] Sistema de favoritos
-- [x] Sistema de mensajería
+- [x] Sistema de mensajería en tiempo real
 - [x] Perfil de usuario
 - [x] Dashboard de ventas
 - [x] Búsqueda de productos
