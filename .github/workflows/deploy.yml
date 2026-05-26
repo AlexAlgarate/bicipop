@@ -107,7 +107,7 @@ jobs:
           key: playwright-${{ runner.os }}-chromium
 
       - name: Install Playwright Browsers
-        run: pnpm exec playwright install --with-deps --no-shell
+        run: pnpm exec playwright install --with-deps chromium
 
       - name: Setup test DB schema
         run: pnpm exec prisma db push --force-reset
