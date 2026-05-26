@@ -99,7 +99,7 @@ jobs:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY }}
 
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: playwright-report
@@ -153,7 +153,6 @@ jobs:
           script: |
             cd ~/bicipop
             DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }} bash deploy.sh
-            whoami
 
       - name: Notify deployment
         if: success()
