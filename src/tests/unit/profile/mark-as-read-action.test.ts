@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 import { revalidatePath } from 'next/cache';
 
 import { markAsReadAction } from '@/features/profile/messages/actions';
@@ -24,10 +24,6 @@ vi.mock('next/cache', () => ({
 }));
 
 describe('markAsReadAction', () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
   describe('Authentication', () => {
     test('Should silently return when there is no active session', async () => {
       vi.mocked(getSession).mockResolvedValue(null);

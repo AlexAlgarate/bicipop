@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 
 import { registerAction } from '@/features/auth/actions';
 import { initialRegisterState } from '@/features/auth/types';
@@ -45,10 +45,6 @@ const setupUserExits = ({
 };
 
 describe('Register Action', () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
   describe('Schema validation', () => {
     test('Should fail when email is missing', async () => {
       const result = await registerAction(

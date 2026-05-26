@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
@@ -21,10 +21,6 @@ vi.mock('next/navigation', () => ({
 }));
 
 describe('Logout action', () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
   test('Should delete session, revalidates and redirects', async () => {
     await expect(logout()).rejects.toThrow('NEXT_REDIRECT');
 

@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 
@@ -11,6 +11,8 @@ import {
   VALID_CONVERSATION_ID,
   makeSession,
 } from './__fixtures__/messages.fixtures';
+
+vi.mock('@/infrastructure/db/prisma/client');
 
 vi.mock('@/infrastructure/auth/session', () => ({
   getSession: vi.fn(),
@@ -31,10 +33,6 @@ vi.mock('next/cache', () => ({
 }));
 
 describe('deleteConversationAction', () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
   describe('Authentication', () => {
     test('Should redirect to login when there is no active session', async () => {
       vi.mocked(getSession).mockResolvedValue(null);

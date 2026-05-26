@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 import { revalidatePath } from 'next/cache';
 
 import { sendMessageAction } from '@/features/profile/messages/actions';
@@ -41,10 +41,6 @@ const setupAuthenticatedAsBuyer = () => {
 };
 
 describe('sendMessageAction', () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
   describe('Authentication', () => {
     test('Should return error when there is no active session', async () => {
       vi.mocked(getSession).mockResolvedValue(null);

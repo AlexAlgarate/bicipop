@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
+import { afterEach, describe, expect, test, vi } from 'vitest';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 
@@ -36,10 +36,6 @@ const setupAuthenticatedSession = () => {
 };
 
 describe('changePasswordAction', () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
   afterEach(() => {
     vi.restoreAllMocks();
   });

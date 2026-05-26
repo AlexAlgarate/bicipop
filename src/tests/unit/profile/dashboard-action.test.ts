@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 
@@ -51,10 +51,6 @@ const ACTIVE_STATUS = 'ACTIVE' as ProductStatus;
 const SOLD_STATUS = 'SOLD' as ProductStatus;
 
 describe('deleteProductAction', () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
   describe('Authentication', () => {
     test('Should redirect to login when there is no active session', async () => {
       vi.mocked(getSession).mockResolvedValue(null);
@@ -156,10 +152,6 @@ describe('deleteProductAction', () => {
 });
 
 describe('updateProductStatusAction', () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
   describe('Authentication', () => {
     test('Should redirect to login when there is no active session', async () => {
       vi.mocked(getSession).mockResolvedValue(null);

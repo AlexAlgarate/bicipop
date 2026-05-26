@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 import { redirect } from 'next/navigation';
 
 import { startConversationAction } from '@/features/profile/messages/actions';
@@ -13,6 +13,7 @@ import {
   makeSession,
 } from './__fixtures__/messages.fixtures';
 
+vi.mock('@/infrastructure/db/prisma/client');
 vi.mock('@/infrastructure/auth/session', () => ({
   getSession: vi.fn(),
 }));
@@ -28,10 +29,6 @@ vi.mock('next/navigation', () => ({
 }));
 
 describe('startConversationAction', () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
   describe('Authentication', () => {
     test('Should redirect to login when there is no active session', async () => {
       vi.mocked(getSession).mockResolvedValue(null);

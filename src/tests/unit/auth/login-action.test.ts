@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 import { revalidatePath } from 'next/cache';
 
 import { loginAction } from '@/features/auth/actions';
@@ -36,10 +36,6 @@ const setupCredentials = (password: boolean = true) => {
 };
 
 describe('Login action', () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
   describe('Validation', () => {
     test('Should fail when email is missing', async () => {
       const result = await loginAction(
