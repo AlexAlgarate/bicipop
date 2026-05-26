@@ -9,8 +9,8 @@ const routeMatchers = {
   protected: [
     routes.profile.dashboard,
     routes.profile.messages,
-    routes.items.upload,
-    '/items/edit',
+    routes.products.upload,
+    '/products/edit',
     '/messages',
   ],
   auth: [routes.auth.login, routes.auth.register],

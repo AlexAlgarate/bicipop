@@ -51,7 +51,7 @@ export const DashboardProductList = ({ products }: DashboardProductProps) => (
 const ProductRow = ({ product }: { product: ProductWithUserContext }) => (
   <div className="flex items-stretch gap-3 py-3 px-2 rounded-lg hover:bg-background/20 transition-colors group">
     <Link
-      href={routes.items.detail(product.id)}
+      href={routes.products.detail(product.id)}
       className="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg"
     >
       <Image
@@ -66,7 +66,7 @@ const ProductRow = ({ product }: { product: ProductWithUserContext }) => (
     <div className="flex flex-1 min-w-0 justify-between gap-2">
       <div className="flex flex-col justify-between min-w-0">
         <Link
-          href={routes.items.detail(product.id)}
+          href={routes.products.detail(product.id)}
           className="truncate font-medium hover:text-primary leading-snug text-sm sm:text-base"
         >
           {product.title}
@@ -108,7 +108,7 @@ const ProductActions = ({ product }: { product: ProductWithUserContext }) => {
   return (
     <div className="flex shrink-0 items-center">
       <Link
-        href={routes.items.edit(product.id)}
+        href={routes.products.edit(product.id)}
         className="p-1.5 rounded-md text-muted hover:text-primary hover:bg-primary/10 transition-colors"
         title="Edit"
       >

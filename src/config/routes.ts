@@ -4,11 +4,11 @@ export const routes = {
     login: '/login',
     register: '/register',
   },
-  items: {
-    upload: '/items/upload',
-    edit: (id: string) => `/items/edit/${id}`,
-    detail: (id: string) => `/items/${id}`,
-    user: (username: string) => `/items/user/${username}`,
+  products: {
+    upload: '/products/upload',
+    edit: (id: string) => `/products/edit/${id}`,
+    detail: (id: string) => `/products/${id}`,
+    user: (username: string) => `/products/user/${username}`,
   },
   category: (categorySlug: string) => `/category/${categorySlug}`,
   profile: {

@@ -28,7 +28,7 @@ export const DashboardView = ({
       <DashboardHeader username={username} />
 
       <DashboardStats statusCounts={data.statusCounts} totalCount={data.totalCount} />
-      <DashboardProductPanel products={data.items} />
+      <DashboardProductPanel products={data.products} />
 
       {totalPages > 1 && (
         <div className="flex justify-center mt-4">

@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 import type { ProductStatus } from '@/generated/client/enums';
-import { getProductById } from '@/features/items/_shared/api';
+import { getProductById } from '@/features/products/_shared/api';
 import { routes } from '@/config/routes';
 import { getSession } from '@/infrastructure/auth/session';
 

@@ -13,7 +13,10 @@ export const NotUserProductsAvailable = () => {
       <p className="mt-2 max-w-sm text-muted">
         Start selling by uploading your first product
       </p>
-      <Link href={routes.items.upload} className="btn btn-primary mt-6 gap-2 px-6 py-3">
+      <Link
+        href={routes.products.upload}
+        className="btn btn-primary mt-6 gap-2 px-6 py-3"
+      >
         <Plus className="h-5 w-5" />
         Upload Product
       </Link>

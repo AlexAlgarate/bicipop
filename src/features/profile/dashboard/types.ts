@@ -17,7 +17,7 @@ export interface DashboardProductProps {
   products: ProductWithUserContext[];
 }
 export interface DashboardData {
-  items: ProductWithUserContext[];
+  products: ProductWithUserContext[];
   totalCount: number;
   statusCounts: {
     active: number;

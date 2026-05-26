@@ -12,7 +12,7 @@ export const FavoritesHeader = ({ username }: { username: string }) => {
           Welcome back, {username}! Manage your favorites here.
         </p>
       </div>
-      <Link href={routes.items.upload} className="btn btn-primary gap-2 px-6 py-3">
+      <Link href={routes.products.upload} className="btn btn-primary gap-2 px-6 py-3">
         <Plus className="h-5 w-5" />
         Upload Product
       </Link>

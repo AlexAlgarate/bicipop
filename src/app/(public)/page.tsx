@@ -3,11 +3,11 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { Suspense } from 'react';
 
-import { HeroSection } from '@/features/items/list/components/HeroSection';
+import { HeroSection } from '@/features/products/list/components/HeroSection';
 import { routes } from '@/config/routes';
-import { ProductsGrid } from '@/features/items/_shared/components/ProductsGrid';
-import { ProductsGridSkeleton } from '@/features/items/_shared/components/ProductsGridSkeleton';
-import { getProducts } from '@/features/items/list/api';
+import { ProductsGrid } from '@/features/products/_shared/components/ProductsGrid';
+import { ProductsGridSkeleton } from '@/features/products/_shared/components/ProductsGridSkeleton';
+import { getProducts } from '@/features/products/list/api';
 import { getSession } from '@/infrastructure/auth/session';
 import { PRODUCTS_PER_PAGE } from '@/utils/constants';
 
@@ -27,11 +27,7 @@ const ProductsGridWrapper = async ({
   const session = await getSession();
   const userId = session?.userId;
 
-  const {
-    items: products,
-    currentPage,
-    totalPages,
-  } = await getProducts(
+  const { products, currentPage, totalPages } = await getProducts(
     {
       page,
       pageSize: PRODUCTS_PER_PAGE,
