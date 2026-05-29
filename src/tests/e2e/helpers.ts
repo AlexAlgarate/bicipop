@@ -45,3 +45,6 @@ export const OTHER_TEST_USER = {
   email: 'other.testuser@example.com',
   password: 'Password2,.-',
 };
+
+export const TEST_PRODUCT_IMAGE =
+  'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=400';

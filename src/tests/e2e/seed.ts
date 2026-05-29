@@ -4,6 +4,8 @@ import bcrypt from 'bcryptjs';
 
 import { PrismaClient } from '@/generated/client/client';
 
+import { GLOBAL_TEST_USER, OTHER_TEST_USER, TEST_PRODUCT_IMAGE } from './helpers';
+
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 });
@@ -28,38 +30,32 @@ async function seed() {
     });
   }
 
-  const testUserEmail = 'global.testuser@example.com';
-  const testUserPassword = 'Password1,.-';
-  const hashedPassword = await bcrypt.hash(testUserPassword, 10);
+  const hashedPassword = await bcrypt.hash(GLOBAL_TEST_USER.password, 10);
 
   const testUser = await prisma.user.upsert({
-    where: { email: testUserEmail },
+    where: { email: GLOBAL_TEST_USER.email },
     update: { password: hashedPassword },
     create: {
-      username: 'globaltestuser',
-      email: testUserEmail,
+      username: GLOBAL_TEST_USER.username,
+      email: GLOBAL_TEST_USER.email,
       password: hashedPassword,
     },
   });
 
-  const otherUserEmail = 'other.testuser@example.com';
-  const otherUserPassword = 'Password2,.-';
-  const otherHashedPassword = await bcrypt.hash(otherUserPassword, 10);
+  const otherHashedPassword = await bcrypt.hash(OTHER_TEST_USER.password, 10);
 
   const otherUser = await prisma.user.upsert({
-    where: { email: otherUserEmail },
+    where: { email: OTHER_TEST_USER.email },
     update: { password: otherHashedPassword },
     create: {
-      username: 'othertestuser',
-      email: otherUserEmail,
+      username: OTHER_TEST_USER.username,
+      email: OTHER_TEST_USER.email,
       password: otherHashedPassword,
     },
   });
 
   const carretera = await prisma.category.findUnique({ where: { slug: 'carretera' } });
   const mtb = await prisma.category.findUnique({ where: { slug: 'montana-mtb' } });
-
-  const testProductImage = 'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=400';
 
   if (carretera) {
     await prisma.product.upsert({
@@ -70,7 +66,7 @@ async function seed() {
         title: 'Trek Domane SL5',
         description: 'Great road bike in excellent condition. Lightweight carbon frame.',
         price: 2500,
-        imageUrl: testProductImage,
+        imageUrl: TEST_PRODUCT_IMAGE,
         location: 'Madrid, Spain',
         categoryId: carretera.id,
         userId: testUser.id,
@@ -88,7 +84,7 @@ async function seed() {
         title: 'Specialized Rockhopper',
         description: 'Perfect MTB for trails. Recently serviced.',
         price: 1200,
-        imageUrl: testProductImage,
+        imageUrl: TEST_PRODUCT_IMAGE,
         location: 'Barcelona, Spain',
         categoryId: mtb.id,
         userId: otherUser.id,
@@ -105,7 +101,7 @@ async function seed() {
       title: 'Cannondale Synapse',
       description: 'Endurance road bike, comfortable for long rides.',
       price: 3200,
-      imageUrl: testProductImage,
+      imageUrl: TEST_PRODUCT_IMAGE,
       location: 'Valencia, Spain',
       categoryId: carretera!.id,
       userId: testUser.id,
