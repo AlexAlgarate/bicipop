@@ -13,13 +13,13 @@ export const PasswordRules = ({ password }: PasswordRulesProps) => {
   const rules = getPasswordRulesStatus(password);
 
   const items = [
-    { key: 'length', label: 'Mínimo 8 caracteres', rule: rules.length },
+    { key: 'length', label: 'Min 8 characters', rule: rules.length },
     {
       key: 'upperLowerNumber',
-      label: 'Mayúsculas, minúsculas y números',
+      label: 'Uppercase, lowercases and numbers',
       rule: rules.upperLowerNumber,
     },
-    { key: 'symbol', label: 'Al menos un símbolo', rule: rules.symbol },
+    { key: 'symbol', label: 'At least one symbol', rule: rules.symbol },
   ];
 
   return (

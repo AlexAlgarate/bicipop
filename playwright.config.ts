@@ -18,13 +18,32 @@ export default defineConfig({
   },
   projects: [
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      name: 'setup',
+      testMatch: /global\.setup\.ts/,
     },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: { ...devices['iPhone 12'] },
-    // },
+    {
+      name: 'chromium-authenticated',
+      use: {
+        ...devices['Desktop Chrome'],
+        storageState: './playwright/.auth/user.json',
+      },
+      dependencies: ['setup'],
+      testIgnore: [
+        '**/global.setup.ts',
+        '**/helpers.ts',
+        '**/register.spec.ts',
+        '**/login.spec.ts',
+        '**/auth.spec.ts',
+      ],
+    },
+    {
+      name: 'chromium-anonymous',
+      use: {
+        ...devices['Desktop Chrome'],
+      },
+      dependencies: ['setup'],
+      testMatch: ['**/register.spec.ts', '**/login.spec.ts', '**/auth.spec.ts'],
+    },
   ],
   webServer: {
     command: 'dotenv -e .env.test -- next dev',

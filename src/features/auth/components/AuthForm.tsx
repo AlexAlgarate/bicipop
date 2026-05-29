@@ -32,8 +32,10 @@ export const AuthForm = ({ action, fields, submitText, footer }: Props) => {
     passwordValue.length > 0 && !isPasswordValid(passwordValue);
 
   useRedirect(state);
+
   return (
     <form
+      noValidate
       action={formAction}
       className="rounded-lg border border-gray-200 dark:border-border bg-white dark:bg-card shadow-sm p-8 space-y-5"
     >
