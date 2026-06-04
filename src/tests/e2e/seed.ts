@@ -4,7 +4,12 @@ import bcrypt from 'bcryptjs';
 
 import { PrismaClient } from '@/generated/client/client';
 
-import { GLOBAL_TEST_USER, OTHER_TEST_USER, TEST_PRODUCT_IMAGE } from './helpers';
+import {
+  GLOBAL_TEST_USER,
+  OTHER_TEST_USER,
+  TEST_PRODUCT_IMAGE,
+  TEST_PRODUCTS,
+} from './helpers';
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -54,39 +59,33 @@ async function seed() {
     },
   });
 
-  const carretera = await prisma.category.findUnique({ where: { slug: 'carretera' } });
-  const mtb = await prisma.category.findUnique({ where: { slug: 'montana-mtb' } });
+  const roadCategory = await prisma.category.findUnique({ where: { slug: 'carretera' } });
+  const mtbCategory = await prisma.category.findUnique({
+    where: { slug: 'montana-mtb' },
+  });
 
-  if (carretera) {
+  if (roadCategory) {
     await prisma.product.upsert({
-      where: { id: 'e2e-test-product-1' },
+      where: { id: TEST_PRODUCTS.CANYON_AEROROAD.id },
       update: {},
       create: {
-        id: 'e2e-test-product-1',
-        title: 'Trek Domane SL5',
-        description: 'Great road bike in excellent condition. Lightweight carbon frame.',
-        price: 2500,
+        ...TEST_PRODUCTS.CANYON_AEROROAD,
         imageUrl: TEST_PRODUCT_IMAGE,
-        location: 'Madrid, Spain',
-        categoryId: carretera.id,
+        categoryId: roadCategory.id,
         userId: testUser.id,
         status: 'ACTIVE',
       },
     });
   }
 
-  if (mtb) {
+  if (mtbCategory) {
     await prisma.product.upsert({
-      where: { id: 'e2e-test-product-2' },
+      where: { id: TEST_PRODUCTS.MMR_RAKISH.id },
       update: {},
       create: {
-        id: 'e2e-test-product-2',
-        title: 'Specialized Rockhopper',
-        description: 'Perfect MTB for trails. Recently serviced.',
-        price: 1200,
+        ...TEST_PRODUCTS.MMR_RAKISH,
         imageUrl: TEST_PRODUCT_IMAGE,
-        location: 'Barcelona, Spain',
-        categoryId: mtb.id,
+        categoryId: mtbCategory.id,
         userId: otherUser.id,
         status: 'ACTIVE',
       },
@@ -94,16 +93,12 @@ async function seed() {
   }
 
   await prisma.product.upsert({
-    where: { id: 'e2e-test-product-3' },
+    where: { id: TEST_PRODUCTS.CANNONDALE_CAAD.id },
     update: {},
     create: {
-      id: 'e2e-test-product-3',
-      title: 'Cannondale Synapse',
-      description: 'Endurance road bike, comfortable for long rides.',
-      price: 3200,
+      ...TEST_PRODUCTS.CANNONDALE_CAAD,
       imageUrl: TEST_PRODUCT_IMAGE,
-      location: 'Valencia, Spain',
-      categoryId: carretera!.id,
+      categoryId: roadCategory!.id,
       userId: testUser.id,
       status: 'ACTIVE',
     },

@@ -48,3 +48,27 @@ export const OTHER_TEST_USER = {
 
 export const TEST_PRODUCT_IMAGE =
   'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=400';
+
+export const TEST_PRODUCTS = {
+  CANYON_AEROROAD: {
+    id: 'e2e-test-product-1',
+    title: 'Canyon AeroRoad',
+    description: 'Great road bike in excellen condition',
+    price: 4500,
+    location: 'Madrid, Spain',
+  },
+  MMR_RAKISH: {
+    id: 'e2e-test-product-2',
+    title: 'MMR Rakish',
+    description: 'Great mtb bike in excellen condition',
+    price: 1500,
+    location: 'Huesca, Spain',
+  },
+  CANNONDALE_CAAD: {
+    id: 'e2e-test-product-3',
+    title: 'Cannondale Caad 14',
+    description: 'Great road aluminium bike in excellen condition',
+    price: 2000,
+    location: 'Barcelona, Spain',
+  } as const,
+};

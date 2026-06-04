@@ -121,7 +121,7 @@ test.describe('User register', () => {
 
     await page.getByLabel('Enter your password').fill('ab');
 
-    await expect(page.getByText('Uppercase, lowercases and numbers')).toBeVisible();
+    await expect(      page.getByText('Uppercase, lowercase and numbers')).toBeVisible();
   });
 
   test('Should have link to login page', async ({ page }) => {
