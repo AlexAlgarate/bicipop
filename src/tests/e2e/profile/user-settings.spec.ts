@@ -4,8 +4,8 @@ import { routes } from '@/config/routes';
 
 import { GLOBAL_TEST_USER } from '../helpers';
 
-test.describe('Profile and Settings', () => {
-  test('Should render dashboard page', async ({ page }) => {
+test.describe.serial('Profile and Settings', () => {
+  test('Should render settings page', async ({ page }) => {
     await page.goto(routes.profile.settings);
 
     await expect(page.getByRole('heading', { name: 'Settings' })).toBeVisible();
@@ -45,6 +45,21 @@ test.describe('Profile and Settings', () => {
     await expect(page.getByRole('button', { name: 'Edit' })).toBeVisible();
   });
 
+  test('Should show error when editing profile with wrong password', async ({
+    page,
+  }) => {
+    await page.goto(routes.profile.settings);
+
+    await page.getByRole('button', { name: 'Edit' }).click();
+    await page.getByLabel('Username').fill('NewName');
+    await page.getByLabel('Email').fill('new_email@example.com');
+    await page.getByLabel('Current password').fill('WrongPassword123!');
+
+    await page.getByRole('button', { name: 'Save changes' }).click();
+
+    await expect(page.getByText('Incorrect password')).toBeVisible();
+  });
+
   test('Should show change password form and cancel', async ({ page }) => {
     await page.goto(routes.profile.settings);
 
@@ -58,6 +73,21 @@ test.describe('Profile and Settings', () => {
     await page.getByRole('button', { name: 'Cancel' }).click();
 
     await expect(page.getByRole('button', { name: 'Change' })).toBeVisible();
+  });
+
+  test('Should show error when changing password with mismatched confirmation', async ({
+    page,
+  }) => {
+    await page.goto(routes.profile.settings);
+
+    await page.getByRole('button', { name: 'Change' }).click();
+    await page.getByLabel('Current password').fill(GLOBAL_TEST_USER.password);
+    await page.getByLabel('New password').fill('NewPassword1,');
+    await page.getByLabel('Confirm password').fill('DifferentPassword1,');
+
+    await page.getByRole('button', { name: 'Update password' }).click();
+
+    await expect(page.getByText('Passwords do not match')).toBeVisible();
   });
 
   test('Should show delete account confirmation and cancel', async ({ page }) => {
@@ -98,9 +128,11 @@ test.describe('Profile and Settings', () => {
     await page.getByLabel('New password').fill('NewPassword1,');
     await page.getByLabel('Confirm password').fill('NewPassword1,');
     await page.getByRole('button', { name: 'Update password' }).click();
+
+    await expect(page.getByRole('button', { name: 'Change' })).toBeVisible();
   });
 
-  test('Should delete account and navigates to home page', async ({ page }) => {
+  test('Should delete account and navigate to home page', async ({ page }) => {
     await page.goto(routes.profile.settings);
 
     await page.getByRole('button', { name: 'Delete account' }).click();
