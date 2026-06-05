@@ -27,7 +27,7 @@ export default defineConfig({
         ...devices['Desktop Chrome'],
         storageState: './playwright/.auth/user.json',
         // Uncomment for headed mode
-        // launchOptions: { slowMo: 1000 },
+        // launchOptions: { slowMo: 5000 },
       },
       dependencies: ['setup'],
       testIgnore: [
