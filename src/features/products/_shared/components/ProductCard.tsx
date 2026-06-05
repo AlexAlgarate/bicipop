@@ -39,7 +39,7 @@ const FavoriteButton = ({
   <Button
     onClick={onClick}
     disabled={isDisabled}
-    aria-label={isFavorite ? 'Quitar de favoritos' : 'Añadir a favoritos'}
+    aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
     className={`flex items-center gap-1.5 bg-gray-100 px-2.5 py-1.5 text-gray-600 rounded-full
       hover:text-yellow-500 hover:bg-yellow-50 transition-all duration-200 w-fit
       ${isFavorite ? 'text-yellow-500 bg-yellow-50' : ''}`}

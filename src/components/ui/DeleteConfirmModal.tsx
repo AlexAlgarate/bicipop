@@ -42,6 +42,7 @@ export const DeleteConfirmModal = ({
             onClick={onConfirm}
             disabled={isPending}
             className="flex-1 bg-red-600 hover:bg-red-700 text-white font-medium py-2.5 rounded-lg"
+            id="delete-confirm-modal"
           >
             {isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Delete'}
           </Button>
