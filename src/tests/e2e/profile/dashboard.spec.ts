@@ -93,7 +93,12 @@ test.describe.serial('Dashboard user products', () => {
 
   test('Should click on the rubbish button and delete the product', async ({ page }) => {
     await page.goto(routes.profile.dashboard);
-    await page.getByRole('button', { name: 'Delete' }).first().click();
+    await page
+      .getByRole('link', { name: 'Edit' })
+      .and(page.locator(`[href="${routes.products.edit(TEST_PRODUCTS.CANNONDALE_CAAD.id)}"]`))
+      .locator('xpath=..')
+      .getByRole('button', { name: 'Delete' })
+      .click();
     await page.locator('#delete-confirm-modal').click();
 
     await expect(
