@@ -57,6 +57,7 @@ const ChatPage = async ({ params }: ChatPageProps) => {
             className="object-cover"
             sizes="80px"
             unoptimized
+            loading="eager"
           />
         </div>
 
