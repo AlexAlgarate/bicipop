@@ -18,7 +18,6 @@ export const routes = {
     favorites: '/profile/favorites',
   },
   messages: {
-    list: '/profile/messages',
     chat: (id: string) => `/messages/${id}`,
   },
 

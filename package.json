@@ -17,8 +17,8 @@
     "prisma:seed:local": "dotenv -e .env.local -- tsx ./prisma/seed.ts",
     "test:unit": "vitest run",
     "test:unit:watch": "vitest",
-    "test:e2e": "pnpm prisma:push:test && playwright test",
-    "test:e2e:headed": "pnpm prisma:push:test && playwright test --headed"
+    "test:e2e": "pnpm prisma:push:test && playwright test --reporter=list",
+    "test:e2e:headed": "pnpm prisma:push:test && playwright test --headed --reporter=list"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.7.0",
