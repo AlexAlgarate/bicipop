@@ -2,10 +2,22 @@ import { expect, test } from '@playwright/test';
 
 import { routes } from '@/config/routes';
 
-import { TEST_PRODUCTS } from '../helpers';
+import { GLOBAL_TEST_USER, TEST_PRODUCTS } from '../helpers';
 
 test.describe.serial('Messages page', () => {
   let conversationId: string;
+
+  test('Should navigate to messages from navbar', async ({ page }) => {
+    await page.goto(routes.home);
+
+    const avatarButton = page
+      .locator('header button')
+      .filter({ hasText: GLOBAL_TEST_USER.username });
+    await avatarButton.click();
+    await page.getByRole('link', { name: 'messages' }).click();
+
+    await expect(page).toHaveURL(routes.profile.messages);
+  });
 
   test('Should render empty messages state', async ({ page }) => {
     await page.goto(routes.profile.messages);
