@@ -89,4 +89,48 @@ test.describe('Search and filters', () => {
 
     await expect(page).toHaveURL(routes.search);
   });
+
+  test('Should filter by location', async ({ page }) => {
+    await page.goto(routes.search);
+
+    await page.locator('#location').fill('Madrid');
+    await page.getByRole('button', { name: 'Apply' }).click();
+
+    await expect(page.getByText(TEST_PRODUCTS.CANYON_AEROROAD.title)).toBeVisible();
+    await expect(page.getByText(TEST_PRODUCTS.MMR_RAKISH.title)).not.toBeVisible();
+  });
+
+  test('Should show heading reflecting search query', async ({ page }) => {
+    await page.goto(routes.search);
+
+    await page.getByPlaceholder('Search products...').fill('Canyon');
+    await page.getByRole('button', { name: 'Apply' }).click();
+
+    await expect(
+      page.getByRole('heading', { name: /Results for "Canyon"/ })
+    ).toBeVisible();
+  });
+
+  test('Should filter by category and price range combined', async ({ page }) => {
+    await page.goto(routes.search);
+
+    await page.locator('#category').selectOption('carretera');
+    await page.getByPlaceholder('Min').fill('2000');
+    await page.getByPlaceholder('Max').fill('5000');
+    await page.getByRole('button', { name: 'Apply' }).click();
+
+    await expect(page.getByText(TEST_PRODUCTS.CANYON_AEROROAD.title)).toBeVisible();
+    await expect(page.getByText(TEST_PRODUCTS.CANNONDALE_CAAD.title)).toBeVisible();
+    await expect(page.getByText(TEST_PRODUCTS.MMR_RAKISH.title)).not.toBeVisible();
+  });
+
+  test('Should render back to home link', async ({ page }) => {
+    await page.goto(routes.search);
+
+    await expect(page.getByRole('link', { name: /Back to home/ })).toBeVisible();
+    await expect(page.getByRole('link', { name: /Back to home/ })).toHaveAttribute(
+      'href',
+      '/'
+    );
+  });
 });
