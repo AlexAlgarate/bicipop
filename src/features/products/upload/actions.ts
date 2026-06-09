@@ -15,7 +15,7 @@ import { uploadImgInSupabaseBucket } from '@/infrastructure/db/supabase/upload-i
 import { type ProductFormState } from '@/features/products/_shared/types';
 
 import { createProduct } from './api';
-import { createProductSchema, isValidImage } from './validation';
+import { createProductSchema, imageUrlSchema, isValidImage } from './validation';
 
 const errorState = (
   message: string,
@@ -35,7 +35,15 @@ const resolveImageUrl = async (
 
   if (imageMode === 'url') {
     const imageUrl = String(formData.get('imageUrl'));
-    return imageUrl || errorState('Image URL is required');
+
+    if (!imageUrl) return errorState('Image URL is required');
+
+    const parsedUrl = imageUrlSchema.safeParse(imageUrl);
+    if (!parsedUrl.success) {
+      return errorState('Image URL must be a valid HTTPS URL');
+    }
+
+    return parsedUrl.data;
   }
 
   if (imageMode === 'file') {
