@@ -8,6 +8,7 @@ import { getSession } from '@/infrastructure/auth/session';
 import { routes } from '@/config/routes';
 import { getFieldErrorsFromTree } from '@/utils/validation-errors';
 import { isNextControlFlowError } from '@/utils/error-handler';
+import { rateLimit } from '@/infrastructure/security/rate-limit';
 import { changePasswordSchema } from '@/features/profile/settings/change-password/validation';
 import { changeUserPassword } from '@/features/profile/settings/change-password/api';
 
@@ -17,6 +18,15 @@ export const changePasswordAction = async (
 ): Promise<ProfileFormState | null> => {
   const session = await getSession();
   if (!session?.userId) redirect(routes.auth.login);
+
+  if (!(await rateLimit('change-password', 5))) {
+    return {
+      success: false,
+      message: 'Too many attempts. Please try again later.',
+      requestId: Date.now(),
+      errors: {},
+    };
+  }
 
   const rawValues = {
     currentPassword: String(formData.get('currentPassword')),

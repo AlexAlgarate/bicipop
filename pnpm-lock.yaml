@@ -99,6 +99,9 @@ importers:
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
+      lru-cache:
+        specifier: ^11.5.1
+        version: 11.5.1
       prettier:
         specifier: ^3.8.3
         version: 3.8.3
@@ -2461,6 +2464,10 @@ packages:
 
   lru-cache@11.5.0:
     resolution: {integrity: sha512-5YgH9UJd7wVb9hIouI2adWpgqrrICkt070Dnj8EUY1+B4B2P9eRLPAkAAo6NICA7CEhOIeBHl46u9zSNpNu7zA==}
+    engines: {node: 20 || >=22}
+
+  lru-cache@11.5.1:
+    resolution: {integrity: sha512-RPimw/7aMdv2oqRrxKwvZXcPfwBrn/JZ2xYcY9Hus/6LaS3VOAKVWKWgNLCFSiOm1ESXinjsDlidVU7JlnCN2A==}
     engines: {node: 20 || >=22}
 
   lru-cache@5.1.1:
@@ -5648,6 +5655,8 @@ snapshots:
       js-tokens: 4.0.0
 
   lru-cache@11.5.0: {}
+
+  lru-cache@11.5.1: {}
 
   lru-cache@5.1.1:
     dependencies:

@@ -12,6 +12,7 @@ import {
   hashPassword,
 } from '@/infrastructure/security/bcrypt-password-hasher';
 import { routes } from '@/config/routes';
+import { rateLimit } from '@/infrastructure/security/rate-limit';
 
 import { getUserForAuth, registerUser, checkIfUserExists } from './api';
 
@@ -19,6 +20,15 @@ export const loginAction = async (
   _prevState: AuthFormState,
   formData: FormData
 ): Promise<AuthFormState> => {
+  if (!(await rateLimit('login'))) {
+    return {
+      success: false,
+      message: 'Too many login attempts. Please try again later.',
+      errors: {},
+      values: {},
+    };
+  }
+
   const emailInput = String(formData.get('email'));
   const passwordInput = String(formData.get('password'));
 
@@ -93,6 +103,15 @@ export const registerAction = async (
         email: emailInput,
         username: usernameInput,
       },
+    };
+  }
+
+  if (!(await rateLimit('register', 5))) {
+    return {
+      success: false,
+      message: 'Too many registration attempts. Please try again later.',
+      errors: {},
+      values: {},
     };
   }
 
