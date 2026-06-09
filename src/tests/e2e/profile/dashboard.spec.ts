@@ -48,7 +48,9 @@ test.describe.serial('Dashboard user products', () => {
   test('Should navigate to edit page from product actions', async ({ page }) => {
     await page.goto(routes.profile.dashboard);
 
-    await page.locator(`[href="${routes.products.edit(TEST_PRODUCTS.CANNONDALE_CAAD.id)}"]`).click();
+    await page
+      .locator(`[href="${routes.products.edit(TEST_PRODUCTS.CANNONDALE_CAAD.id)}"]`)
+      .click();
 
     await expect(page).toHaveURL(routes.products.edit(TEST_PRODUCTS.CANNONDALE_CAAD.id));
     await expect(page.getByRole('heading', { name: 'Edit Product' })).toBeVisible();
@@ -95,7 +97,9 @@ test.describe.serial('Dashboard user products', () => {
     await page.goto(routes.profile.dashboard);
     await page
       .getByRole('link', { name: 'Edit' })
-      .and(page.locator(`[href="${routes.products.edit(TEST_PRODUCTS.CANNONDALE_CAAD.id)}"]`))
+      .and(
+        page.locator(`[href="${routes.products.edit(TEST_PRODUCTS.CANNONDALE_CAAD.id)}"]`)
+      )
       .locator('xpath=..')
       .getByRole('button', { name: 'Delete' })
       .click();

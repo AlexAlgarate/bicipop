@@ -58,14 +58,14 @@ export const updateProductAction = async (
 
   try {
     await updateProduct({
-      title: rawValues.title,
-      description: rawValues.description,
-      price: rawValues.price,
-      location: rawValues.location,
-      imageUrl: rawValues.imageUrl,
-      categoryId: rawValues.categoryId,
-      status: rawValues.status,
-      productId: rawValues.productId,
+      title: parsed.data.title,
+      description: parsed.data.description,
+      price: parsed.data.price,
+      location: parsed.data.location,
+      imageUrl: parsed.data.imageUrl ?? '',
+      categoryId: parsed.data.categoryId,
+      status: parsed.data.status,
+      productId: parsed.data.productId,
     });
     revalidatePath(routes.home, 'layout');
     revalidatePath(routes.profile.dashboard, 'page');

@@ -1,5 +1,10 @@
 import z from 'zod';
 
+export const imageUrlSchema = z.url({
+  protocol: /^https$/,
+  message: 'URL must be https',
+});
+
 export const createProductSchema = z.object({
   title: z
     .string()

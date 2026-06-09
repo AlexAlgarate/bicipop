@@ -120,7 +120,14 @@ const ImagePreview = ({ src, onError }: { src: string; onError?: () => void }) =
 
   return (
     <div className="mt-3 relative aspect-video w-full max-w-xs overflow-hidden rounded-lg border border-border">
-      <Image src={src} alt="Preview" fill sizes="320px" className="object-cover" onError={onError} />
+      <Image
+        src={src}
+        alt="Preview"
+        fill
+        sizes="320px"
+        className="object-cover"
+        onError={onError}
+      />
     </div>
   );
 };
