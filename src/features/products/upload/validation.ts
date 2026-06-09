@@ -1,7 +1,7 @@
 import z from 'zod';
 
 export const imageUrlSchema = z.url({
-  protocol: /^https?$/,
+  protocol: /^https$/,
   message: 'URL must be https',
 });
 

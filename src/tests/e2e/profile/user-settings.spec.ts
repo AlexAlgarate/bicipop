@@ -45,9 +45,7 @@ test.describe.serial('Profile and Settings', () => {
     await expect(page.getByRole('button', { name: 'Edit' })).toBeVisible();
   });
 
-  test('Should show error when editing profile with wrong password', async ({
-    page,
-  }) => {
+  test('Should show error when editing profile with wrong password', async ({ page }) => {
     await page.goto(routes.profile.settings);
 
     await page.getByRole('button', { name: 'Edit' }).click();

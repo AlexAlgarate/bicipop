@@ -19,8 +19,7 @@ export const updateProductSchema = z.object({
     .min(3, 'Location is too short, try again')
     .max(30, 'Location is too long, max 30 characters'),
   imageUrl: z
-    .url({ protocol: /^https?$/, message: 'URL must be https' })
-
+    .url({ protocol: /^https$/, message: 'URL must be https' })
     .optional()
     .or(z.literal('')),
   status: z.enum([ProductStatus.ACTIVE, ProductStatus.RESERVED, ProductStatus.SOLD]),

@@ -5,21 +5,17 @@ const store = new Map<string, { count: number; resetAt: number }>();
 const DEFAULT_WINDOW_MS = 15 * 60 * 1000;
 const DEFAULT_MAX_REQUESTS = 10;
 
-export const rateLimit = async (
-  action: string,
-  maxRequests: number = DEFAULT_MAX_REQUESTS,
-  windowMs: number = DEFAULT_WINDOW_MS
-): Promise<boolean> => {
-  if (process.env.NODE_ENV === 'test') return true;
-
-  const ip = await getClientIp();
-  const key = `${ip}:${action}`;
+export const checkRateLimit = (
+  entries: Map<string, { count: number; resetAt: number }>,
+  key: string,
+  maxRequests: number,
+  windowMs: number
+): boolean => {
   const now = Date.now();
-
-  const entry = store.get(key);
+  const entry = entries.get(key);
 
   if (!entry || now > entry.resetAt) {
-    store.set(key, { count: 1, resetAt: now + windowMs });
+    entries.set(key, { count: 1, resetAt: now + windowMs });
     return true;
   }
 
@@ -29,6 +25,19 @@ export const rateLimit = async (
 
   entry.count++;
   return true;
+};
+
+export const rateLimit = async (
+  action: string,
+  maxRequests: number = DEFAULT_MAX_REQUESTS,
+  windowMs: number = DEFAULT_WINDOW_MS
+): Promise<boolean> => {
+  if (process.env.NODE_ENV === 'test') return true;
+
+  const ip = await getClientIp();
+  const key = `${ip}:${action}`;
+
+  return checkRateLimit(store, key, maxRequests, windowMs);
 };
 
 export const resetRateLimitStore = (): void => {
