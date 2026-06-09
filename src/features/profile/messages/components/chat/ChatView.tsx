@@ -22,9 +22,6 @@ export const ChatView = ({ conversation, currentUserId }: ChatViewProps) => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  console.log(
-    `[ChatView] [CreatedAt] ${messages.forEach(msg => console.log(msg.createdAt))}`
-  );
   return (
     <div className="flex flex-col h-full">
       <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3">

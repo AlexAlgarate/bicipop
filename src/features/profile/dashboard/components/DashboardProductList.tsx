@@ -78,7 +78,7 @@ const ProductRow = ({ product }: { product: ProductWithUserContext }) => (
         <div className="hidden sm:flex items-center gap-1.5 text-sm text-muted">
           <span>{product.categoryName}</span>
           <span className="text-border">·</span>
-          <span>{formatDate(product.createdAt)}</span>{' '}
+          <span suppressHydrationWarning>{formatDate(product.createdAt)}</span>{' '}
         </div>
       </div>
       <div className="flex flex-col items-end justify-between shrink-0">

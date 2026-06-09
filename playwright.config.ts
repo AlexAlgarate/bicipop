@@ -7,7 +7,7 @@ dotenv.config({ path: path.resolve(process.cwd(), '.env.test') });
 
 export default defineConfig({
   testDir: './src/tests/e2e',
-  fullyParallel: true,
+  fullyParallel: false,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
@@ -18,13 +18,34 @@ export default defineConfig({
   },
   projects: [
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      name: 'setup',
+      testMatch: /global\.setup\.ts/,
     },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: { ...devices['iPhone 12'] },
-    // },
+    {
+      name: 'chromium-anonymous',
+      use: {
+        ...devices['Desktop Chrome'],
+      },
+      dependencies: ['setup'],
+      testMatch: ['**/register.spec.ts', '**/login.spec.ts', '**/auth.spec.ts'],
+    },
+    {
+      name: 'chromium-authenticated',
+      use: {
+        ...devices['Desktop Chrome'],
+        storageState: './playwright/.auth/user.json',
+        // Uncomment for headed mode
+        // launchOptions: { slowMo: 3000 },
+      },
+      dependencies: ['setup'],
+      testIgnore: [
+        '**/global.setup.ts',
+        '**/helpers.ts',
+        '**/register.spec.ts',
+        '**/login.spec.ts',
+        '**/auth.spec.ts',
+      ],
+    },
   ],
   webServer: {
     command: 'dotenv -e .env.test -- next dev',

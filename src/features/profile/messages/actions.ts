@@ -62,7 +62,7 @@ export const sendMessageAction = async (
   });
 
   revalidatePath(routes.messages.chat(conversationId));
-  revalidatePath(routes.messages.list);
+  revalidatePath(routes.profile.messages);
 
   return { success: true };
 };
@@ -72,7 +72,7 @@ export const markAsReadAction = async (conversationId: string): Promise<void> =>
   if (!session?.userId) return;
 
   await markMessagesAsRead(conversationId, session.userId);
-  revalidatePath(routes.messages.list);
+  revalidatePath(routes.profile.messages);
 };
 
 export const deleteConversationAction = async (conversationId: string): Promise<void> => {
@@ -81,5 +81,5 @@ export const deleteConversationAction = async (conversationId: string): Promise<
 
   await deleteConversation(conversationId, session.userId);
 
-  revalidatePath(routes.messages.list);
+  revalidatePath(routes.profile.messages);
 };

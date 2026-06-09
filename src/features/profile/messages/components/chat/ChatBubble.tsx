@@ -22,7 +22,7 @@ export const ChatBubble = ({ message, isOwn }: MessageBubbleProps) => {
       >
         <p className="whitespace-pre-wrap wrap-break-word">{message.content}</p>
       </div>
-      <span className="text-[10px] text-muted px-1">
+      <span className="text-[10px] text-muted px-1" suppressHydrationWarning>
         {isOptimistic ? 'Sending...' : formatDate(message.createdAt)}
       </span>
     </div>

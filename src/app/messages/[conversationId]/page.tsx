@@ -41,8 +41,9 @@ const ChatPage = async ({ params }: ChatPageProps) => {
       <div className="flex items-stretch gap-4 border-b border-border bg-card px-4 py-3 shrink-0">
         <div>
           <Link
-            href={routes.messages.list}
+            href={routes.profile.messages}
             className="rounded-lg p-1.5 justify-center text-muted hover:bg-secondary hover:text-foreground transition-colors"
+            aria-label="Back to messages"
           >
             <ArrowLeft className="h-4 w-4" />
           </Link>
@@ -56,6 +57,7 @@ const ChatPage = async ({ params }: ChatPageProps) => {
             className="object-cover"
             sizes="80px"
             unoptimized
+            loading="eager"
           />
         </div>
 

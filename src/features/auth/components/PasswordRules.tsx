@@ -2,6 +2,7 @@
 
 import { Check, X } from 'lucide-react';
 
+import { DEV_PASSWORD_LENGTH, PROD_PASSWORD_LENGTH } from '@/utils/constants';
 import { getPasswordRulesStatus } from '@/features/auth/validation';
 
 interface PasswordRulesProps {
@@ -11,15 +12,17 @@ interface PasswordRulesProps {
 export const PasswordRules = ({ password }: PasswordRulesProps) => {
   const hasInput = password.length > 0;
   const rules = getPasswordRulesStatus(password);
+  const isDev = process.env.NODE_ENV !== 'production';
+  const minLength = isDev ? DEV_PASSWORD_LENGTH : PROD_PASSWORD_LENGTH;
 
   const items = [
-    { key: 'length', label: 'Mínimo 8 caracteres', rule: rules.length },
+    { key: 'length', label: `Minimum ${minLength} characters`, rule: rules.length },
     {
       key: 'upperLowerNumber',
-      label: 'Mayúsculas, minúsculas y números',
+      label: 'Uppercase, lowercase and numbers',
       rule: rules.upperLowerNumber,
     },
-    { key: 'symbol', label: 'Al menos un símbolo', rule: rules.symbol },
+    { key: 'symbol', label: 'At least one symbol', rule: rules.symbol },
   ];
 
   return (

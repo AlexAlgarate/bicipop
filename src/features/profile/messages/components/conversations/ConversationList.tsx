@@ -87,6 +87,7 @@ const ConversationRow = ({ conversation, currentUserId }: ConversationRowProps) 
             className="object-cover"
             sizes="56px"
             unoptimized
+            loading="eager"
           />
         </div>
 
@@ -116,7 +117,7 @@ const ConversationRow = ({ conversation, currentUserId }: ConversationRowProps) 
           <div className="flex flex-col items-end justify-between shrink-0">
             <div className="flex items-center gap-2">
               {conversation.lastMessage && (
-                <span className="text-xs text-muted">
+                <span className="text-xs text-muted" suppressHydrationWarning>
                   {formatDate(conversation.lastMessage.createdAt)}
                 </span>
               )}
