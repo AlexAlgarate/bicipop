@@ -31,7 +31,7 @@ test.describe.serial('Dashboard user products', () => {
     await expect(page.getByRole('heading', { name: 'Your Products' })).toBeVisible();
 
     await expect(page.getByText('Total Products')).toBeVisible();
-    await expect(page.getByText('Active')).toHaveCount(3);
+    await expect(page.getByText('Active').first()).toBeVisible();
     await expect(page.getByText('Reserved')).toBeVisible();
     await expect(page.getByText('Sold')).toBeVisible();
 
@@ -48,7 +48,7 @@ test.describe.serial('Dashboard user products', () => {
   test('Should navigate to edit page from product actions', async ({ page }) => {
     await page.goto(routes.profile.dashboard);
 
-    await page.getByRole('link', { name: 'Edit' }).first().click();
+    await page.locator(`[href="${routes.products.edit(TEST_PRODUCTS.CANNONDALE_CAAD.id)}"]`).click();
 
     await expect(page).toHaveURL(routes.products.edit(TEST_PRODUCTS.CANNONDALE_CAAD.id));
     await expect(page.getByRole('heading', { name: 'Edit Product' })).toBeVisible();

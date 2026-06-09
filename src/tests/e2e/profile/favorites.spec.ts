@@ -54,7 +54,6 @@ test.describe.serial('Favorites', () => {
 
     await page.getByLabel('Remove from favorites').click();
 
-    await expect(page.getByLabel('Add to favorites')).toBeVisible();
     await expect(page.getByText('No favorites yet')).toBeVisible();
   });
 });

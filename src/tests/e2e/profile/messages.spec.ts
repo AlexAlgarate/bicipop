@@ -55,7 +55,8 @@ test.describe.serial('Messages page', () => {
       .fill('Hello, this is an E2E test message');
     await page.getByLabel('Send message').click();
 
-    await page.getByRole('link', { name: 'Back to messages' }).click({ delay: 200 });
+    await page.waitForTimeout(500);
+    await page.getByRole('link', { name: 'Back to messages' }).click();
     await expect(page).toHaveURL(routes.profile.messages);
     await expect(page.getByText('1').first()).toBeVisible();
   });
