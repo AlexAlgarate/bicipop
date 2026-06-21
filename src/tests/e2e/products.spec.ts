@@ -144,7 +144,7 @@ test.describe('Product CRUD', () => {
 
     await expect(page).toHaveURL(routes.home);
 
-    expect(page.getByText(`${product.price} €`));
+    await expect(page.getByText(`${product.price} €`)).toBeVisible();
     await expect(page.getByText(product.title)).toBeVisible();
   });
 

@@ -24,8 +24,8 @@ export const createTestUserCredentialsWithInvalidPassword = () => ({
 });
 
 export const createTestProductData = () => ({
-  title: faker.commerce.productName(),
-  description: faker.lorem.paragraph(),
+  title: faker.commerce.productName().slice(0, 30),
+  description: faker.lorem.paragraph().slice(0, 200),
   price: faker.number.int({ min: 100, max: 5000 }),
   location: faker.location.city(),
 });
@@ -33,7 +33,11 @@ export const createTestProductData = () => ({
 export const TEST_IMAGE_FILE = {
   name: 'test-bike.jpg',
   mimeType: 'image/jpeg',
-  buffer: Buffer.from([0xff, 0xd8, 0xff, 0xd9]),
+  buffer: Buffer.from([
+    0xff, 0xd8, 0xff, 0xe0, 0x00, 0x10, 0x4a, 0x46,
+    0x49, 0x46, 0x00, 0x01, 0x01, 0x00, 0x00, 0x01,
+    0x00, 0x01, 0x00, 0x00, 0xff, 0xd9,
+  ]),
 };
 
 export const GLOBAL_TEST_USER = {
