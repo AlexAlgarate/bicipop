@@ -7,10 +7,15 @@ import { getProductById } from '@/features/products/_shared/api';
 import { updateProduct } from '@/features/products/edit/api';
 import { updateProductAction } from '@/features/products/edit/actions';
 import { routes } from '@/config/routes';
+import { uploadImgInSupabaseBucket } from '@/infrastructure/db/supabase/upload-image';
 
 import {
+  SUPABASE_PUBLIC_URL,
+  VALID_IMAGE_URL,
   VALID_USER_ID,
   VALID_PRODUCT_ID,
+  makeImageFile,
+  makeNonImageFile,
   makeSession,
   makeProductDTO,
   makeProductWithUserContext,
@@ -27,6 +32,10 @@ vi.mock('@/features/products/_shared/api', () => ({
 
 vi.mock('@/features/products/edit/api', () => ({
   updateProduct: vi.fn(),
+}));
+
+vi.mock('@/infrastructure/db/supabase/upload-image', () => ({
+  uploadImgInSupabaseBucket: vi.fn(),
 }));
 
 vi.mock('next/navigation', () => ({
@@ -194,11 +203,61 @@ describe('updateProductAction', () => {
           description: expect.any(String),
           price: expect.any(Number),
           location: expect.any(String),
-          imageUrl: expect.any(String),
+          imageUrl: VALID_IMAGE_URL,
           categoryId: expect.any(String),
           status: expect.any(String),
         })
       );
+    });
+
+    test('Should keep the existing image when no new file is provided', async () => {
+      setupAuthorizedEdit();
+
+      await updateProductAction(null, buildUpdateFormData());
+
+      expect(uploadImgInSupabaseBucket).not.toHaveBeenCalled();
+      expect(updateProduct).toHaveBeenCalledWith(
+        expect.objectContaining({ imageUrl: VALID_IMAGE_URL })
+      );
+    });
+
+    test('Should ignore submitted imageUrl values', async () => {
+      setupAuthorizedEdit();
+      const formData = buildUpdateFormData();
+      formData.set('imageUrl', 'https://example.com/replacement.jpg');
+
+      await updateProductAction(null, formData);
+
+      expect(uploadImgInSupabaseBucket).not.toHaveBeenCalled();
+      expect(updateProduct).toHaveBeenCalledWith(
+        expect.objectContaining({ imageUrl: VALID_IMAGE_URL })
+      );
+    });
+
+    test('Should upload a new image file and update the product with its URL', async () => {
+      setupAuthorizedEdit();
+      vi.mocked(uploadImgInSupabaseBucket).mockResolvedValue(SUPABASE_PUBLIC_URL);
+
+      await updateProductAction(null, buildUpdateFormData({ file: makeImageFile() }));
+
+      expect(uploadImgInSupabaseBucket).toHaveBeenCalledWith(expect.any(File));
+      expect(updateProduct).toHaveBeenCalledWith(
+        expect.objectContaining({ imageUrl: SUPABASE_PUBLIC_URL })
+      );
+    });
+
+    test('Should fail when the replacement file is not an image', async () => {
+      setupAuthorizedEdit();
+
+      const result = await updateProductAction(
+        null,
+        buildUpdateFormData({ file: makeNonImageFile() })
+      );
+
+      expect(result?.success).toBe(false);
+      expect(result?.message).toBe('File must be an image');
+      expect(uploadImgInSupabaseBucket).not.toHaveBeenCalled();
+      expect(updateProduct).not.toHaveBeenCalled();
     });
 
     test('Should revalidate home layout after a successful update', async () => {

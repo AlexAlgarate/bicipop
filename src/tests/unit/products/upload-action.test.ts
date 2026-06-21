@@ -10,10 +10,8 @@ import { routes } from '@/config/routes';
 
 import {
   SUPABASE_PUBLIC_URL,
-  VALID_IMAGE_URL,
   VALID_USER_ID,
   buildFileImageFormData,
-  buildInvalidImageModeFormData,
   buildUrlImageFormData,
   makeEmptyFile,
   makeNonImageFile,
@@ -85,7 +83,7 @@ describe('uploadProductAction', () => {
 
       const result = await uploadProductAction(
         null,
-        buildUrlImageFormData({ title: '' })
+        buildFileImageFormData({ title: '' })
       );
 
       expect(result?.success).toBe(false);
@@ -98,7 +96,7 @@ describe('uploadProductAction', () => {
 
       const result = await uploadProductAction(
         null,
-        buildUrlImageFormData({ description: '' })
+        buildFileImageFormData({ description: '' })
       );
 
       expect(result?.success).toBe(false);
@@ -110,7 +108,7 @@ describe('uploadProductAction', () => {
 
       const result = await uploadProductAction(
         null,
-        buildUrlImageFormData({ price: 'is-not-a-number' })
+        buildFileImageFormData({ price: 'is-not-a-number' })
       );
 
       expect(result?.success).toBe(false);
@@ -122,7 +120,7 @@ describe('uploadProductAction', () => {
 
       const result = await uploadProductAction(
         null,
-        buildUrlImageFormData({ categoryId: '' })
+        buildFileImageFormData({ categoryId: '' })
       );
 
       expect(result?.success).toBe(false);
@@ -134,7 +132,7 @@ describe('uploadProductAction', () => {
 
       const result = await uploadProductAction(
         null,
-        buildUrlImageFormData({ title: '' })
+        buildFileImageFormData({ title: '' })
       );
 
       expect(result?.values).toMatchObject({
@@ -148,42 +146,29 @@ describe('uploadProductAction', () => {
     test('Should not call uploadImgInSupabaseBucket when validation fails', async () => {
       setupAuthenticatedSession();
 
-      await uploadProductAction(null, buildUrlImageFormData({ title: '' }));
+      await uploadProductAction(null, buildFileImageFormData({ title: '' }));
 
       expect(uploadImgInSupabaseBucket).not.toHaveBeenCalled();
     });
   });
 
-  describe('Image mode: url', () => {
-    test('Should fail when imageUrl is empty', async () => {
+  describe('URL image submissions', () => {
+    test('Should fail when only imageUrl is provided', async () => {
       setupAuthenticatedSession();
 
-      const result = await uploadProductAction(
-        null,
-        buildUrlImageFormData({ imageUrl: '' })
-      );
+      const result = await uploadProductAction(null, buildUrlImageFormData());
 
       expect(result?.success).toBe(false);
-      expect(result?.message).toBe('Image URL is required');
+      expect(result?.message).toBe('Image file is required');
     });
 
-    test('Should not call createProduct when imageUrl is empty', async () => {
+    test('Should not upload or create a product when only imageUrl is provided', async () => {
       setupAuthenticatedSession();
-
-      await uploadProductAction(null, buildUrlImageFormData({ imageUrl: '' }));
-
-      expect(createProduct).not.toHaveBeenCalled();
-    });
-
-    test('Should call createProduct with the provided URL when imageUrl is valid', async () => {
-      setupAuthenticatedSession();
-      vi.mocked(createProduct).mockResolvedValue(makeProductDTO());
 
       await uploadProductAction(null, buildUrlImageFormData());
 
-      expect(createProduct).toHaveBeenCalledWith(
-        expect.objectContaining({ imageUrl: VALID_IMAGE_URL })
-      );
+      expect(uploadImgInSupabaseBucket).not.toHaveBeenCalled();
+      expect(createProduct).not.toHaveBeenCalled();
     });
   });
 
@@ -242,17 +227,6 @@ describe('uploadProductAction', () => {
 
       expect(result?.success).toBe(false);
       expect(result?.message).toBe('Failed to upload the product. Please try again');
-    });
-  });
-
-  describe('Image mode: invalid', () => {
-    test('Should fail when imageMode is not recognized', async () => {
-      setupAuthenticatedSession();
-
-      const result = await uploadProductAction(null, buildInvalidImageModeFormData());
-
-      expect(result?.success).toBe(false);
-      expect(result?.message).toBe('Invalid image mode');
     });
   });
 

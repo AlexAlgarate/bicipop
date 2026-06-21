@@ -44,7 +44,6 @@ export const buildUrlImageFormData = (
 ): FormData => {
   const formData = new FormData();
   applyProductFields(formData, overrides);
-  formData.set('imageMode', 'url');
   formData.set('imageUrl', overrides.imageUrl ?? VALID_IMAGE_URL);
 
   return formData;
@@ -55,17 +54,7 @@ export const buildFileImageFormData = (
 ): FormData => {
   const formData = new FormData();
   applyProductFields(formData, overrides);
-  formData.set('imageMode', 'file');
   formData.set('imageFile', overrides.file ?? makeImageFile());
-  return formData;
-};
-
-export const buildInvalidImageModeFormData = (
-  overrides: ProductFormOverrides = {}
-): FormData => {
-  const formData = new FormData();
-  applyProductFields(formData, overrides);
-  formData.set('imageMode', 'unknown');
   return formData;
 };
 
@@ -118,7 +107,7 @@ type UpdateFormOverrides = Partial<{
   location: string;
   price: string;
   categoryId: string;
-  imageUrl: string;
+  file: File;
   status: string;
 }>;
 
@@ -130,7 +119,7 @@ export const buildUpdateFormData = (overrides: UpdateFormOverrides = {}): FormDa
   formData.set('location', overrides.location ?? VALID_PRODUCT_VALUES.location);
   formData.set('price', overrides.price ?? VALID_PRODUCT_VALUES.price);
   formData.set('categoryId', overrides.categoryId ?? VALID_PRODUCT_VALUES.categoryId);
-  formData.set('imageUrl', overrides.imageUrl ?? VALID_IMAGE_URL);
+  if (overrides.file) formData.set('imageFile', overrides.file);
   if (overrides.status) formData.set('status', overrides.status);
 
   return formData;

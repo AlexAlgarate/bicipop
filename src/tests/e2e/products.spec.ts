@@ -6,6 +6,7 @@ import {
   createTestProductData,
   GLOBAL_TEST_USER,
   OTHER_TEST_USER,
+  TEST_IMAGE_FILE,
   TEST_PRODUCTS,
 } from './helpers';
 
@@ -108,6 +109,9 @@ test.describe('Product CRUD', () => {
       await expect(page.getByLabel('Price (EUR)')).toBeVisible();
       await expect(page.getByLabel('Location')).toBeVisible();
       await expect(page.getByLabel('category')).toBeVisible();
+      await expect(page.getByLabel('Image')).toBeVisible();
+      await expect(page.locator('[name="imageUrl"]')).toHaveCount(0);
+      await expect(page.getByRole('button', { name: 'URL' })).toHaveCount(0);
       await expect(page.getByRole('button', { name: 'Publish Product' })).toBeVisible();
     });
 
@@ -134,13 +138,13 @@ test.describe('Product CRUD', () => {
     await page.getByLabel('Price (EUR)').fill(String(product.price));
     await page.getByLabel('Location').fill(product.location);
     await page.locator('#categoryId').selectOption({ index: 1 });
-    await page.locator('[name="imageUrl"]').fill(product.imageUrl);
+    await page.locator('[name="imageFile"]').setInputFiles(TEST_IMAGE_FILE);
 
     await page.getByRole('button', { name: 'Publish Product' }).click();
 
     await expect(page).toHaveURL(routes.home);
 
-    expect(page.getByText(`${product.price} €`));
+    await expect(page.getByText(`${product.price} €`)).toBeVisible();
     await expect(page.getByText(product.title)).toBeVisible();
   });
 
@@ -156,7 +160,7 @@ test.describe('Product CRUD', () => {
     await page.getByLabel('Price (EUR)').fill(String(product.price));
     await page.getByLabel('Location').fill(product.location);
     await page.locator('#categoryId').selectOption({ index: 1 });
-    await page.locator('[name="imageUrl"]').fill(product.imageUrl);
+    await page.locator('[name="imageFile"]').setInputFiles(TEST_IMAGE_FILE);
 
     await page.getByRole('button', { name: 'Publish Product' }).click();
 

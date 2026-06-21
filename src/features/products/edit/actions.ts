@@ -10,6 +10,8 @@ import { ProductStatus } from '@/generated/client/enums';
 import { getFieldErrorsFromTree } from '@/utils/validation-errors';
 import { isNextControlFlowError } from '@/utils/error-handler';
 import { getProductById } from '@/features/products/_shared/api';
+import { uploadImgInSupabaseBucket } from '@/infrastructure/db/supabase/upload-image';
+import { isValidImage } from '@/features/products/upload/validation';
 
 import { updateProductSchema } from './validation';
 import { updateProduct } from './api';
@@ -36,7 +38,6 @@ export const updateProductAction = async (
     title: String(formData.get('title')),
     description: String(formData.get('description')),
     price: Number(formData.get('price')),
-    imageUrl: String(formData.get('imageUrl') || ''),
     location: String(formData.get('location')),
     categoryId: String(formData.get('categoryId')),
     status: (formData.get('status') as ProductStatus) || ProductStatus.ACTIVE,
@@ -57,12 +58,25 @@ export const updateProductAction = async (
   }
 
   try {
+    const file = formData.get('imageFile');
+    let imageUrl = existingProduct.imageUrl;
+
+    if (file instanceof File && file.size > 0) {
+      if (!isValidImage(file)) {
+        return errorState('File must be an image', {
+          errors: { imageFile: ['File must be an image'] },
+        });
+      }
+
+      imageUrl = await uploadImgInSupabaseBucket(file);
+    }
+
     await updateProduct({
       title: parsed.data.title,
       description: parsed.data.description,
       price: parsed.data.price,
       location: parsed.data.location,
-      imageUrl: parsed.data.imageUrl ?? '',
+      imageUrl,
       categoryId: parsed.data.categoryId,
       status: parsed.data.status,
       productId: parsed.data.productId,
