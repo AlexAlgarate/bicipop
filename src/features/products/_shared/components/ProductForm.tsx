@@ -128,7 +128,7 @@ export const ProductForm = ({ categories, mode, initialData }: ProductFormProps)
 
       <ImageField
         initialUrl={initialData?.imageUrl}
-        error={errors?.imageUrl}
+        error={errors?.imageFile}
         disabled={isPending}
       />
 

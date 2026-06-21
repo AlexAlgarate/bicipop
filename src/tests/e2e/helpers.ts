@@ -23,16 +23,18 @@ export const createTestUserCredentialsWithInvalidPassword = () => ({
   confirmPassword: '12',
 });
 
-export const TEST_IMAGE_URL =
-  'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=400';
-
 export const createTestProductData = () => ({
   title: faker.commerce.productName(),
   description: faker.lorem.paragraph(),
   price: faker.number.int({ min: 100, max: 5000 }),
   location: faker.location.city(),
-  imageUrl: TEST_IMAGE_URL,
 });
+
+export const TEST_IMAGE_FILE = {
+  name: 'test-bike.jpg',
+  mimeType: 'image/jpeg',
+  buffer: Buffer.from([0xff, 0xd8, 0xff, 0xd9]),
+};
 
 export const GLOBAL_TEST_USER = {
   username: 'globaltestuser',

@@ -15,7 +15,7 @@ import { uploadImgInSupabaseBucket } from '@/infrastructure/db/supabase/upload-i
 import { type ProductFormState } from '@/features/products/_shared/types';
 
 import { createProduct } from './api';
-import { createProductSchema, imageUrlSchema, isValidImage } from './validation';
+import { createProductSchema, isValidImage } from './validation';
 
 const errorState = (
   message: string,
@@ -31,31 +31,23 @@ const resolveImageUrl = async (
   formData: FormData,
   extras?: Partial<ProductFormState>
 ): Promise<string | ProductFormState> => {
-  const imageMode = formData.get('imageMode');
+  const file = formData.get('imageFile');
 
-  if (imageMode === 'url') {
-    const imageUrl = String(formData.get('imageUrl'));
-
-    if (!imageUrl) return errorState('Image URL is required');
-
-    const parsedUrl = imageUrlSchema.safeParse(imageUrl);
-    if (!parsedUrl.success) {
-      return errorState('Image URL must be a valid HTTPS URL');
-    }
-
-    return parsedUrl.data;
+  if (!(file instanceof File) || file.size === 0) {
+    return errorState('Image file is required', {
+      ...extras,
+      errors: { ...extras?.errors, imageFile: ['Image file is required'] },
+    });
   }
 
-  if (imageMode === 'file') {
-    const file = formData.get('imageFile') as File;
-
-    if (!file || file.size === 0) return errorState('Image file is required');
-    if (!isValidImage(file)) return errorState('File must be an image');
-
-    return await uploadImgInSupabaseBucket(file);
+  if (!isValidImage(file)) {
+    return errorState('File must be an image', {
+      ...extras,
+      errors: { ...extras?.errors, imageFile: ['File must be an image'] },
+    });
   }
 
-  return errorState('Invalid image mode', { ...extras });
+  return await uploadImgInSupabaseBucket(file);
 };
 
 export const uploadProductAction = async (
