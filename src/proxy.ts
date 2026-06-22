@@ -40,7 +40,7 @@ const proxy = async (request: NextRequest) => {
 };
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|.*\\..*|_next).*)'],
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|sentry-tunnel|.*\\..*|_next).*)'],
 };
 
 export default proxy;
