@@ -98,6 +98,7 @@ jobs:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           NEXT_PUBLIC_SUPABASE_URL: http://localhost
           NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY: dummy
+          MOCK_SUPABASE_STORAGE: 'true'
 
       - uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
