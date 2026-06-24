@@ -13,7 +13,7 @@ env:
 
 jobs:
   test:
-    name: Run tests
+    name: Run Unit tests
     runs-on: ubuntu-latest
 
     steps:
@@ -39,8 +39,13 @@ jobs:
         run: pnpm test:unit
 
   test-e2e:
-    name: E2E tests (Playwright)
+    name: Run E2E tests (Shard ${{ matrix.shard }}/3)
     runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3]
 
     services:
       postgres:
@@ -76,14 +81,24 @@ jobs:
         env:
           DATABASE_URL: 'postgresql://bicipop:bicipop_secret@localhost:5433/bicipop_test_db'
 
+      - name: Get installed Playwright version
+        id: playwright-version
+        run: echo "version=$(pnpm exec playwright --version | awk '{print $2}')" >> "$GITHUB_OUTPUT"
+
       - name: Cache Playwright browsers
         uses: actions/cache@v6
+        id: playwright-cache
         with:
           path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          key: playwright-${{ runner.os }}-${{ steps.playwright-version.outputs.version }}
 
       - name: Install Playwright Browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: pnpm exec playwright install chromium --with-deps
+
+      - name: Install Playwright system deps only
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: pnpm exec playwright install-deps chromium
 
       - name: Setup test DB schema
         run: pnpm exec prisma db push --force-reset
@@ -91,7 +106,7 @@ jobs:
           DATABASE_URL: 'postgresql://bicipop:bicipop_secret@localhost:5433/bicipop_test_db'
 
       - name: Run Playwright tests
-        run: pnpm exec playwright test
+        run: pnpm exec playwright test --shard=${{ matrix.shard }}/3
         env:
           DATABASE_URL: 'postgresql://bicipop:bicipop_secret@localhost:5433/bicipop_test_db'
           ENVIRONMENT: local
@@ -103,7 +118,7 @@ jobs:
       - uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
-          name: playwright-report
+          name: playwright-report-shard-${{ matrix.shard }}
           path: playwright-report/
           retention-days: 30
 
