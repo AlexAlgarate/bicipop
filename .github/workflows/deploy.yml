@@ -142,6 +142,8 @@ jobs:
 
       - name: Build project for production
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       - name: Deploy to Vercel
         id: deploy
