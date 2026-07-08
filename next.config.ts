@@ -3,6 +3,25 @@ import { withSentryConfig } from '@sentry/nextjs';
 
 const useMockUpload = process.env.MOCK_SUPABASE_STORAGE === 'true';
 
+const securityHeaders = [
+  {
+    key: 'X-Content-Type-Options',
+    value: 'nosniff',
+  },
+  {
+    key: 'X-Frame-Options',
+    value: 'DENY',
+  },
+  {
+    key: 'Referrer-Policy',
+    value: 'strict-origin-when-cross-origin',
+  },
+  {
+    key: 'Permissions-Policy',
+    value: 'camera=(), microphone=(), geolocation=()',
+  },
+];
+
 const nextConfig: NextConfig = {
   output: 'standalone',
   experimental: {
@@ -14,7 +33,13 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '*',
+        hostname: 'images.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname:
+          process.env.NEXT_PUBLIC_SUPABASE_URL?.replace('https://', '') ??
+          'gqwarqgiibymlrxlklsh.supabase.co',
       },
     ],
   },
@@ -26,6 +51,9 @@ const nextConfig: NextConfig = {
             './src/infrastructure/db/supabase/__mocks__/upload-image.ts',
         }
       : {},
+  },
+  async headers() {
+    return [{ source: '/path', headers: securityHeaders }];
   },
 };
 
