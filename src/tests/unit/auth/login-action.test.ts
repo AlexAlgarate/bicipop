@@ -133,12 +133,12 @@ describe('Login action', () => {
       });
     });
 
-    test('Should create session with the user id', async () => {
+    test('Should create session with the user id and tokenVersion', async () => {
       setupCredentials();
 
       await loginAction(initialRegisterState, buildLoginFormData());
 
-      expect(createSession).toHaveBeenCalledWith('123');
+      expect(createSession).toHaveBeenCalledWith('123', 0);
     });
 
     test('Should revalidate the home page after login', async () => {

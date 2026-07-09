@@ -36,15 +36,35 @@ export const checkIfUserExists = async (
 export const getUserForAuth = async (email: string) => {
   return prisma.user.findUnique({
     where: { email },
-    select: { id: true, email: true, password: true },
+    select: { id: true, email: true, password: true, tokenVersion: true },
   });
 };
+
+export const incrementUserTokenVersion = async (userId: string): Promise<void> => {
+  await prisma.user.update({
+    where: { id: userId },
+    data: { tokenVersion: { increment: 1 } },
+  });
+};
+
+const isValidTokenVersion = cache(
+  async (userId: string, tokenVersion: number): Promise<boolean> => {
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { tokenVersion: true },
+    });
+
+    return user !== null && user.tokenVersion === tokenVersion;
+  }
+);
 
 export const getCurrentUserWithPassword = cache(
   async (): Promise<{ id: string; passwordHash: string } | null> => {
     const session = await getSession();
 
     if (!session) return null;
+
+    if (!(await isValidTokenVersion(session.userId, session.tokenVersion))) return null;
 
     const user = await prisma.user.findUnique({
       where: { id: session.userId },
@@ -61,6 +81,8 @@ export const getCurrentUser = cache(async (): Promise<UserDTO | null> => {
   const session = await getSession();
 
   if (!session) return null;
+
+  if (!(await isValidTokenVersion(session.userId, session.tokenVersion))) return null;
 
   return prisma.user.findUnique({
     where: { id: session.userId },

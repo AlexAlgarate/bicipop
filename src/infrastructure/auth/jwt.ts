@@ -3,7 +3,7 @@ import { SignJWT, jwtVerify } from 'jose';
 import { getJwtSecretKey, JWT_ALGORITHM } from '@/infrastructure/auth/constants';
 
 export const signSessionToken = async (
-  payload: { userId: string },
+  payload: { userId: string; tokenVersion: number },
   expiresAt: Date
 ): Promise<string> => {
   const jwtSecret = getJwtSecretKey();
@@ -16,15 +16,16 @@ export const signSessionToken = async (
 
 export const verifySessionToken = async (
   token: string
-): Promise<{ userId: string } | null> => {
+): Promise<{ userId: string; tokenVersion: number } | null> => {
   const jwtSecret = getJwtSecretKey();
   try {
     const { payload } = await jwtVerify(token, jwtSecret, {
       algorithms: [JWT_ALGORITHM],
     });
     if (typeof payload.userId !== 'string') return null;
+    if (typeof payload.tokenVersion !== 'number') return null;
 
-    return { userId: payload.userId };
+    return { userId: payload.userId, tokenVersion: payload.tokenVersion };
   } catch {
     return null;
   }

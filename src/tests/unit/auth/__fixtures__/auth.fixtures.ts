@@ -30,10 +30,11 @@ export const buildRegisterFormData = (overrides?: {
 };
 
 export const makeUser = (
-  overrides?: Partial<{ id: string; email: string; password: string }>
+  overrides?: Partial<{ id: string; email: string; password: string; tokenVersion: number }>
 ) => ({
   id: '123',
   email: VALID_EMAIL,
   password: 'hashed-password',
+  tokenVersion: 0,
   ...overrides,
 });

@@ -6,7 +6,7 @@ import { revalidatePath } from 'next/cache';
 import type { AuthFormState } from '@/features/auth/types';
 import { loginSchema, registerSchema } from '@/features/auth/validation';
 import { getFieldErrorsFromTree } from '@/utils/validation-errors';
-import { createSession, deleteSession } from '@/infrastructure/auth/session';
+import { createSession, getSession, deleteSession } from '@/infrastructure/auth/session';
 import {
   comparePassword,
   hashPassword,
@@ -14,7 +14,12 @@ import {
 import { routes } from '@/config/routes';
 import { rateLimit } from '@/infrastructure/security/rate-limit';
 
-import { getUserForAuth, registerUser, checkIfUserExists } from './api';
+import {
+  getUserForAuth,
+  registerUser,
+  checkIfUserExists,
+  incrementUserTokenVersion,
+} from './api';
 
 export const loginAction = async (
   _prevState: AuthFormState,
@@ -53,7 +58,7 @@ export const loginAction = async (
   if (!validPassword) return invalidCredentials(emailInput);
 
   try {
-    await createSession(user.id);
+    await createSession(user.id, user.tokenVersion);
     revalidatePath(routes.home);
 
     return {
@@ -161,6 +166,12 @@ export const registerAction = async (
 };
 
 export const logout = async (): Promise<void> => {
+  const session = await getSession();
+
+  if (session?.userId) {
+    await incrementUserTokenVersion(session.userId);
+  }
+
   await deleteSession();
   revalidatePath(routes.home);
   redirect(routes.home);

@@ -13,10 +13,13 @@ const getSessionExpiresAt = (): Date => {
   return new Date(Date.now() + SESSION_DURATION_MS);
 };
 
-export const createSession = async (userId: string): Promise<void> => {
+export const createSession = async (
+  userId: string,
+  tokenVersion: number
+): Promise<void> => {
   const expiresAt = getSessionExpiresAt();
 
-  const token = await signSessionToken({ userId }, expiresAt);
+  const token = await signSessionToken({ userId, tokenVersion }, expiresAt);
 
   const cookieStore = await cookies();
   cookieStore.set(SESSION_COOKIE_NAME, token, {
@@ -28,14 +31,16 @@ export const createSession = async (userId: string): Promise<void> => {
   });
 };
 
-export const getSession = cache(async (): Promise<{ userId: string } | null> => {
-  const cookieStore = await cookies();
-  const token = cookieStore.get(SESSION_COOKIE_NAME)?.value;
+export const getSession = cache(
+  async (): Promise<{ userId: string; tokenVersion: number } | null> => {
+    const cookieStore = await cookies();
+    const token = cookieStore.get(SESSION_COOKIE_NAME)?.value;
 
-  if (!token) return null;
+    if (!token) return null;
 
-  return verifySessionToken(token);
-});
+    return verifySessionToken(token);
+  }
+);
 
 export const deleteSession = async (): Promise<void> => {
   const cookieStore = await cookies();
