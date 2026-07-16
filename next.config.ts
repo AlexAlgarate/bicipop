@@ -3,6 +3,22 @@ import { withSentryConfig } from '@sentry/nextjs';
 
 const useMockUpload = process.env.MOCK_SUPABASE_STORAGE === 'true';
 
+const supabaseHostname =
+  process.env.NEXT_PUBLIC_SUPABASE_URL?.replace('https://', '') ??
+  'gqwarqgiibymlrxlklsh.supabase.co';
+
+const cspDirectives = [
+  `default-src 'self'`,
+  `script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.sentry.io`,
+  `style-src 'self' 'unsafe-inline'`,
+  `img-src 'self' data: blob: https://images.unsplash.com https://${supabaseHostname}`,
+  `font-src 'self' data:`,
+  `connect-src 'self' blob: https://${supabaseHostname} https://*.sentry.io https://*.ingest.sentry.io`,
+  `frame-ancestors 'none'`,
+  `base-uri 'self'`,
+  `form-action 'self'`,
+].join('; ');
+
 const securityHeaders = [
   {
     key: 'X-Content-Type-Options',
@@ -19,6 +35,14 @@ const securityHeaders = [
   {
     key: 'Permissions-Policy',
     value: 'camera=(), microphone=(), geolocation=()',
+  },
+  {
+    key: 'Content-Security-Policy',
+    value: cspDirectives,
+  },
+  {
+    key: 'X-XSS-Protection',
+    value: '0',
   },
 ];
 
@@ -37,9 +61,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname:
-          process.env.NEXT_PUBLIC_SUPABASE_URL?.replace('https://', '') ??
-          'gqwarqgiibymlrxlklsh.supabase.co',
+        hostname: supabaseHostname,
       },
     ],
   },
