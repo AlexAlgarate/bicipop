@@ -15,7 +15,7 @@ export async function GET(request: Request) {
         id: true,
       },
     });
-
+    console.log('Supabase keep-alive executed');
     return NextResponse.json({
       ok: true,
       timestamp: new Date().toISOString(),
