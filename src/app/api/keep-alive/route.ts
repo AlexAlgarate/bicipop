@@ -20,7 +20,8 @@ export async function GET(request: Request) {
   }
 
   return NextResponse.json({
-    ok: true,
-    timestamp: new Date().toISOString(),
+    hasUrl: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
+    hasServiceRole: !!process.env.SUPABASE_SERVICE_ROLE_KEY,
+    serviceRoleStart: process.env.SUPABASE_SERVICE_ROLE_KEY?.slice(0, 20),
   });
 }
