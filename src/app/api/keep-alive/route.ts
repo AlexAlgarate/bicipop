@@ -1,27 +1,17 @@
-import { createClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
 
-export async function GET(request: Request) {
-  const auth = request.headers.get('x-keep-alive-secret');
+import { prisma } from '@/infrastructure/db/prisma/client';
 
-  if (auth !== process.env.KEEP_ALIVE_SECRET) {
+export async function GET(request: Request) {
+  if (request.headers.get('x-keep-alive-secret') !== process.env.KEEP_ALIVE_SECRET) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  );
-
-  const { error } = await supabase.from('User').select('id').limit(1);
-
-  if (error) {
-    return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
-  }
-
-  return NextResponse.json({
-    hasUrl: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
-    hasServiceRole: !!process.env.SUPABASE_SERVICE_ROLE_KEY,
-    serviceRoleStart: process.env.SUPABASE_SERVICE_ROLE_KEY?.slice(0, 20),
+  await prisma.user.findFirst({
+    select: {
+      id: true,
+    },
   });
+
+  return NextResponse.json({ ok: true });
 }
